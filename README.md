@@ -106,6 +106,7 @@ Shared/general sections live in the root templates; each root template `{% inclu
 ### Supported languages
 
 - Go: `go`
+- TypeScript: `typescript`
 
 ### Supported licenses
 
@@ -126,6 +127,10 @@ Shared/general sections live in the root templates; each root template `{% inclu
 ## Attributions
 
 - Initial structure and contents inspired by [LocalAI](https://github.com/mudler/LocalAI) by Ettore Di Giacinto (mudler), licensed under MIT license.
-- Portion of [Project Structure](.agents/project-structure.md.jinja) referenced from [Standard Go Project Layout](https://github.com/golang-standards/project-layout) by [Golang Standards](https://github.com/golang-standards).
-- Portion of [Development Guideline](.agents/development-guideline.md.jinja) referenced from [lazy senior dev mode](https://github.com/DietrichGebert/ponytail/blob/main/AGENTS.md) of [Ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert, licensed under MIT license.
-- Portion of [Coding Convention](.agents/coding-conventions.md.jinja) and [Development Guideline](.agents/development-guideline.md.jinja) referenced from [clean-code-skills](https://github.com/btseee/clean-code-skills) by Battseren Badral, licensed under MIT license.
+- General [Coding Convention](.agents/coding-conventions.md.jinja) and [Development Guideline](.agents/development-guideline.md.jinja) referenced from [clean-code-skills](https://github.com/btseee/clean-code-skills) by Battseren Badral, licensed under MIT license.
+
+Referenced repositories (listed in alphabet order):
+
+- [clean-code-typescript](https://github.com/labs42io/clean-code-typescript) by Labs42, licensed under MIT license.
+- [ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert, licensed under MIT license.
+- [project-layout](https://github.com/golang-standards/project-layout) by [Golang Standards](https://github.com/golang-standards), licensed under MIT license.

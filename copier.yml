@@ -39,11 +39,10 @@ _message_after_update: |
   Update finished. If any file contains conflict markers (<<<<<<< / >>>>>>>)
   or Copier generated *.rej files, resolve them before committing.
   Then review the changes and commit them.
-
 project_name:
   type: str
   help: "What is the name of this project?"
-  default: "go-project"
+  default: "project-name"
   validator: >-
     {% if not (project_name | regex_search('^[A-Za-z][A-Za-z0-9_. -]*$')) %}
     Start with a letter; use only letters, digits, spaces, dots, dashes, and underscores.
@@ -54,6 +53,7 @@ language:
   help: "Which primary language is this project written in?"
   choices:
     - go
+    - typescript
   default: go
 
 license:

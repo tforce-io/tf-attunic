@@ -1,0 +1,48 @@
+## TypeScript
+
+### Formats
+
+- Let the project's formatter (e.g. Prettier or Biome) own the format; run it via the project's `format` script.
+- Keep imports single-line-per-module and grouped in sections: Node built-ins, then third-party, then local, then relative, separated by a blank line.
+- Prefer `import type` (or `import { type ... }`) for type-only imports so they are erased at compile time.
+- Use `const` by default, `let` only for reassigned variables, never `var`.
+- Do not use `any`; use `unknown` when a value's type is not known and narrow it before use.
+- Do not suppress the type checker with `@ts-ignore` or `@ts-nocheck`; fix the types or narrow with a well-scoped `@ts-expect-error` and a *why* comment.
+- Use `private` visibility modifiers, never `#private` fields.
+- Use named exports; never `export default` or mutable exports like `export let`.
+- Compare with `===`/`!==`; use `==`/`!= null` only to catch both `null` and `undefined`.
+- Iterate with `for...of`; never `for...in` over arrays or objects (string indices, prototype chain).
+<!-- Project-specific / TypeScript-Formats -->
+
+### Names
+
+- `PascalCase` for types, classes, enums, and their members.
+- `camelCase` for variables, functions, and properties.
+- `CONSTANT_CASE` for module-level constants.
+- Booleans: name as predicates (`isReady`, `hasItems`, `canRetry`), never a bare `isXxx` negation like `isNotReady`.
+<!-- Project-specific / TypeScript-Names -->
+
+### Types
+
+- Prefer immutability: mark never-reassigned properties `readonly`, freeze literal collections with `as const`, return new arrays/objects instead of mutating inputs.
+- Use `type` for unions and intersections; use `interface` for `extends`/`implements` contracts.
+<!-- Project-specific / TypeScript-Types -->
+
+### Functions
+
+- Consolidate more than two parameters into one destructured options object.
+- Never pass boolean flags that branch behavior; split the function instead.
+- Use `async`/`await`; do not mix callbacks and promises in the same code path.
+<!-- Project-specific / TypeScript-Functions -->
+
+### Classes
+
+- Prefer composition over inheritance; compose small classes, each with one responsibility.
+- Prefer passing dependencies in (constructor injection) over module-level singletons.
+<!-- Project-specific / TypeScript-Classes -->
+
+### Comments
+
+- Document every exported identifier (constants, vars, types, classes, functions) with a JSDoc comment.
+- Refer [TypeScript JSDoc Reference](https://www.typescriptlang.org/docs/handbook/jsdoc-supported.html) for supported tags.
+<!-- Project-specific / TypeScript-Comments -->

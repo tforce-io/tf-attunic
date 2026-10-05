@@ -1,0 +1,46 @@
+## Guideline
+
+- Keep entrypoints thin: parse env/config, wire dependencies, then delegate to `src/` modules.
+- Keep code under `src/` as the house style; only drop to a framework-mandated layout (e.g. `app/`, `pages/`) when a tool requires it.
+- In a workspace monorepo (npm, yarn, pnpm, or bun), keep shared tooling at the repo root and give each package under `packages/` (or `apps/` for deployables) its own `package.json`, `tsconfig.json`, and `src/`.
+- Organize files by responsibility (e.g. `config/`, `http/`, `auth/`), not by type (avoid generic buckets like `utils/`, `helpers/`, `common/`).
+- Keep test files (`*.test.ts`, `*.spec.ts`) near the code they test.
+- Prefer dependency injection over module-level singletons so tests can substitute fakes without module mocking.
+<!-- Project-specific / Guideline -->
+
+## Layout
+
+```
+├── .agents/            # shared AI agent instructions (coding conventions, PR/task checklists, project structure)
+├── .github/            # GitHub-specific config (workflows, issue/PR templates)
+├── .vscode/            # VS Code editor/workspace settings
+├── api/                # OpenAPI/Swagger specs, JSON schemas, protocol definitions
+├── assets/             # repository assets (images, logos, etc)
+├── config/             # global application configuration
+├── deployments/        # deployment configs and templates (docker-compose, kubernetes/helm, terraform)
+├── docs/               # design and user documents
+├── examples/           # examples for applications and/or public libraries
+├── packages/           # workspace packages for a monorepo (npm/yarn/pnpm/bun workspaces)
+├── scripts/            # build/install/analysis scripts (keeps package.json scripts small)
+├── src/                # application/library source code (default entrypoint: main.ts)
+├── test/               # additional external test apps, fixtures, and test data
+├── web/                # web app components: static assets, server-side templates, SPAs
+├── .editorconfig       # editor formatting rules
+├── .gitignore          # git ignore patterns
+├── .npmrc              # npm/pnpm package-manager config (registry, install, publish settings)
+├── .yarnrc.yml         # yarn config (yarn berry; yarn classic uses .yarnrc)
+├── AGENTS.md           # instructions for AI coding agents
+├── CLAUDE.md           # instructions specific for Claude coding agents
+├── CONTRIBUTING.md     # contribution guidelines
+├── Dockerfile          # container build definition
+├── Makefile            # build/test/lint task automation (optional)
+├── bun.lock            # bun dependency lockfile
+├── bunfig.toml         # bun package-manager and runtime config
+├── package.json        # package manifest: scripts, dependencies, and workspaces (npm/yarn/bun)
+├── package-lock.json   # npm dependency lockfile
+├── pnpm-lock.yaml      # pnpm dependency lockfile
+├── pnpm-workspace.yaml # pnpm workspace configuration (workspace globs, settings)
+├── tsconfig.json       # TypeScript compiler options
+├── yarn.lock           # yarn dependency lockfile
+<!-- Project-specific / Layout -->
+```

@@ -1,6 +1,6 @@
 # TFattunic
 
-[Copier](https://copier.readthedocs.io/) template attuned with multi-language support for any project. See [Appendix](#supported-languages) for details.
+[Copier](https://copier.readthedocs.io/) template attuned to multi-language support for any project. See [Appendix](#supported-languages) for details.
 
 This `README.md` is for the template itself; it won't be copied into downstream projects.
 
@@ -9,7 +9,7 @@ This `README.md` is for the template itself; it won't be copied into downstream 
 Generate a new project:
 
 ```sh
-copier copy --trust gh:tforce-io/dotfiles-go .
+copier copy --trust gh:tforce-io/tf-attunic .
 ```
 
 Update an existing project that was generated from this template:
@@ -26,7 +26,7 @@ copier update --trust
 
 ## Customize
 
-To customize the dotfiles to follow your project, add your rules below the `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker of the section you are overriding. Project-specific rules supplement the template rules; when they conflict, the project-specific rules take precedence.
+To customize the generated files to follow your project, add your rules below the `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker of the section you are overriding. Project-specific rules supplement the template rules; when they conflict, the project-specific rules take precedence.
 
 - Each section in a template-owned file ends with one `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker, uniquely named after the section. In `.editorconfig` / `.gitignore` it is a plain `# Project-specific` comment. Everything above a marker is template-owned; everything below it is project-owned. For general additions, use the final `Project-specific` section's marker.
 - **DO NOT** add, edit, or delete anything above a marker, and never move or duplicate a marker.
@@ -47,7 +47,8 @@ To customize the dotfiles to follow your project, add your rules below the `<!--
 
 ```
 ├── .agents/                   # shared AI agent instructions copied into generated projects
-├── licenses/                  # license text snippets, license notice snippets, included by LICENSE.jinja / COPYING*.jinja (not copied)
+├── .attunic/                  # project memory layer (see Project Memory Layer section below)
+├── licenses/                  # license text snippets, license notice snippets, included by LICENSE.jinja / COPYING*.jinja / .agents/license-header.md.jinja (not copied)
 ├── languages/<lang>/          # language-specific content, included by the root templates above, one folder per supported language (not copied)
 ├── .editorconfig.jinja        # generic editor formatting rules + language fragment included before the Project-specific marker
 ├── .gitignore.jinja           # generic ignore rules + language fragment included before the Project-specific marker
@@ -61,19 +62,28 @@ To customize the dotfiles to follow your project, add your rules below the `<!--
 └── copier.yml                 # template questions and settings
 ```
 
-### Language fragments (`languages/<lang>/`)
+### Project Memory Layer (`.attunic/`)
+
+Generated projects carry a markdown-only project memory layer in `.attunic/`, adapted from [clean-code-skills](https://github.com/btseee/clean-code-skills)' memory protocol. It lets a new agent session resume instead of guessing, with no scripts and no runtime tooling:
+
+| File         | Created by                                                      |
+|--------------|-----------------------------------------------------------------|
+| `context.md` | Pre-seeded by this template                                     |
+| `memory.md`  | Pre-seeded by this template; append-only log of settled choices |
+| `wip.md`     | On demand, when an audit or cleanup campaign starts; gitignored |
+
+### Language Fragments (`languages/<lang>/`)
 
 | Fragment                     | Included by                              |
 |------------------------------|------------------------------------------|
 | `.editorconfig.jinja`        | `.editorconfig.jinja`                    |
 | `.gitignore.jinja`           | `.gitignore.jinja`                       |
 | `coding-conventions.md.jinja`| `.agents/coding-conventions.md.jinja`    |
-| `commands.md.jinja`          | `.agents/commands.md.jinja`              |
 | `project-structure.md.jinja` | `.agents/project-structure.md.jinja`     |
 
 Shared/general sections live in the root templates; each root template `{% include %}`s the language fragment of the selected `language` answer. These fragments are never emitted as project files.
 
-### License file mapping
+### License File Mapping
 
 | License choice     | Files generated              |
 |--------------------|------------------------------|
@@ -92,23 +102,24 @@ Shared/general sections live in the root templates; each root template `{% inclu
 | `AGPL-3.0-only`    | `COPYING`                    |
 | `AGPL-3.0-or-later`| `COPYING`                    |
 
-## Maintain the template
+## Maintain the Template
 
 - Keep the marker convention from the [Customize](#customize) section above in every new template file, including the language fragments in `languages/<lang>/`.
 - Keep the marker text byte-identical across versions; Copier matches on this line as diff context, so even a whitespace or punctuation change can break the anchor and produce spurious conflicts.
 - Only make changes to content above the `<!-- Project-specific -->`, `<!-- Project-specific / ... -->`, or `# Project-specific` marker in each section.
-- To add a new language, create `languages/<lang_code>/` with the five fragments listed above and add `<lang_code>` to the `language` question's choices in `copier.yml`.
+- To add a new language, create `languages/<lang_code>/` with all the fragments listed above and add `<lang_code>` to the `language` question's choices in `copier.yml`.
+- To add a new license, update `copier.yml` (choices, `_exclude` branches), create the `licenses/<id>.jinja` and `licenses/<id>-notice.jinja` fragments, update the `LICENSE.jinja` / `COPYING.jinja` includes, and update the README tables (Questions, License File Mapping, Supported Licenses) in the same commit.
 - Never rename or delete a shipped file without adding a `_migrations` entry in `copier.yml` (e.g. `git mv old new`) so downstream projects keep any content users appended past that file's marker instead of losing it.
 - Never move or re-point a published tag (no force-push to tags); ship corrections as a new tag instead.
 
 ## Appendix
 
-### Supported languages
+### Supported Languages
 
 - Go: `go`
 - TypeScript: `typescript`
 
-### Supported licenses
+### Supported Licenses
 
 - `0BSD`
 - `AGPL-3.0-only`
@@ -126,11 +137,11 @@ Shared/general sections live in the root templates; each root template `{% inclu
 
 ## Attributions
 
-- Initial structure and contents inspired by [LocalAI](https://github.com/mudler/LocalAI) by Ettore Di Giacinto (mudler), licensed under MIT license.
-- General [Coding Convention](.agents/coding-conventions.md.jinja) and [Development Guideline](.agents/development-guideline.md.jinja) referenced from [clean-code-skills](https://github.com/btseee/clean-code-skills) by Battseren Badral, licensed under MIT license.
+- Topic-based structure referenced from [LocalAI](https://github.com/mudler/LocalAI) by Ettore Di Giacinto (mudler), licensed under the MIT license.
+- General [Coding Convention](.agents/coding-conventions.md.jinja), [Development Guideline](.agents/development-guideline.md.jinja), and [Project Memory Layer](.agents/attunic-protocol.md.jinja) (`.attunic/`) referenced from [clean-code-skills](https://github.com/btseee/clean-code-skills) by Battseren Badral, licensed under the MIT license.
 
-Referenced repositories (listed in alphabet order):
+Referenced repositories (listed in alphabetical order):
 
-- [clean-code-typescript](https://github.com/labs42io/clean-code-typescript) by Labs42, licensed under MIT license.
-- [ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert, licensed under MIT license.
-- [project-layout](https://github.com/golang-standards/project-layout) by [Golang Standards](https://github.com/golang-standards), licensed under MIT license.
+- [clean-code-typescript](https://github.com/labs42io/clean-code-typescript) by Labs42, licensed under the MIT license.
+- [ponytail](https://github.com/DietrichGebert/ponytail) by Dietrich Gebert, licensed under the MIT license.
+- [project-layout](https://github.com/golang-standards/project-layout) by [Golang Standards](https://github.com/golang-standards), licensed under the MIT license.

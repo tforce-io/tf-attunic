@@ -14,10 +14,8 @@ _exclude:
   - "copier.yaml"
   - "licenses"
   - "languages"
-  - "languages/**"
   - |
       {% if license == 'None' %}
-      LICENSE
       COPYING
       COPYING.LESSER
       .agents/license-header.md
@@ -34,11 +32,11 @@ _exclude:
       .agents/license-header.md
       {% endif %}
 
-
 _message_after_update: |
   Update finished. If any file contains conflict markers (<<<<<<< / >>>>>>>)
   or Copier generated *.rej files, resolve them before committing.
   Then review the changes and commit them.
+
 project_name:
   type: str
   help: "What is the name of this project?"

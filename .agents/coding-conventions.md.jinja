@@ -8,6 +8,7 @@ The principles below are for all languages. They use camelCase for demonstration
 
 - Keep file content reads top-down: high-level intent first, details descending (newspaper metaphor).
 - Keep related things close: declarations near first use, callers near callees.
+- Always brace control-flow bodies (if/else, for, while, do, switch, when) even for a single statement; never rely on brace-less bodies.
 {%- if license != 'None' and license_header != 'None' %}
 - Start every code file, including test files, with the license header defined in [license-header.md](license-header.md).
 {%- endif %}
@@ -30,8 +31,8 @@ The principles below are for all languages. They use camelCase for demonstration
 - Document every exported identifier (constants, vars, types, methods, functions) with a doc comment.
 - Write comments explaining *why*, not *what*; the code already shows what it does.
 - Cut articles, filler, and hedging; keep IDs, numbers, links, and warnings whole.
-- Keep comments short and concise, should be one to three lines. Longer explanations belong in a doc file the comment points to, or an extracted function.
-- Keep comments up to date with the code, a stale comment is worse than no comment.
+- Keep comments short and concise: they should be one to three lines; longer explanations belong in a doc file the comment points to, or an extracted function.
+- Keep comments up to date with the code: a stale comment is worse than no comment.
 - Keep comments about: non-obvious constraints, legal requirements, algorithmic tradeoffs, external system quirks, warnings of consequences, and TODOs with context and ownership.
 - Delete comment noise: redundant restatements, change journals, attributions, banner or position markers, closing-brace labels, and commented-out code.
 - Never delete or reword comments a tool reads (shebangs, encoding lines, license and SPDX headers, build and compiler directives, suppressions, doctests, generated-file headers). An unexplained suppression is a finding, not a comment to delete.

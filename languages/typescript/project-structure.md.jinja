@@ -3,9 +3,8 @@
 - Keep entrypoints thin: parse env/config, wire dependencies, then delegate to `src/` modules.
 - Keep code under `src/` as the house style; only drop to a framework-mandated layout (e.g. `app/`, `pages/`) when a tool requires it.
 - In a workspace monorepo (npm, yarn, pnpm, or bun), keep shared tooling at the repo root and give each package under `packages/` (or `apps/` for deployables) its own `package.json`, `tsconfig.json`, and `src/`.
-- Organize files by responsibility (e.g. `config/`, `http/`, `auth/`), not by type (avoid generic buckets like `utils/`, `helpers/`, `common/`).
+- Organize files by responsibility (e.g. `config/`, `http/`, `auth/`), not by type.
 - Keep test files (`*.test.ts`, `*.spec.ts`) near the code they test.
-- Prefer dependency injection over module-level singletons so tests can substitute fakes without module mocking.
 <!-- Project-specific / Guideline -->
 
 ## Layout
@@ -44,3 +43,21 @@
 ├── yarn.lock           # yarn dependency lockfile
 <!-- Project-specific / Layout -->
 ```
+
+## Layer Dependencies
+
+Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- `src/main.ts` (or the framework entrypoint) is the outermost layer: parse env/config, wire dependencies, then delegate to `src/` modules; it may import everything, and nothing imports it.
+- Layers live under `src/`, organized by responsibility (e.g. `src/auth/`, `src/http/`), not by type; one suggestion, innermost first:
+
+| Layer | Typical path | Depends on | Must never contain |
+|-------|--------------|------------|--------------------|
+| domain | src/\<area\>/domain | itself | framework types, database, HTTP |
+| application | src/\<area\>/application | domain | database access, HTTP handlers |
+| adapter | src/\<area\>/http, src/\<area\>/cli | application, domain | SQL, external clients |
+| infrastructure | src/\<area\>/infrastructure | application (its ports), domain | business rules |
+
+- Prefer passing dependencies in (constructor injection) over module-level singletons, so a layer boundary can be substituted in tests.
+- Check by hand: read the imports of changed files; an inner module importing an outer one is a violation.
+<!-- Project-specific / Layer Dependencies -->

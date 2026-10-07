@@ -2,8 +2,8 @@
 
 - Keep `main()` functions thin: parse flags/config, wire dependencies, then delegate to `internal/` packages.
 - Code that should never be imported by other projects belongs under `internal/`.
-- Only put code under `pkg/` if it's genuinely meant to be a public, importable API - don't use it as a dumping ground.
-- Group files within a package by responsibility, not by type (avoid generic buckets like `utils.go` or `helpers.go` when a more specific name fits).
+- Only put code under `pkg/` if it's genuinely meant to be a public, importable API; don't use it as a dumping ground.
+- Group files within a package by responsibility, not by type.
 - Keep test files (`_test.go`) alongside the code they test, in the same package or a `_test` package for black-box tests.
 <!-- Project-specific / Guideline -->
 
@@ -35,9 +35,28 @@
 ├── CLAUDE.md       # instructions specific for Claude coding agents
 ├── CONTRIBUTING.md # contribution guidelines
 ├── Dockerfile      # container build definition
-├── Makefile        # build/test/lint task automation
+├── Makefile        # build/test/lint task automation (optional)
 ├── go.mod          # Go module definition
 ├── go.sum          # Go module checksums
 ├── main.go         # default application entrypoint
 <!-- Project-specific / Layout -->
 ```
+
+## Layer Dependencies
+
+Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- `common/` is a shared kernel: every layer may import it, so it must import no layer of its own; keep business rules and framework types out of it.
+- `cmd/` is the outermost layer: entrypoints parse flags/config, wire dependencies, then delegate to `internal/`; it may import everything, and nothing imports it.
+- `internal/` holds the layers themselves; one suggestion, innermost first:
+
+| Layer | Typical path | Depends on | Must never contain |
+|-------|--------------|------------|--------------------|
+| domain | internal/\<app\>/domain | itself, common | framework types, database, HTTP |
+| application | internal/\<app\>/app | domain, common | database access, HTTP handlers |
+| adapter | internal/\<app\>/transport | application, domain, common | SQL, external clients |
+| infrastructure | internal/\<app\>/infra | application (its ports), domain, common | business rules |
+
+- `pkg/` is a public boundary for other modules; keep application-internal layer types out of it.
+- Check by hand: reading imports or `go list -deps ./...` must never show an inner package importing an outer one.
+<!-- Project-specific / Layer Dependencies -->

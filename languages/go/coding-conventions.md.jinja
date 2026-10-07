@@ -2,16 +2,18 @@
 
 ### Formats
 
-- Run `gofmt -l .` to format the code; it must report no files.
+- Run `gofmt -l .` to check formatting; it must report no files.
 - Run `goimports` to keep imports sorted and grouped: stdlib, then third-party, then local packages, separated by a blank line.
 <!-- Project-specific / Go-Formats -->
 
 ### Names
+
 - Package names: short, lowercase, single word, no underscores or mixedCaps.
 - Interface names: prefer the `-er` suffix for single-method interfaces (e.g. `Reader`, `Closer`).
 - Avoid stuttering: don't repeat the package name in exported identifiers (e.g. `log.Logger`, not `log.LogLogger`).
 <!-- Project-specific / Go-Names -->
 
 ### Comments
-- Refer [Go doc conventions](https://go.dev/doc/comment) for specific convention.
+
+- Refer to [Go doc conventions](https://go.dev/doc/comment) for specific convention.
 <!-- Project-specific / Go-Comments -->

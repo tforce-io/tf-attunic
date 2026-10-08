@@ -11,7 +11,10 @@ trim_trailing_whitespace = true
 [*.{json,md,toml,yaml,yml}]
 indent_style = space
 
-{% for language in languages %}
-{% include 'languages/' ~ language ~ '/.editorconfig.jinja' %}
-{% endfor %}
+{% set blocks = [] -%}
+{% for language in languages -%}
+{%- set snippet %}{% include 'languages/' ~ language ~ '/.editorconfig.jinja' %}{% endset -%}
+{% if snippet | trim %}{% set _ = blocks.append(snippet | trim) %}{% endif -%}
+{%- endfor -%}
+{{ ((blocks | join('\n\n')) ~ '\n\n' if blocks else '') -}}
 # Project-specific

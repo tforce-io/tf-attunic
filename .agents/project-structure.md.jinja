@@ -6,12 +6,17 @@ The file holding the layout attuned to this project is [context.md](../.attunic/
 
 The files holding the rules for working with this project are [coding-conventions.md](coding-conventions.md) and [development-guideline.md](development-guideline.md).
 
-{% for language in languages %}
-{% include 'languages/' ~ language ~ '/project-structure.md.jinja' %}
-{% endfor %}
-{% for framework in frameworks %}
-{% include 'frameworks/' ~ framework ~ '/project-structure.md.jinja' %}
-{% endfor %}
+{% set blocks = [] -%}
+{% for language in languages -%}
+{%- set snippet %}{% include 'languages/' ~ language ~ '/project-structure.md.jinja' %}{% endset -%}
+{% if snippet | trim %}{% set _ = blocks.append(snippet | trim) %}{% endif -%}
+{%- endfor -%}
+{% set fblocks = [] -%}
+{% for framework in frameworks -%}
+{%- set snippet %}{% include 'frameworks/' ~ framework ~ '/project-structure.md.jinja' %}{% endset -%}
+{% if snippet | trim %}{% set _ = fblocks.append(snippet | trim) %}{% endif -%}
+{%- endfor -%}
+{{ ((blocks + fblocks) | join('\n\n')) ~ '\n\n' if blocks or fblocks else '' -}}
 ## Project-specific
 
 <!-- Project-specific -->

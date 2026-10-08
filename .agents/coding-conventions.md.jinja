@@ -48,12 +48,17 @@ The principles below are for all languages. They use camelCase for demonstration
 - Never swallow errors or catch broadly without handling, wrapping, or propagating with context.
 <!-- Project-specific / Errors -->
 
-{% for language in languages %}
-{% include 'languages/' ~ language ~ '/coding-conventions.md.jinja' %}
-{% endfor %}
-{% for framework in frameworks %}
-{% include 'frameworks/' ~ framework ~ '/coding-conventions.md.jinja' %}
-{% endfor %}
+{% set blocks = [] -%}
+{% for language in languages -%}
+{%- set snippet %}{% include 'languages/' ~ language ~ '/coding-conventions.md.jinja' %}{% endset -%}
+{% if snippet | trim %}{% set _ = blocks.append(snippet | trim) %}{% endif -%}
+{%- endfor -%}
+{% set fblocks = [] -%}
+{% for framework in frameworks -%}
+{%- set snippet %}{% include 'frameworks/' ~ framework ~ '/coding-conventions.md.jinja' %}{% endset -%}
+{% if snippet | trim %}{% set _ = fblocks.append(snippet | trim) %}{% endif -%}
+{%- endfor -%}
+{{ ((blocks + fblocks) | join('\n\n')) ~ '\n\n' if blocks or fblocks else '' -}}
 ## Project-specific
 
 <!-- Project-specific -->

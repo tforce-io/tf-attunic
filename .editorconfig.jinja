@@ -11,5 +11,7 @@ trim_trailing_whitespace = true
 [*.{json,md,toml,yaml,yml}]
 indent_style = space
 
+{% for language in languages %}
 {% include 'languages/' ~ language ~ '/.editorconfig.jinja' %}
+{% endfor %}
 # Project-specific

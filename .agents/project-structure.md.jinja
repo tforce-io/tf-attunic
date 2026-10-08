@@ -6,7 +6,9 @@ The file holding the layout attuned to this project is [context.md](../.attunic/
 
 The files holding the rules for working with this project are [coding-conventions.md](coding-conventions.md) and [development-guideline.md](development-guideline.md).
 
+{% for language in languages %}
 {% include 'languages/' ~ language ~ '/project-structure.md.jinja' %}
+{% endfor %}
 ## Project-specific
 
 <!-- Project-specific -->

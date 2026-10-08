@@ -11,5 +11,7 @@
 Thumbs.db
 desktop.ini
 
+{% for language in languages %}
 {% include 'languages/' ~ language ~ '/.gitignore.jinja' %}
+{% endfor %}
 # Project-specific

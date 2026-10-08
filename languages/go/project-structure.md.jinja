@@ -1,4 +1,6 @@
-## Guideline
+## Go structure
+
+### Guideline
 
 - Keep `main()` functions thin: parse flags/config, wire dependencies, then delegate to `internal/` packages.
 - Code that should never be imported by other projects belongs under `internal/`.
@@ -7,7 +9,7 @@
 - Keep test files (`_test.go`) alongside the code they test, in the same package or a `_test` package for black-box tests.
 <!-- Project-specific / Guideline -->
 
-## Layout
+### Layout
 
 ```
 ├── .agents/        # shared AI agent instructions (coding conventions, PR/task checklists, project structure)
@@ -42,7 +44,7 @@
 <!-- Project-specific / Layout -->
 ```
 
-## Layer Dependencies
+### Layer Dependencies
 
 Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 

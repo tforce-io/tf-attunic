@@ -1,4 +1,6 @@
-## Guideline
+## TypeScript structure
+
+### Guideline
 
 - Keep entrypoints thin: parse env/config, wire dependencies, then delegate to `src/` modules.
 - Keep code under `src/` as the house style; only drop to a framework-mandated layout (e.g. `app/`, `pages/`) when a tool requires it.
@@ -7,7 +9,7 @@
 - Keep test files (`*.test.ts`, `*.spec.ts`) near the code they test.
 <!-- Project-specific / Guideline -->
 
-## Layout
+### Layout
 
 ```
 ├── .agents/            # shared AI agent instructions (coding conventions, PR/task checklists, project structure)
@@ -44,7 +46,7 @@
 <!-- Project-specific / Layout -->
 ```
 
-## Layer Dependencies
+### Layer Dependencies
 
 Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 

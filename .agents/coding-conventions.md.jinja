@@ -48,7 +48,9 @@ The principles below are for all languages. They use camelCase for demonstration
 - Never swallow errors or catch broadly without handling, wrapping, or propagating with context.
 <!-- Project-specific / Errors -->
 
+{% for language in languages %}
 {% include 'languages/' ~ language ~ '/coding-conventions.md.jinja' %}
+{% endfor %}
 ## Project-specific
 
 <!-- Project-specific -->

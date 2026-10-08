@@ -46,14 +46,18 @@ project_name:
     Start with a letter; use only letters, digits, spaces, dots, dashes, and underscores.
     {% endif %}
 
-language:
+languages:
   type: str
-  help: "Which primary language is this project written in?"
+  multiselect: true
+  help: "Which languages is this project written in? (select all that apply)"
   choices:
     - go
     - typescript
     - text
-  default: go
+  validator: >-
+    {% if not languages %}
+    Select at least one language.
+    {% endif %}
 
 license:
   type: str

@@ -3,11 +3,7 @@
 ## Guideline
 
 - Start every code file, including test files, with the license header below.
-{%- if language == 'go' %}
-- The header comes first, before the `package` clause, followed by a blank line.
-{%- else %}
 - The header comes first in the code file, followed by a blank line.
-{%- endif %}
 
 {%- if license_header == 'Full' %}
 {%- set notice_license = license|lower|replace('-or-later','')|replace('-only','') %}

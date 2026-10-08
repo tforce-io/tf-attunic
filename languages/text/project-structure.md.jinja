@@ -1,0 +1,38 @@
+## Guideline
+
+- Keep one topic per file: prose on top, appendices and notes at the bottom, so a document can be read front-to-back or diffed cleanly.
+- Split by responsibility (e.g. `docs/release-notes.txt`, `docs/api-reference.txt`), not by date or author.
+- Keep shared boilerplate (headers, glossaries, style rules) in one place and reference it; never copy-paste it into every document.
+<!-- Project-specific / Guideline -->
+
+## Layout
+
+```
+├── .agents/        # shared AI agent instructions (coding conventions, PR/task checklists, project structure)
+├── .github/        # GitHub-specific config (workflows, issue/PR templates)
+├── .vscode/        # VS Code editor/workspace settings
+├── assets/         # repository assets (images, logos, etc)
+├── config/         # global project configuration
+├── docs/           # design and user documents (plain text)
+├── examples/       # sample documents and snippets
+├── scripts/        # helper scripts (text checks, wrapping, generation)
+├── test/           # fixtures, sample text, and expected check outputs
+├── web/            # rendered or published copies, if the text is hosted
+├── .editorconfig   # editor formatting rules
+├── .gitignore      # git ignore patterns
+├── AGENTS.md       # instructions for AI coding agents
+├── CLAUDE.md       # instructions specific for Claude coding agents
+├── CONTRIBUTING.md # contribution guidelines
+├── Dockerfile      # container build definition
+├── Makefile        # build/check task automation (optional)
+├── README.md       # project overview and pointing entry
+<!-- Project-specific / Layout -->
+```
+
+## Layer Dependencies
+
+Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- Plain-text projects have no importable layers; delete the layer table or repurpose it to document document-level organization instead (e.g. `docs/` depends on `assets/` and the shared glossary; `test/` depends on `docs/` fixtures; nothing depends on `scripts/`).
+- Check by hand: no document should duplicate content that another owns; cross-reference instead.
+<!-- Project-specific / Layer Dependencies -->

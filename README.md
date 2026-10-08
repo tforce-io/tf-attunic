@@ -118,6 +118,7 @@ Shared/general sections live in the root templates; each root template `{% inclu
 
 - Go: `go`
 - TypeScript: `typescript`
+- Text: `text`
 
 ### Supported Licenses
 

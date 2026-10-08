@@ -134,6 +134,7 @@ Each root template `{% include %}`s the framework fragment of every framework se
 ### Supported Languages
 
 - Go: `go`
+- PowerShell: `powershell`
 - Shell: `shell`
 - TypeScript: `typescript`
 - Text: `text`

@@ -55,6 +55,7 @@ languages:
   help: "Which languages is this project written in? (select all that apply)"
   choices:
     - go
+    - powershell
     - shell
     - typescript
     - text

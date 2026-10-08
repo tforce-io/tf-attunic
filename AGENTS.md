@@ -15,7 +15,7 @@ A brief overview of the ingredients used for developing this project. These are 
 - Build system: None.
 - Test runner: None.
 - Linter: None.
-- Supported languages: `go`, `typescript`, `text`.
+- Supported languages: `go`, `shell`, `typescript`, `text`.
 - Supported frameworks: `angular`, `react`.
 - Supported licenses: `MIT`, `ISC`, `BSD-2-Clause`, `BSD-3-Clause`, `0BSD`, `Apache-2.0`, `MPL-2.0`, `GPL-3.0-only`, `GPL-3.0-or-later`, `LGPL-3.0-only`, `LGPL-3.0-or-later`, `AGPL-3.0-only`, `AGPL-3.0-or-later`, or `None`; license header style in code files: `Full`, `SPDX`, or `None` (skipped when `license` is `None`).
 - Verification: manual, by running `copier copy` / `copier update` into a scratch project and inspecting the generated files (see [Supporting Tools](#supporting-tools)).
@@ -130,7 +130,7 @@ Template authoring conventions for this repository:
 
 - Name markers uniquely after the section they close: `<!-- Project-specific / <Section> -->`.
 - Name template files after the generated file with the `.jinja` suffix (e.g. `AGENTS.md.jinja` renders `AGENTS.md`).
-- Name language folders with the lowercase codes listed in the `languages` choices in `copier.yml`: `go`, `typescript`, `text`.
+- Name language folders with the lowercase codes listed in the `languages` choices in `copier.yml`: `go`, `shell`, `typescript`, `text`.
 - Name framework folders with the lowercase codes listed in the `frameworks` choices in `copier.yml`: `angular`, `react`.
 - Name license fragments `<license-id>.jinja` and `<license-id>-notice.jinja` (e.g. `mit.jinja`, `mit-notice.jinja`).
 

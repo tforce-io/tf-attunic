@@ -1,0 +1,43 @@
+## React structure
+
+### Guideline
+
+- Group each feature under `src/features/<feature>/` with its components, hooks, and API calls.
+- Keep shared presentational components used by several features under `src/components/`.
+- Keep shared custom hooks (`useDebounce`, `useMediaQuery`) under `src/hooks/`.
+- Keep HTTP clients and data access under `src/api/` or `src/services/`; no JSX there.
+- Keep providers, router, and composition in `src/main.tsx` or `src/app/`.
+- Co-locate a component's test, styles, and stories beside it when the project co-locates.
+<!-- Project-specific / React-Guideline -->
+
+### Layout
+
+```
+├── src/
+│   ├── main.tsx (or app/)    # providers, router, and composition
+│   ├── features/
+│   │   └── <feature>/        # one feature's components, hooks, and API calls
+│   ├── components/           # shared presentational components used by several features
+│   ├── hooks/                # shared custom hooks (useDebounce, useMediaQuery)
+│   └── api/ (or services/)   # HTTP clients and data access; no JSX
+<!-- Project-specific / React-Layout -->
+```
+
+### Layer Dependencies
+
+Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- Components and hooks are the delivery layer: they render and adapt; they do not decide.
+- Business rules live in plain modules that import nothing from React.
+- API clients implement interfaces the application layer declares; components never call `fetch` directly.
+- Providers and the router compose everything, in the outermost layer.
+- Prefer passing dependencies in (constructor injection or a provider) over module-level singletons, so a layer boundary can be substituted in tests.
+- Check by hand: read the imports of changed files; an inner module importing an outer one is a violation.
+
+| Layer | Typical path | Depends on | Must never contain |
+|-------|--------------|------------|--------------------|
+| domain | src/domain | itself | framework types, database, HTTP |
+| application | src/application | domain | HTTP handlers, framework types |
+| infrastructure | src/api | application (its ports), domain | business rules, JSX |
+| ui | src/components, src/features, src/hooks | application, domain | SQL, external clients |
+<!-- Project-specific / React-Layer-Dependencies -->

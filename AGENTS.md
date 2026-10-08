@@ -4,7 +4,7 @@ This file is the entry point for AI coding assistants working on this repository
 
 ## Abstract
 
-TFattunic attunes software projects for AI coding assistants. From a project name, its languages, and a license choice, it generates the instructions and project memory an agent needs to work on the repository: shared development guidelines, coding conventions, pull-request guidance, and a record of context, settled decisions, and work in progress, so that any session can start informed and hand its findings to the next.
+TFattunic attunes software projects for AI coding assistants. From a project name, its languages and frameworks, and a license choice, it generates the instructions and project memory an agent needs to work on the repository: shared development guidelines, coding conventions, pull-request guidance, and a record of context, settled decisions, and work in progress, so that any session can start informed and hand its findings to the next.
 
 ## Technical Specifications
 
@@ -15,6 +15,8 @@ A brief overview of the ingredients used for developing this project. These are 
 - Build system: None.
 - Test runner: None.
 - Linter: None.
+- Supported languages: `go`, `typescript`, `text`.
+- Supported frameworks: `angular`, `react`.
 - Supported licenses: `MIT`, `ISC`, `BSD-2-Clause`, `BSD-3-Clause`, `0BSD`, `Apache-2.0`, `MPL-2.0`, `GPL-3.0-only`, `GPL-3.0-or-later`, `LGPL-3.0-only`, `LGPL-3.0-or-later`, `AGPL-3.0-only`, `AGPL-3.0-or-later`, or `None`; license header style in code files: `Full`, `SPDX`, or `None` (skipped when `license` is `None`).
 - Verification: manual, by running `copier copy` / `copier update` into a scratch project and inspecting the generated files (see [Supporting Tools](#supporting-tools)).
 
@@ -39,16 +41,19 @@ List of important folders, files and their roles in the project:
 ```text
 ├── .agents/                              # shared AI agent instruction templates (`*.md.jinja`), copied into generated projects
 │   ├── attunic-protocol.md.jinja         # defines the `.attunic/` memory layer: files, read order, write rules
-│   ├── coding-conventions.md.jinja       # naming, formatting, comment, and error conventions; plus per-language sections
+│   ├── coding-conventions.md.jinja       # naming, formatting, comment, and error conventions; plus per-language and per-framework sections
 │   ├── development-guideline.md.jinja    # exploring/writing/security/fixing/testing rules, common mistakes, coding checklist
 │   ├── license-header.md.jinja           # license header to put at the top of every code file
 │   ├── memory-template.md.jinja          # skeleton for `wip.md`, copied when an audit starts
-│   ├── project-structure.md.jinja        # standard project structures of languages, kept for reference
+│   ├── project-structure.md.jinja        # standard project structures of languages and frameworks, kept for reference
 │   └── pull-request-guideline.md.jinja   # guideline and checklist run before opening/updating a PR
 ├── .attunic/                             # project memory layer templates, pre-seeded into generated projects
 │   ├── context.md.jinja                  # renders `context.md`: specs, layout, layer dependencies, tools, confirmed facts
 │   └── memory.md.jinja                   # renders `memory.md`: append-only decisions and open questions; `wip.md` created on demand (gitignored)
-├── languages/<lang>/                     # language fragments included by root templates for every selected language (`go`, `typescript`, `text`); included, never copied
+├── frameworks/<framework>/               # framework fragments included by root templates for every selected framework; included, never copied
+│   ├── coding-conventions.md.jinja       # framework-specific coding conventions
+│   └── project-structure.md.jinja        # framework-specific standard project structure
+├── languages/<language>/                 # language fragments included by root templates for every selected language; included, never copied
 │   ├── .editorconfig.jinja               # language-specific editor formatting rules
 │   ├── .gitignore.jinja                  # language-specific ignore patterns
 │   ├── coding-conventions.md.jinja       # language-specific coding conventions
@@ -126,6 +131,7 @@ Template authoring conventions for this repository:
 - Name markers uniquely after the section they close: `<!-- Project-specific / <Section> -->`.
 - Name template files after the generated file with the `.jinja` suffix (e.g. `AGENTS.md.jinja` renders `AGENTS.md`).
 - Name language folders with the lowercase codes listed in the `languages` choices in `copier.yml`: `go`, `typescript`, `text`.
+- Name framework folders with the lowercase codes listed in the `frameworks` choices in `copier.yml`: `angular`, `react`.
 - Name license fragments `<license-id>.jinja` and `<license-id>-notice.jinja` (e.g. `mit.jinja`, `mit-notice.jinja`).
 
 ## Exploring

@@ -1,0 +1,41 @@
+## Angular structure
+
+### Guideline
+
+- Keep `src/main.ts` as the composition root: `bootstrapApplication`, providers, and nothing else.
+- Group each feature under `src/app/<feature>/` with its components, services, guards, and routes colocated (Angular's flat layout, not a type-based tree).
+- Keep `src/app/core/` for singleton services, guards, and interceptors provided once, at the root.
+- Keep `src/app/shared/` for presentational components, directives, and pipes reused by several features — not a dumping ground for unrelated helpers.
+- Declare the root `Routes` array in `src/app/app.routes.ts`; lazy-load features with `loadComponent`/`loadChildren`.
+<!-- Project-specific / Angular-Guideline -->
+
+### Layout
+
+```
+├── src/
+│   ├── main.ts               # composition root: bootstrapApplication, providers
+│   └── app/
+│       ├── <feature>/        # a feature's components, services, guards, and routes, colocated
+│       ├── core/             # singleton services, guards, interceptors provided once, at the root
+│       ├── shared/           # presentational components, directives, pipes reused by several features
+│       └── app.routes.ts     # root Routes array; features lazy-load with loadComponent/loadChildren
+<!-- Project-specific / Angular-Layout -->
+```
+
+### Layer Dependencies
+
+Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- Components, directives, and pipes are the delivery layer: they render and adapt, they do not decide.
+- Business rules are plain TypeScript classes or functions with no `@angular/*` import; declare a repository interface there and implement it in a service that injects `HttpClient`.
+- Guards, interceptors, and resolvers depend on the application layer's interfaces, never the reverse.
+- Prefer passing dependencies in (constructor or `inject()`) over module-level singletons, so a layer boundary can be substituted in tests.
+- Check by hand: read the imports of changed files; an inner module importing an outer one is a violation.
+
+| Layer | Typical path | Depends on | Must never contain |
+|-------|--------------|------------|--------------------|
+| domain | src/app/domain | itself | framework types, database, HTTP |
+| application | src/app/application | domain | HTTP handlers, framework types |
+| infrastructure | src/app/infrastructure, \*.service.ts, \*.interceptor.ts | application (its ports), domain | business rules |
+| ui | src/app/** | application, domain | SQL, external clients |
+<!-- Project-specific / Angular-Layer-Dependencies -->

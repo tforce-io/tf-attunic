@@ -14,8 +14,9 @@ _exclude:
   - "README.md"
   - "copier.yml"
   - "copier.yaml"
-  - "licenses"
+  - "frameworks"
   - "languages"
+  - "licenses"
   - |
       {% if license == 'None' %}
       COPYING
@@ -60,6 +61,20 @@ languages:
     {% if not languages %}
     Select at least one language.
     {% endif %}
+
+frameworks:
+  type: str
+  multiselect: true
+  help: "Which frameworks does this project use? (select all that apply)"
+  when: "{{ 'typescript' in languages }}"
+  choices: |
+    {%- if 'typescript' in languages %}
+    - angular
+    - react
+    {%- else %}
+    []
+    {%- endif %}
+  default: []
 
 license:
   type: str

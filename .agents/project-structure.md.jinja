@@ -1,6 +1,6 @@
 # Project Structure
 
-Here are standard project structures of languages, kept for reference.
+Here are standard project structures of languages and frameworks, kept for reference.
 
 The file holding the layout attuned to this project is [context.md](../.attunic/context.md).
 
@@ -8,6 +8,9 @@ The files holding the rules for working with this project are [coding-convention
 
 {% for language in languages %}
 {% include 'languages/' ~ language ~ '/project-structure.md.jinja' %}
+{% endfor %}
+{% for framework in frameworks %}
+{% include 'frameworks/' ~ framework ~ '/project-structure.md.jinja' %}
 {% endfor %}
 ## Project-specific
 

@@ -1,6 +1,6 @@
 # TFattunic
 
-[Copier](https://copier.readthedocs.io/) template attuned to multi-language support for any project. See [Appendix](#supported-languages) for details.
+[Copier](https://copier.readthedocs.io/) template attuned to multi-language and multi-framework support for any project. See [Appendix](#supported-languages) for details.
 
 This `README.md` is for the template itself; it won't be copied into downstream projects.
 
@@ -39,7 +39,8 @@ To customize the generated files to follow your project, add your rules below th
 | Question            | Description                                               |
 |---------------------|-----------------------------------------------------------|
 | `project_name`      | Name of the generated project                             |
-| `languages`         | Language(s) of the project; multi-select              |
+| `languages`         | Language(s) of the project; multi-select                  |
+| `frameworks`        | Framework(s) of the project; multi-select; shown only when a selected language has supported frameworks |
 | `license`           | Open source license (see [Appendix](#supported-licenses)) or `None` |
 | `copyright_holder`  | Copyright holder name                                     |
 | `copyright_year`    | Copyright year                                            |
@@ -50,18 +51,22 @@ To customize the generated files to follow your project, add your rules below th
 ```
 ├── .agents/                   # shared AI agent instructions copied into generated projects
 ├── .attunic/                  # project memory layer (see Project Memory Layer section below)
+├── frameworks/<framework>/    # framework-specific content, included by the root templates above, one folder per supported framework (not copied)
+├── languages/<language>/      # language-specific content, included by the root templates above, one folder per supported language (not copied)
 ├── licenses/                  # license text snippets, license notice snippets, included by LICENSE.jinja / COPYING*.jinja / .agents/license-header.md.jinja (not copied)
-├── languages/<lang>/          # language-specific content, included by the root templates above, one folder per supported language (not copied)
+├── .copier-answers.yml.jinja  # emits .copier-answers.yml (required by copier update)
 ├── .editorconfig.jinja        # generic editor formatting rules + language fragment included before the Project-specific marker
 ├── .gitignore.jinja           # generic ignore rules + language fragment included before the Project-specific marker
+├── AGENTS.md                  # agents' entry point of this repo itself; maintained manually, not copied
 ├── AGENTS.md.jinja            # entry point for AI agents in generated projects
+├── CLAUDE.md                  # this repo's pointer to AGENTS.md; not copied
 ├── CLAUDE.md.jinja            # instructions specific for Claude coding agents
-├── LICENSE                    # MIT License Text for this template (not copied)
-├── LICENSE.jinja              # renders LICENSE for LICENSE-based licenses (MIT, ISC, BSD-2-Clause, BSD-3-Clause, 0BSD, Apache-2.0, MPL-2.0)
 ├── COPYING.jinja              # renders COPYING for GPL-3.0-only, GPL-3.0-or-later, the GPL part of LGPL-3.0-only / LGPL-3.0-or-later, AGPL-3.0-only, AGPL-3.0-or-later
 ├── COPYING.LESSER.jinja       # renders COPYING.LESSER with the LGPL text (LGPL-3.0-only and LGPL-3.0-or-later)
-├── .copier-answers.yml.jinja  # emits .copier-answers.yml (required by copier update)
-└── copier.yml                 # template questions and settings
+├── LICENSE                    # MIT License Text for this template (not copied)
+├── LICENSE.jinja              # renders LICENSE for LICENSE-based licenses (MIT, ISC, BSD-2-Clause, BSD-3-Clause, 0BSD, Apache-2.0, MPL-2.0)
+└── README.md                  # template documentation; not copied
+├── copier.yml                 # template questions and settings
 ```
 
 ### Project Memory Layer (`.attunic/`)
@@ -84,6 +89,15 @@ Generated projects carry a markdown-only project memory layer in `.attunic/`, ad
 | `project-structure.md.jinja` | `.agents/project-structure.md.jinja`     |
 
 Shared/general sections live in the root templates; each root template `{% include %}`s the language fragment of every language selected in the multi-select `languages` answer (in the question's choices order). These fragments are never emitted as project files.
+
+### Framework Fragments (`frameworks/<framework>/`)
+
+| Fragment                      | Included by                              |
+|-------------------------------|------------------------------------------|
+| `coding-conventions.md.jinja` | `.agents/coding-conventions.md.jinja`    |
+| `project-structure.md.jinja`  | `.agents/project-structure.md.jinja`     |
+
+Each root template `{% include %}`s the framework fragment of every framework selected in the multi-select `frameworks` answer (in the question's choices order), right after the language fragments. These fragments are never emitted as project files.
 
 ### License File Mapping
 
@@ -110,6 +124,7 @@ Shared/general sections live in the root templates; each root template `{% inclu
 - Keep the marker text byte-identical across versions; Copier matches on this line as diff context, so even a whitespace or punctuation change can break the anchor and produce spurious conflicts.
 - Only make changes to content above the `<!-- Project-specific -->`, `<!-- Project-specific / ... -->`, or `# Project-specific` marker in each section.
 - To add a new language, create `languages/<lang_code>/` with all the fragments listed above and add `<lang_code>` to the `languages` question's choices (an array multiselect) in `copier.yml`.
+- To add a new framework, create `frameworks/<framework_code>/` with both fragments listed above and add `<framework_code>` under each supported language block in the `frameworks` question's dynamic choices in `copier.yml` (a framework supporting several languages is listed under each of them; see [Appendix](#supported-frameworks)).
 - To add a new license, update `copier.yml` (choices, `_exclude` branches), create the `licenses/<id>.jinja` and `licenses/<id>-notice.jinja` fragments, update the `LICENSE.jinja` / `COPYING.jinja` includes, and update the README tables (Questions, License File Mapping, Supported Licenses) in the same commit.
 - Never rename or delete a shipped file without adding a `_migrations` entry in `copier.yml` (e.g. `git mv old new`) so downstream projects keep any content users appended past that file's marker instead of losing it.
 - Never move or re-point a published tag (no force-push to tags); ship corrections as a new tag instead.
@@ -121,6 +136,11 @@ Shared/general sections live in the root templates; each root template `{% inclu
 - Go: `go`
 - TypeScript: `typescript`
 - Text: `text`
+
+### Supported Frameworks
+
+- Angular: `angular`
+- React: `react`
 
 ### Supported Licenses
 

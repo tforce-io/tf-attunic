@@ -23,6 +23,7 @@ When writing code, follow these rules:
 - Make targeted edits, never whole-file regeneration; every changed line should trace to the request.
 - Keep one job per unit at every scale (function, type, package); if describing its job needs "and", split it. Parsing, domain rules, persistence, external calls, presentation, and wiring stay in separate homes.
 - Use the narrowest access modifier; keep the public API surface small.
+- Grep every caller of the function/method you touch to make sure a signature or behavior change doesn't introduce a new bug or leave a bug half-fixed.
 - Report unrelated findings; never do drive-by renames, reformats, or dependency bumps.
 - Prefer small, focused functions and files; avoid large "god" packages or files.
 - Prefer surrounding code's local, idiomatic style over general rules unless it is unsafe or broken.
@@ -57,7 +58,6 @@ When fixing issues, instructions of [Writing](#writing) apply, plus:
 
 - Fix the root cause, not just the symptom.
 - Write a test that reproduces the bug first, watch it fail, then make it pass.
-- Grep every caller of the function you touch to make sure we don't introduce a new bug or leave a bug half-fixed.
 - For refactoring, run the relevant tests before and after; behavior must not change.
 - For deduplication, only merge true duplication (copies that must always change together); merging accidental lookalikes is harder to undo than leaving them apart.
 <!-- Project-specific / Fixing -->
@@ -96,18 +96,23 @@ Check your diff against these failure patterns; each must be fixed before comple
 
 Before considering any coding task complete, please verify the following to ensure nothing is missed during implementation:
 
+- [ ] The task's requirements are fulfilled; acceptance criteria (if any) are verified against real behavior, not assumed from passing tests.
 - [ ] Whole project is built successfully (see [context.md](../.attunic/context.md)).
 - [ ] Code files are formatted and pass static analysis (see [context.md](../.attunic/context.md)).
 - [ ] Changed code files follow project convention (see [coding-conventions.md](coding-conventions.md)).
 - [ ] Declared layers in [context.md](../.attunic/context.md)'s `Layer Dependencies` table (if any) are respected.
 - [ ] Changes are scoped to the task, unrelated fixes are reported, not bundled in.
-- [ ] Review the changes for security requirements (see [Security](#security)).
-- [ ] Review the changes for common mistakes (see [Common Mistakes](#common-mistakes)).
+- [ ] The complete final diff has been read line by line; every change is intentional and understood.
+- [ ] Changes are reviewed for security requirements (see [Security](#security)).
+- [ ] Changes are reviewed for common mistakes (see [Common Mistakes](#common-mistakes)).
+- [ ] Every caller of changed functions/methods is checked; no signature or behavior change left half-applied (see [Writing](#writing)).
 - [ ] New/changed behavior has test coverage.
 - [ ] Relevant tests are passing, except the ones documented as known failures.
 - [ ] No secrets, tokens, or sensitive payloads in logs, error messages, or hardcoded values.
 - [ ] No unused code, debug prints, or commented-out blocks left behind.
+- [ ] New or moved top-level files and folders are reflected in [context.md](../.attunic/context.md)'s `Layout` (prompt the user per its rule).
 - [ ] Lasting choices and confirmed facts are recorded per [attunic-protocol.md](attunic-protocol.md)'s Write Rules; ensure nothing is missed: decisions and open questions go to [memory.md](../.attunic/memory.md), confirmed facts to [context.md](../.attunic/context.md)'s `Confirmed Facts`.
+- [ ] Every applicable item above was verified by actually running the check; anything not run is explicitly reported, not claimed.
 <!-- Project-specific / Checklist -->
 
 ## Project-specific

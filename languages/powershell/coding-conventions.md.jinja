@@ -2,7 +2,6 @@
 
 ### Formats
 
-- Format every `.ps1`/`.psm1`/`.psd1` file with PSScriptAnalyzer's `Invoke-Formatter`; never hand-format what it owns.
 <!-- Project-specific / PowerShell-Formats -->
 
 ### Names
@@ -43,17 +42,13 @@
 
 ### Tests
 
-- Use Pester (5 or 6); existing `Should -Be` assertions keep working on either, so match whichever the project has installed.
-- Structure specs `Describe`/`Context`/`It` around behavior, and mock the filesystem, network, or registry a function calls rather than hitting them for real (F.I.R.S.T.).
+- Write specs around behavior, and mock the filesystem, network, or registry a function calls rather than hitting them for real (F.I.R.S.T.).
 - Test parameter validation and the `ShouldProcess` branch explicitly; `-WhatIf` must produce no side effect.
 <!-- Project-specific / PowerShell-Tests -->
 
 ### Tooling
 
-- Target PowerShell 7.4+ (7.6 LTS current); write Windows PowerShell 5.1-compatible syntax only where a host requires it.
-- Run PSScriptAnalyzer in CI (`Invoke-ScriptAnalyzer -Recurse`) with at least `PSUseApprovedVerbs`, `PSAvoidUsingCmdletAliases`, `PSAvoidUsingWriteHost`, `PSUseShouldProcessForStateChangingFunctions`, and `PSAvoidGlobalVars` enabled.
-- Run `Invoke-Formatter` in CI or a pre-commit hook so layout never bikesheds a review.
-- Run Pester in CI, with coverage on `Public/` and `Private/` functions, not a manual run before release.
+- Target Windows PowerShell 5.1; use only syntax and cmdlets it provides.
 <!-- Project-specific / PowerShell-Tooling -->
 
 ### Smells

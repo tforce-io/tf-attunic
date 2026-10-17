@@ -5,7 +5,7 @@
 - Use the `src/` layout: package code under `src/<package>/`, tests under `tests/`, so tests exercise the installed package, not the working directory.
 - Keep the entry point (`__main__.py` or `main.py`) thin: parse arguments, build collaborators, call in.
 - Put ORM models, HTTP clients, and file I/O in their own modules.
-<!-- Project-specific / Guideline -->
+<!-- Project-specific / Python-Guideline -->
 
 ### Layout
 
@@ -30,7 +30,7 @@
 ├── pyproject.toml   # project metadata, dependencies, build system, and tool configuration
 ├── requirements.txt # pinned dependencies (pip workflows; optional)
 ├── uv.lock          # uv dependency lockfile (uv workflows; optional)
-<!-- Project-specific / Layout -->
+<!-- Project-specific / Python-Layout -->
 ```
 
 ### Layer Dependencies
@@ -50,4 +50,4 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 - Declare ports as a `typing.Protocol` in the domain or application module; adapter modules implement them.
 - Keep framework base classes and decorators out of the domain layer; a domain object never inherits from one.
 - Check by hand: read the imports of changed files; a domain module importing an ORM, an HTTP framework, or an HTTP client is a violation.
-<!-- Project-specific / Layer Dependencies -->
+<!-- Project-specific / Python-Layer-Dependencies -->

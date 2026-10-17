@@ -1,21 +1,41 @@
 ## React
 
-### Components
+### Formats
+
+<!-- Project-specific / React-Formats -->
+
+### Names
 
 - Name components PascalCase in PascalCase files (`UserCard.jsx` or `UserCard.tsx`); name event-handler props `on<Thing>` (`onSave`) and their handlers `handle<Thing>` (`handleSave`).
+<!-- Project-specific / React-Names -->
+
+### Packages
+
+<!-- Project-specific / React-Packages -->
+
+### Types
+
+<!-- Project-specific / React-Types -->
+
+### Functions
+
+<!-- Project-specific / React-Functions -->
+
+### Comments
+
+<!-- Project-specific / React-Comments -->
+
+### Errors
+
+<!-- Project-specific / React-Errors -->
+
+### Components
+
 - Keep components pure: same props and state render the same output, no side effects during render.
 - Keep business rules out of components: a component calls a hook or function that owns the rule.
 - Build accessible controls: semantic elements first, labels on inputs, keyboard support for custom widgets.
 - Never render HTML from strings with `dangerouslySetInnerHTML` unless sanitized.
 <!-- Project-specific / React-Components -->
-
-### Hooks
-
-- Follow the Rules of Hooks: call hooks only at the top level of components and custom hooks.
-- Extract reusable stateful logic into a custom hook named `use<Thing>`, repeated markup into a component.
-- Pass `ref` as an ordinary prop; new code does not need `forwardRef`.
-- With React Compiler on, hand-write `useMemo`, `useCallback`, or `memo` only where profiling shows a need.
-<!-- Project-specific / React-Hooks -->
 
 ### State
 
@@ -26,11 +46,19 @@
 - Key list items by stable data identity, never the array index when order can change.
 <!-- Project-specific / React-State -->
 
+### Hooks
+
+- Follow the Rules of Hooks: call hooks only at the top level of components and custom hooks.
+- Extract reusable stateful logic into a custom hook named `use<Thing>`, repeated markup into a component.
+- Pass `ref` as an ordinary prop; new code does not need `forwardRef`.
+- With React Compiler on, hand-write `useMemo`, `useCallback`, or `memo` only where profiling shows a need.
+<!-- Project-specific / React-Hooks -->
+
 ### Tests
 
-- Test behavior through rendered output with Testing Library: query by role and label, interact with `user-event`, assert what the user sees.
-- Mock the network at the boundary with MSW rather than mocking modules.
-- Test custom hooks through a component or `renderHook`, and business rules as plain functions without rendering.
+- Test behavior through rendered output with the project's component-testing library: query by role and label, interact with realistic user events, assert what the user sees.
+- Mock the network at the request boundary rather than mocking modules.
+- Test custom hooks through a component or a hook-rendering helper, and business rules as plain functions without rendering.
 - Keep snapshots small and deliberate; a large snapshot asserts nothing anyone reads.
 <!-- Project-specific / React-Tests -->
 

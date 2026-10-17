@@ -1,9 +1,37 @@
 ## Angular
 
+### Formats
+
+<!-- Project-specific / Angular-Formats -->
+
+### Names
+
+- Name for the concept (`Orders`, not `OrdersService`): since v20, `ng generate` no longer appends `Component`/`Service`/`Directive`/`Pipe` suffixes; match whichever naming the project's `angular.json` already requests.
+<!-- Project-specific / Angular-Names -->
+
+### Packages
+
+<!-- Project-specific / Angular-Packages -->
+
+### Types
+
+<!-- Project-specific / Angular-Types -->
+
+### Functions
+
+<!-- Project-specific / Angular-Functions -->
+
+### Comments
+
+<!-- Project-specific / Angular-Comments -->
+
+### Errors
+
+<!-- Project-specific / Angular-Errors -->
+
 ### Components
 
 - Write standalone components, directives, and pipes; `standalone: true` is the default since v19, and a new `NgModule`-based one needs `standalone: false` stated explicitly.
-- Name for the concept (`Orders`, not `OrdersService`): since v20, `ng generate` no longer appends `Component`/`Service`/`Directive`/`Pipe` suffixes; match whichever naming the project's `angular.json` already requests.
 - Inject collaborators with `inject()` or the constructor; never `new` a service directly.
 - Prefer functional guards, interceptors, and resolvers (`CanActivateFn`, `HttpInterceptorFn`, `ResolveFn`) over class-based ones; they need no `@Injectable()` ceremony for a single decision.
 <!-- Project-specific / Angular-Components -->
@@ -15,15 +43,15 @@
 - Use `effect()` only to synchronize with something outside Angular's reactivity; a template or a computed signal answers most other needs.
 <!-- Project-specific / Angular-State -->
 
-### Async
-
-- Never subscribe inside a `subscribe` callback; compose with `switchMap`, `mergeMap`, or `toSignal` instead.
-<!-- Project-specific / Angular-Async -->
-
 ### Templates
 
 - Keep templates free of method calls that carry business logic; bind to a signal or a getter that calls the one function that owns the rule.
 <!-- Project-specific / Angular-Templates -->
+
+### Async
+
+- Never subscribe inside a `subscribe` callback; compose with `switchMap`, `mergeMap`, or `toSignal` instead.
+<!-- Project-specific / Angular-Async -->
 
 ### Tests
 

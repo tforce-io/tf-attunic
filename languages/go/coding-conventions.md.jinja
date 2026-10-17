@@ -8,11 +8,13 @@
 ### Names
 
 - Case marks visibility: MixedCaps (exported) or mixedCaps (unexported); never underscores.
-- Package names: short, lowercase, single word, no underscores or mixedCaps.
+- Package names: short, lowercase, single word, no underscores or mixedCaps; never `util`, `common`, or `base`.
 - Interface names: prefer the `-er` suffix for single-method interfaces (e.g. `Reader`, `Closer`); never an `I` prefix.
 - Avoid stuttering: don't repeat the package name in exported identifiers (e.g. `log.Logger`, not `log.LogLogger`).
 - Receiver names: short (one or two letters) and identical across every method of the type.
 - Getters: name after the value returned, without a `Get` prefix (e.g. `Owner`, not `GetOwner`).
+- Never write a vague name (`data`, `info`, `obj`, `ret`), a bare-verb function with no object (`handle`, `process`), or a numbered or versioned name (`user2`, `dataV2`).
+- Never suffix a type with a noise word (`Manager`, `Helper`, `Util`) or name it after a verb (`ProcessOrder`).
 <!-- Project-specific / Go-Names -->
 
 ### Packages
@@ -68,3 +70,13 @@
 - Keep package-level state immutable; mutable package state read or written from more than one goroutine is a defect.
 - Since Go 1.22 each `for` iteration owns its own loop variables; add a `v := v` capture only when the module still targets an older Go version.
 <!-- Project-specific / Go-Concurrency -->
+
+### Smells
+
+- A `util` or `common` package that keeps absorbing unrelated helpers.
+- Package-level mutable state read or written from more than one goroutine.
+- An `init()` that reaches out to a database, file, or network instead of only registering something.
+- A `context.Context` stored on a struct field instead of threaded through as a parameter.
+- An error compared by its formatted string instead of `errors.Is`/`errors.As`.
+- A wide interface declared next to its one implementation, instead of the small one its consumer needs.
+<!-- Project-specific / Go-Smells -->

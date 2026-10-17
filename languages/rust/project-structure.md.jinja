@@ -6,7 +6,7 @@
 - Give each concept its own module under `src/`, re-exported from `lib.rs`.
 - Split a multi-purpose binary into workspace crates along actor lines (a domain crate, an application crate, adapter crates), never one crate that several teams edit for unrelated reasons.
 - Keep unit tests beside their code in `#[cfg(test)] mod tests`; keep integration tests of the public API under `tests/`.
-<!-- Project-specific / Guideline -->
+<!-- Project-specific / Rust-Guideline -->
 
 ### Layout
 
@@ -34,7 +34,7 @@
 ├── Dockerfile          # container build definition
 ├── Makefile            # build/test/lint task automation (optional)
 ├── rust-toolchain.toml # pinned Rust toolchain (optional)
-<!-- Project-specific / Layout -->
+<!-- Project-specific / Rust-Layout -->
 ```
 
 ### Layer Dependencies
@@ -53,4 +53,4 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 
 - Declare ports as traits in the domain or application crate; adapter crates implement them, and path dependencies point outward-to-inward only.
 - Check by hand: `cargo tree` (or reading each crate's `Cargo.toml`) must never show an inner crate depending on an outer one.
-<!-- Project-specific / Layer Dependencies -->
+<!-- Project-specific / Rust-Layer-Dependencies -->

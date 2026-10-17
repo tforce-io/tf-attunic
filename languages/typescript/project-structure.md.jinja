@@ -7,7 +7,7 @@
 - In a workspace monorepo (npm, yarn, pnpm, or bun), keep shared tooling at the repo root and give each package under `packages/` (or `apps/` for deployables) its own `package.json`, `tsconfig.json`, and `src/`.
 - Organize files by responsibility (e.g. `config/`, `http/`, `auth/`), not by type.
 - Keep test files (`*.test.ts`, `*.spec.ts`) near the code they test.
-<!-- Project-specific / Guideline -->
+<!-- Project-specific / TypeScript-Guideline -->
 
 ### Layout
 
@@ -43,7 +43,7 @@
 ├── pnpm-workspace.yaml # pnpm workspace configuration (workspace globs, settings)
 ├── tsconfig.json       # TypeScript compiler options
 ├── yarn.lock           # yarn dependency lockfile
-<!-- Project-specific / Layout -->
+<!-- Project-specific / TypeScript-Layout -->
 ```
 
 ### Layer Dependencies
@@ -62,4 +62,4 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 
 - Prefer passing dependencies in (constructor injection) over module-level singletons, so a layer boundary can be substituted in tests.
 - Check by hand: read the imports of changed files; an inner module importing an outer one is a violation.
-<!-- Project-specific / Layer Dependencies -->
+<!-- Project-specific / TypeScript-Layer-Dependencies -->

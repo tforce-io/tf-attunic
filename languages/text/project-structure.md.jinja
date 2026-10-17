@@ -5,7 +5,7 @@
 - Keep one topic per file: prose on top, appendices and notes at the bottom, so a document can be read front-to-back or diffed cleanly.
 - Split by responsibility (e.g. `docs/release-notes.txt`, `docs/api-reference.txt`), not by date or author.
 - Keep shared boilerplate (headers, glossaries, style rules) in one place and reference it; never copy-paste it into every document.
-<!-- Project-specific / Guideline -->
+<!-- Project-specific / Text-Guideline -->
 
 ### Layout
 
@@ -28,7 +28,7 @@
 ├── Dockerfile      # container build definition
 ├── Makefile        # build/check task automation (optional)
 ├── README.md       # project overview and pointing entry
-<!-- Project-specific / Layout -->
+<!-- Project-specific / Text-Layout -->
 ```
 
 ### Layer Dependencies
@@ -37,4 +37,4 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 
 - Plain-text projects have no importable layers; delete the layer table or repurpose it to document document-level organization instead (e.g. `docs/` depends on `assets/` and the shared glossary; `test/` depends on `docs/` fixtures; nothing depends on `scripts/`).
 - Check by hand: no document should duplicate content that another owns; cross-reference instead.
-<!-- Project-specific / Layer Dependencies -->
+<!-- Project-specific / Text-Layer-Dependencies -->

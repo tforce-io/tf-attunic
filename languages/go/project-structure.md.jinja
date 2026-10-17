@@ -8,7 +8,7 @@
 - Group files within a package by responsibility, not by type.
 - Keep test files (`_test.go`) alongside the code they test, in the same package or a `_test` package for black-box tests.
 - Mirror the module's existing layout (`internal/`, `pkg/`, or flat) instead of introducing a second convention.
-<!-- Project-specific / Guideline -->
+<!-- Project-specific / Go-Guideline -->
 
 ### Layout
 
@@ -41,7 +41,7 @@
 ├── go.mod          # Go module definition
 ├── go.sum          # Go module checksums
 ├── main.go         # default application entrypoint
-<!-- Project-specific / Layout -->
+<!-- Project-specific / Go-Layout -->
 ```
 
 ### Layer Dependencies
@@ -60,4 +60,4 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 
 - `pkg/` is a public boundary for other modules; keep application-internal layer types out of it.
 - Check by hand: reading imports or `go list -deps ./...` must never show an inner package importing an outer one.
-<!-- Project-specific / Layer Dependencies -->
+<!-- Project-specific / Go-Layer-Dependencies -->

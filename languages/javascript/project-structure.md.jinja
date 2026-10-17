@@ -6,7 +6,7 @@
 - Keep entry points (`src/main.js`, `server.js`, a CLI's `bin/`) thin: read configuration, compose, start.
 - In a workspace monorepo (npm, yarn, pnpm, or bun), keep shared tooling at the repo root and give each package under `packages/` its own `package.json` and `src/`.
 - Put tests beside their module (`order.test.js`) or under `test/` mirroring `src/` — whichever the project already does.
-<!-- Project-specific / Guideline -->
+<!-- Project-specific / JavaScript-Guideline -->
 
 ### Layout
 
@@ -42,7 +42,7 @@
 ├── pnpm-lock.yaml      # pnpm dependency lockfile
 ├── pnpm-workspace.yaml # pnpm workspace configuration (workspace globs, settings)
 ├── yarn.lock           # yarn dependency lockfile
-<!-- Project-specific / Layout -->
+<!-- Project-specific / JavaScript-Layout -->
 ```
 
 ### Layer Dependencies
@@ -61,4 +61,4 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 
 - Declare ports as object shapes documented with JSDoc `@typedef` in the domain or application layer; adapter modules implement them.
 - Check by hand: read the imports of changed files; a domain module importing Express, a database driver, `fetch`, or `process.env` is a violation.
-<!-- Project-specific / Layer Dependencies -->
+<!-- Project-specific / JavaScript-Layer-Dependencies -->

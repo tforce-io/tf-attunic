@@ -114,19 +114,21 @@ Template engine; version floor `>= 9.0.0` (declared in `copier.yml`). Template v
 Facts about the project which have been confirmed; they outrank anything derived or guessed.
 
 - Project is in early development, migration is skipped for faster development, downstream dataloss is acceptable.
-- License text in `./licenses` are canonical text, it's safe to skip checking them for most tasks.
+- Project breaks some languages indent rule by forcing the use of `tab` for code files (go, js, rs, ts,...), and `space` for data files (json, md, xml, yaml,...).
+- License text in [./licenses](./licenses) are canonical text, it's safe to skip checking them for most tasks.
 
-## Coding Convention
+## Coding Conventions
 
 Template authoring conventions for this repository:
 
-- Every template file ends each section with a `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker; content above the marker is template-owned, content below is project-owned.
-- Never add, edit, or delete anything above a marker; never move or duplicate a marker.
+- End each section of every template file with a `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker; content above the marker is template-owned, content below is project-owned.
+- Use a plain `# Project-specific` comment as the marker in `.editorconfig` and `.gitignore`.
 - Keep marker text byte-identical across template versions: Copier matches the marker line as diff context, so a whitespace or punctuation change can break the anchor and produce spurious conflicts on `copier update`.
-- In `.editorconfig` and `.gitignore`, the marker is a plain `# Project-specific` comment.
-- Project-specific rules supplement the template rules; add them below the marker of the section being overridden, or below the final `Project-specific` section's marker for general additions.
+- Supplement the template rules with project-specific rules; add them below the marker of the section being overridden, or below the final `Project-specific` section's marker for general additions.
+- Keep the language/framework guides tool-neutral; it's up to the downstream project to pick the tools and declare them in the context.
+- Include all sections declared in [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) in the language/framework Coding Conventions, even when empty; add new sections after the shared ones.
 
-## Naming Convention
+## Naming Conventions
 
 - Name markers uniquely after the section they close: `<!-- Project-specific / <Section> -->`.
 - Name template files after the generated file with the `.jinja` suffix (e.g. `AGENTS.md.jinja` renders `AGENTS.md`).

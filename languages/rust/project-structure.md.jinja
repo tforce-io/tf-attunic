@@ -1,0 +1,56 @@
+## Rust structure
+
+### Guideline
+
+- Keep `src/main.rs` or `src/bin/*.rs` thin: parse arguments, build the dependency graph, run.
+- Give each concept its own module under `src/`, re-exported from `lib.rs`.
+- Split a multi-purpose binary into workspace crates along actor lines (a domain crate, an application crate, adapter crates), never one crate that several teams edit for unrelated reasons.
+- Keep unit tests beside their code in `#[cfg(test)] mod tests`; keep integration tests of the public API under `tests/`.
+<!-- Project-specific / Guideline -->
+
+### Layout
+
+```
+├── .agents/            # shared AI agent instructions (coding conventions, PR/task checklists, project structure)
+├── .github/            # GitHub-specific config (workflows, issue/PR templates)
+├── .vscode/            # VS Code editor/workspace settings
+├── assets/             # repository assets (images, logos, etc)
+├── benches/            # benchmarks (cargo bench)
+├── crates/             # workspace member crates (workspace projects)
+├── docs/               # design and user documents
+├── examples/           # examples for applications and/or public libraries (cargo run --example <name>)
+├── scripts/            # build/install/analysis scripts
+├── src/                # library/binary source (lib.rs, main.rs, bin/*.rs)
+├── tests/              # integration tests of the public API
+├── .editorconfig       # editor formatting rules
+├── .gitignore          # git ignore patterns
+├── AGENTS.md           # instructions for AI coding agents
+├── CLAUDE.md           # instructions specific for Claude coding agents
+├── CONTRIBUTING.md     # contribution guidelines
+├── Cargo.lock          # dependency lockfile (committed for binaries)
+├── Cargo.toml          # package manifest / workspace definition
+├── clippy.toml         # Clippy lint configuration (optional)
+├── deny.toml           # cargo-deny policy: licenses, advisories, banned crates (optional)
+├── Dockerfile          # container build definition
+├── Makefile            # build/test/lint task automation (optional)
+├── rust-toolchain.toml # pinned Rust toolchain (optional)
+<!-- Project-specific / Layout -->
+```
+
+### Layer Dependencies
+
+Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- `crates/cli` (or `src/main.rs` in a single-crate project) is the outermost layer and the composition root: the only place that names a concrete adapter type; it may depend on everything, and nothing depends on it.
+- Layers are workspace crates; one suggestion, innermost first:
+
+| Layer | Typical path | Depends on | Must never contain |
+|-------|--------------|------------|--------------------|
+| domain | crates/domain | itself | HTTP client, database driver, async runtime |
+| application | crates/application | domain | database access, HTTP handlers |
+| adapters | crates/adapters/\* | application (its ports), domain | business rules |
+| main | crates/cli | application, adapters, domain | business rules |
+
+- Declare ports as traits in the domain or application crate; adapter crates implement them, and path dependencies point outward-to-inward only.
+- Check by hand: `cargo tree` (or reading each crate's `Cargo.toml`) must never show an inner crate depending on an outer one.
+<!-- Project-specific / Layer Dependencies -->

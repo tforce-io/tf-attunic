@@ -2,8 +2,7 @@
 
 ### Formats
 
-- Run `gofmt -l .` to check formatting; it must report no files.
-- Run `goimports` to keep imports sorted and grouped: stdlib, then third-party, then local packages, separated by a blank line.
+- Keep imports sorted and grouped: standard library, then third-party, then local packages, separated by a blank line.
 <!-- Project-specific / Go-Formats -->
 
 ### Names
@@ -16,14 +15,32 @@
 - Getters: name after the value returned, without a `Get` prefix (e.g. `Owner`, not `GetOwner`).
 <!-- Project-specific / Go-Names -->
 
-### Functions And Types
+### Packages
+
+- Default to unexported; export only the names another package must call.
+- Keep one package per directory; never split a single package's files across unrelated directories.
+- Never add to a `utils` or `common` package; name the concept the code implements.
+- Keep `init()` to registration only; never reach out to a database, file, or network from one.
+<!-- Project-specific / Go-Packages -->
+
+### Types
 
 - Accept an interface as a parameter, return a concrete struct; declare the interface at the consumer that needs it, never beside the implementation.
+- Guard a type whose zero value is unsafe to use behind a constructor (`NewX`); document the zero value when it is safe.
+<!-- Project-specific / Go-Types -->
+
+### Functions
+
 - Keep exported functions to a handful of parameters; past three related values, group them into a struct.
 - Never switch behavior on a `bool` parameter; write two functions or a small typed enum instead.
 - Use named returns only to document a short function's intent, never to smuggle a late, hidden mutation.
-- Guard a type whose zero value is unsafe to use behind a constructor (`NewX`); document the zero value when it is safe.
-<!-- Project-specific / Go-Functions-And-Types -->
+<!-- Project-specific / Go-Functions -->
+
+### Comments
+
+- Refer to [Go doc conventions](https://go.dev/doc/comment) for specific convention.
+- State a package's purpose once, in its doc comment; do not restate it per file.
+<!-- Project-specific / Go-Comments -->
 
 ### Errors
 
@@ -33,14 +50,6 @@
 - Never panic for an expected failure in library code; reserve `panic` for a programmer error the caller cannot act on.
 - Check every returned error where it is returned; assigning one to `_` outside a test is a defect, not a shortcut.
 <!-- Project-specific / Go-Errors -->
-
-### Packages
-
-- Default to unexported; export only the names another package must call.
-- Keep one package per directory; never split a single package's files across unrelated directories.
-- Never add to a `utils` or `common` package; name the concept the code implements.
-- Keep `init()` to registration only; never reach out to a database, file, or network from one.
-<!-- Project-specific / Go-Packages -->
 
 ### Tests
 
@@ -59,17 +68,3 @@
 - Keep package-level state immutable; mutable package state read or written from more than one goroutine is a defect.
 - Since Go 1.22 each `for` iteration owns its own loop variables; add a `v := v` capture only when the module still targets an older Go version.
 <!-- Project-specific / Go-Concurrency -->
-
-### Comments
-
-- Refer to [Go doc conventions](https://go.dev/doc/comment) for specific convention.
-- State a package's purpose once, in its doc comment; do not restate it per file.
-<!-- Project-specific / Go-Comments -->
-
-### Tooling
-
-- Lint with golangci-lint v2 (`.golangci.yml`, `version: "2"`): enable `gocyclo`/`gocognit` for complexity, `funlen` for size, `errcheck` for ignored errors, `revive` for naming and style, `depguard` to forbid disallowed imports.
-- Enforce declared component boundaries by import path with `go-arch-lint` (`.go-arch-lint.yml`).
-- Run `gofmt -l` and `goimports -l` in CI; a file either would change is a failing check, not a style nit.
-- Run `go vet ./...` and `go test -race ./...` on every change that touches concurrency.
-<!-- Project-specific / Go-Tooling -->

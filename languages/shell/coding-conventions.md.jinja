@@ -2,7 +2,6 @@
 
 ### Formats
 
-- Run `shfmt -d .` to check formatting; it must report no files; run `shfmt -w .` locally before committing.
 <!-- Project-specific / Shell-Formats -->
 
 ### Names
@@ -14,14 +13,29 @@
 - Keep a name that short only for a loop index (`for i in`) or a shell idiom (`$#`, `$?`); name anything read later on.
 <!-- Project-specific / Shell-Names -->
 
-### Functions And Types
+### Packages
+
+- Keep reusable functions in `lib/*.sh`, loaded with `source`.
+- Guard a sourced library against double-sourcing (`[[ -n "${MYLIB_SOURCED:-}" ]] && return`).
+- Never `export` a variable a sourced library does not document as its interface; keep the rest local to the sourcing script.
+<!-- Project-specific / Shell-Packages -->
+
+### Types
+
+<!-- Project-specific / Shell-Types -->
+
+### Functions
 
 - Wrap logic in functions and call them from one `main "$@"` at the bottom; nothing but definitions runs at the top level.
 - Declare every function-local with `local` (`local -r` when it never changes); an undeclared variable leaks into the caller's scope.
 - Mark a value that must not change `readonly` right after it is set.
 - Keep a function to one job; parsing arguments, doing the work, and printing a report is three functions.
 - Pass data through arguments and exit status, not through a global a sibling function set earlier.
-<!-- Project-specific / Shell-Functions-And-Types -->
+<!-- Project-specific / Shell-Functions -->
+
+### Comments
+
+<!-- Project-specific / Shell-Comments -->
 
 ### Errors
 
@@ -32,26 +46,12 @@
 - Never swallow a failure with `2>/dev/null` alone; redirect, then act on the exit status, or let the error surface.
 <!-- Project-specific / Shell-Errors -->
 
-### Modules And Visibility
-
-- Keep reusable functions in `lib/*.sh`, loaded with `source`.
-- Guard a sourced library against double-sourcing (`[[ -n "${MYLIB_SOURCED:-}" ]] && return`).
-- Never `export` a variable a sourced library does not document as its interface; keep the rest local to the sourcing script.
-<!-- Project-specific / Shell-Modules-And-Visibility -->
-
 ### Tests
 
-- Test with bats-core or ShellSpec; guard `main "$@"` behind `[[ "${BASH_SOURCE[0]}" == "${0}" ]]` so a test can load its functions without running it.
+- Guard `main "$@"` behind `[[ "${BASH_SOURCE[0]}" == "${0}" ]]` so a test can load its functions without running it.
 - Assert on exit status and stdout/stderr, not on incidental formatting; use real temp directories, cleaned up in teardown.
 - Add a test for every argument-parsing edge case and every past incident: a missing argument, an unwritable path, a missing dependency on `PATH`.
 <!-- Project-specific / Shell-Tests -->
-
-### Tooling
-
-- Run ShellCheck in CI on every script (`git ls-files '*.sh' | xargs shellcheck`) as a build failure, not a suggestion; disable one code only with a comment saying why (`# shellcheck disable=SC2064 # trap must expand now`).
-- Run `shfmt -d` in CI so formatting never bikesheds a review.
-- Pin the dialect per file when the project mixes Bash and POSIX sh (`# shellcheck shell=sh`).
-<!-- Project-specific / Shell-Tooling -->
 
 ### Smells
 

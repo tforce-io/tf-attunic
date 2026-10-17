@@ -2,7 +2,6 @@
 
 ### Formats
 
-- Let the project's formatter (e.g. Prettier or Biome) own the format; run it via the project's `format` script.
 - Keep imports single-line-per-module and grouped in sections: Node built-ins, then third-party, then local, then relative, separated by a blank line.
 - Prefer `import type` (or `import { type ... }`) for type-only imports so they are erased at compile time.
 - Use `const` by default, `let` only for reassigned variables, never `var`.
@@ -22,10 +21,16 @@
 - Booleans: never a bare `isXxx` negation like `isNotReady`.
 <!-- Project-specific / TypeScript-Names -->
 
+### Packages
+
+<!-- Project-specific / TypeScript-Packages -->
+
 ### Types
 
-- Prefer immutability: mark never-reassigned properties `readonly`, freeze literal collections with `as const`, return new arrays/objects instead of mutating inputs.
 - Use `type` for unions and intersections; use `interface` for `extends`/`implements` contracts.
+- Prefer immutability: mark never-reassigned properties `readonly`, freeze literal collections with `as const`, return new arrays/objects instead of mutating inputs.
+- Prefer composition over inheritance; compose small classes, each with one responsibility.
+- Prefer passing dependencies in (constructor injection) over module-level singletons.
 <!-- Project-specific / TypeScript-Types -->
 
 ### Functions
@@ -35,14 +40,12 @@
 - Use `async`/`await`; do not mix callbacks and promises in the same code path.
 <!-- Project-specific / TypeScript-Functions -->
 
-### Classes
-
-- Prefer composition over inheritance; compose small classes, each with one responsibility.
-- Prefer passing dependencies in (constructor injection) over module-level singletons.
-<!-- Project-specific / TypeScript-Classes -->
-
 ### Comments
 
 - Document every exported identifier (constants, vars, types, classes, functions) with a JSDoc comment.
 - Refer to [TypeScript JSDoc Reference](https://www.typescriptlang.org/docs/handbook/jsdoc-supported.html) for supported tags.
 <!-- Project-specific / TypeScript-Comments -->
+
+### Errors
+
+<!-- Project-specific / TypeScript-Errors -->

@@ -14,7 +14,18 @@
 - Never hide a verb in a cmdlet's noun (`Get-ProcessOrder`) — the verb names the action — and never a noun alone `Manager`, `Helper`, or `Util(s)`.
 <!-- Project-specific / PowerShell-Names -->
 
-### Functions And Types
+### Packages
+
+- Ship a module as a `.psm1` plus a `.psd1` manifest that lists `FunctionsToExport`; never export with a wildcard.
+- Split `Public/` (one file per exported function) from `Private/` (internal helpers); export only the public folder.
+- Keep a function private unless another script or module is meant to call it.
+<!-- Project-specific / PowerShell-Packages -->
+
+### Types
+
+<!-- Project-specific / PowerShell-Types -->
+
+### Functions
 
 - Start every function with `[CmdletBinding()]` (add `SupportsShouldProcess` when it changes state) so common parameters, `-Verbose`, and `-WhatIf` come for free.
 - Type every parameter and validate it declaratively (`[ValidateNotNullOrEmpty()]`, `[ValidateRange()]`, `[ValidateSet()]`) instead of an early `if` that throws.
@@ -22,7 +33,12 @@
 - Emit objects (`[PSCustomObject]`, a typed class, or a domain type) from a function that returns data; never format it as a string for a caller to re-parse.
 - Use `Write-Host` only for output meant for a human; use the pipeline (or `Write-Output`), `Write-Verbose`, and `Write-Warning` for everything else.
 - Split a function that both decides whether to act and performs the action; gate the action with `$PSCmdlet.ShouldProcess(...)` rather than a boolean parameter.
-<!-- Project-specific / PowerShell-Functions-And-Types -->
+- Never rely on a `$global:` variable to pass state between functions; pass parameters and return values instead.
+<!-- Project-specific / PowerShell-Functions -->
+
+### Comments
+
+<!-- Project-specific / PowerShell-Comments -->
 
 ### Errors
 
@@ -32,24 +48,11 @@
 - Model an expected alternate outcome (not found, already exists) as a return value or a `-PassThru` result; reserve a thrown error for what the caller did not ask for.
 <!-- Project-specific / PowerShell-Errors -->
 
-### Modules And Visibility
-
-- Ship a module as a `.psm1` plus a `.psd1` manifest that lists `FunctionsToExport`; never export with a wildcard.
-- Split `Public/` (one file per exported function) from `Private/` (internal helpers); export only the public folder.
-- Keep a function private unless another script or module is meant to call it.
-- Never rely on a `$global:` variable to pass state between functions; pass parameters and return values instead.
-<!-- Project-specific / PowerShell-Modules-And-Visibility -->
-
 ### Tests
 
 - Write specs around behavior, and mock the filesystem, network, or registry a function calls rather than hitting them for real (F.I.R.S.T.).
 - Test parameter validation and the `ShouldProcess` branch explicitly; `-WhatIf` must produce no side effect.
 <!-- Project-specific / PowerShell-Tests -->
-
-### Tooling
-
-- Target Windows PowerShell 5.1; use only syntax and cmdlets it provides.
-<!-- Project-specific / PowerShell-Tooling -->
 
 ### Smells
 

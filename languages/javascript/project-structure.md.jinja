@@ -1,0 +1,64 @@
+## JavaScript structure
+
+### Guideline
+
+- Keep sources under `src/`, one module per concept.
+- Keep entry points (`src/main.js`, `server.js`, a CLI's `bin/`) thin: read configuration, compose, start.
+- In a workspace monorepo (npm, yarn, pnpm, or bun), keep shared tooling at the repo root and give each package under `packages/` its own `package.json` and `src/`.
+- Put tests beside their module (`order.test.js`) or under `test/` mirroring `src/` — whichever the project already does.
+<!-- Project-specific / Guideline -->
+
+### Layout
+
+```
+├── .agents/            # shared AI agent instructions (coding conventions, PR/task checklists, project structure)
+├── .github/            # GitHub-specific config (workflows, issue/PR templates)
+├── .vscode/            # VS Code editor/workspace settings
+├── api/                # OpenAPI/Swagger specs, JSON schemas, protocol definitions
+├── assets/             # repository assets (images, logos, etc)
+├── bin/                # CLI entry points (thin: read configuration, compose, start)
+├── config/             # global application configuration
+├── deployments/        # deployment configs and templates (docker-compose, kubernetes/helm, terraform)
+├── docs/               # design and user documents
+├── examples/           # examples for applications and/or public libraries
+├── packages/           # workspace packages for a monorepo (npm/yarn/pnpm/bun workspaces)
+├── scripts/            # build/install/analysis scripts (keeps package.json scripts small)
+├── src/                # application/library source code (default entrypoint: main.js)
+├── test/               # additional external test apps, fixtures, and test data
+├── web/                # web app components: static assets, server-side templates, SPAs
+├── .editorconfig       # editor formatting rules
+├── .gitignore          # git ignore patterns
+├── .npmrc              # npm/pnpm package-manager config (registry, install, publish settings)
+├── .yarnrc.yml         # yarn config (yarn berry; yarn classic uses .yarnrc)
+├── AGENTS.md           # instructions for AI coding agents
+├── CLAUDE.md           # instructions specific for Claude coding agents
+├── CONTRIBUTING.md     # contribution guidelines
+├── Dockerfile          # container build definition
+├── Makefile            # build/test/lint task automation (optional)
+├── bun.lock            # bun dependency lockfile
+├── bunfig.toml         # bun package-manager and runtime config
+├── package.json        # package manifest: scripts, dependencies, and workspaces (npm/yarn/bun)
+├── package-lock.json   # npm dependency lockfile
+├── pnpm-lock.yaml      # pnpm dependency lockfile
+├── pnpm-workspace.yaml # pnpm workspace configuration (workspace globs, settings)
+├── yarn.lock           # yarn dependency lockfile
+<!-- Project-specific / Layout -->
+```
+
+### Layer Dependencies
+
+Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- `src/main.js` (or the framework entrypoint) is the outermost layer and the composition root: it builds the object graph and passes it down; it may import everything, and nothing imports it.
+- Layers live under `src/`; one suggestion, innermost first:
+
+| Layer | Typical path | Depends on | Must never contain |
+|-------|--------------|------------|--------------------|
+| domain | src/domain | itself | Express, database drivers, `fetch`, `process.env` |
+| application | src/application | domain | database access, HTTP handlers |
+| adapters | src/adapters | application (its ports), domain | business rules |
+| main | src/main.js | application, adapters, domain | business rules |
+
+- Declare ports as object shapes documented with JSDoc `@typedef` in the domain or application layer; adapter modules implement them.
+- Check by hand: read the imports of changed files; a domain module importing Express, a database driver, `fetch`, or `process.env` is a violation.
+<!-- Project-specific / Layer Dependencies -->

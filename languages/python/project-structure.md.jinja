@@ -1,0 +1,53 @@
+## Python structure
+
+### Guideline
+
+- Use the `src/` layout: package code under `src/<package>/`, tests under `tests/`, so tests exercise the installed package, not the working directory.
+- Keep the entry point (`__main__.py` or `main.py`) thin: parse arguments, build collaborators, call in.
+- Put ORM models, HTTP clients, and file I/O in their own modules.
+<!-- Project-specific / Guideline -->
+
+### Layout
+
+```
+├── .agents/         # shared AI agent instructions (coding conventions, PR/task checklists, project structure)
+├── .github/         # GitHub-specific config (workflows, issue/PR templates)
+├── .vscode/         # VS Code editor/workspace settings
+├── assets/          # repository assets (images, logos, etc)
+├── docs/            # design and user documents
+├── examples/        # examples for applications and/or public libraries
+├── scripts/         # build/install/analysis scripts
+├── src/             # installable package code
+│   └── <package>/   # the package: __init__.py re-exports the public surface, __main__.py is the entry point
+├── tests/           # test suites (pytest), fixtures, and test data
+├── .editorconfig    # editor formatting rules
+├── .gitignore       # git ignore patterns
+├── AGENTS.md        # instructions for AI coding agents
+├── CLAUDE.md        # instructions specific for Claude coding agents
+├── CONTRIBUTING.md  # contribution guidelines
+├── Dockerfile       # container build definition
+├── Makefile         # build/test/lint task automation (optional)
+├── pyproject.toml   # project metadata, dependencies, build system, and tool configuration
+├── requirements.txt # pinned dependencies (pip workflows; optional)
+├── uv.lock          # uv dependency lockfile (uv workflows; optional)
+<!-- Project-specific / Layout -->
+```
+
+### Layer Dependencies
+
+Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- The entry point (`__main__.py` or `main.py`) is the outermost layer and the composition root: it may import everything, nothing imports it, and nothing else constructs a repository or client and hands it to policy.
+- Layers live under the package, organized by area; one suggestion, innermost first:
+
+| Layer | Typical path | Depends on | Must never contain |
+|-------|--------------|------------|--------------------|
+| domain | src/\<area\>/domain | itself | ORM models, HTTP framework or client, file I/O |
+| application | src/\<area\>/application | domain | database access, HTTP handlers |
+| adapters | src/\<area\>/adapters | application (its ports), domain | business rules |
+| main | src/\<area\>/__main__.py, src/\<area\>/main.py | application, adapters, domain | business rules |
+
+- Declare ports as a `typing.Protocol` in the domain or application module; adapter modules implement them.
+- Keep framework base classes and decorators out of the domain layer; a domain object never inherits from one.
+- Check by hand: read the imports of changed files; a domain module importing an ORM, an HTTP framework, or an HTTP client is a violation.
+<!-- Project-specific / Layer Dependencies -->

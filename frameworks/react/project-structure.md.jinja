@@ -6,7 +6,7 @@
 - Keep shared presentational components used by several features under `src/components/`.
 - Keep shared custom hooks (`useDebounce`, `useMediaQuery`) under `src/hooks/`.
 - Keep HTTP clients and data access under `src/api/` or `src/services/`; no JSX there.
-- Keep providers, router, and composition in `src/main.tsx` or `src/app/`.
+- Keep providers, router, and composition in `src/main.jsx`/`src/main.tsx` or `src/app/`.
 - Co-locate a component's test, styles, and stories beside it when the project co-locates.
 <!-- Project-specific / React-Guideline -->
 
@@ -14,12 +14,12 @@
 
 ```
 ├── src/
-│   ├── main.tsx (or app/)    # providers, router, and composition
+│   ├── main.jsx|tsx (or app/)  # providers, router, and composition
 │   ├── features/
-│   │   └── <feature>/        # one feature's components, hooks, and API calls
-│   ├── components/           # shared presentational components used by several features
-│   ├── hooks/                # shared custom hooks (useDebounce, useMediaQuery)
-│   └── api/ (or services/)   # HTTP clients and data access; no JSX
+│   │   └── <feature>/          # one feature's components, hooks, and API calls
+│   ├── components/             # shared presentational components used by several features
+│   ├── hooks/                  # shared custom hooks (useDebounce, useMediaQuery)
+│   └── api/ (or services/)     # HTTP clients and data access; no JSX
 <!-- Project-specific / React-Layout -->
 ```
 
@@ -40,4 +40,5 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 | application | src/application | domain | HTTP handlers, framework types |
 | infrastructure | src/api | application (its ports), domain | business rules, JSX |
 | ui | src/components, src/features, src/hooks | application, domain | SQL, external clients |
+| main | src/main.jsx\|src/main.tsx, src/app/ | application, infrastructure, ui, domain | business rules |
 <!-- Project-specific / React-Layer-Dependencies -->

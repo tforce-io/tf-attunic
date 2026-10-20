@@ -4,13 +4,29 @@
 
 - Start every code file, including test files, with the license header below.
 - The header comes first in the code file, followed by a blank line.
+{%- set line_comment_tokens = {
+    'go': '//',
+    'javascript': '//',
+    'rust': '//',
+    'typescript': '//',
+    'powershell': '#',
+    'python': '#',
+    'shell': '#',
+} %}
+- The header text below is plaintext; when writing it into a code file, prefix every line with the file language's line-comment token:
+{%- for language in languages %}
+{%- if language in line_comment_tokens %}
+  - `{{ language }}`: `{{ line_comment_tokens[language] }}`
+{%- endif %}
+{%- endfor %}
+- Formats without line comments (e.g. Markdown, JSON, YAML) don't carry the header.
 
 {%- if license_header == 'Full' %}
 {%- set notice_license = license|lower|replace('-or-later','')|replace('-only','') %}
 
 ## Full header
 
-The header for each code file is:
+The header text for each code file is:
 
 ```
 {% include 'licenses/' ~ notice_license ~ '-notice.jinja' -%}
@@ -19,7 +35,7 @@ The header for each code file is:
 
 ## SPDX identifier
 
-The header for each code file is:
+The header text for each code file is:
 
 ```
 {% include 'licenses/spdx-notice.jinja' -%}

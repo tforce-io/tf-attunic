@@ -1,6 +1,6 @@
 # AGENTS.md - TFattunic
 
-This file is the entry point for AI coding assistants working on this repository.
+This file is the entry point for AI coding assistants developing this template; the `*.jinja` files it maintains are rendered into downstream projects (see [Confirmed Facts](#confirmed-facts)).
 
 ## Abstract
 
@@ -24,15 +24,19 @@ A brief overview of the ingredients used for developing this project. These are 
 
 Important rules when working with the project; these must be strictly followed:
 
-- Follow instructions: anything explicitly requested, plus the instructions in [Exploring](#exploring), [Writing](#writing), [Security](#security), [Fixing](#fixing), and [Testing](#testing); priority order: user requests, template.
-- Plan first: plan by default, unless the user explicitly says to skip it.
-- Ask when in doubt: if you are unsure about an instruction, need help, or have a better solution, feel free to ask questions: "Do you actually need X?", "Does Y cover it?", "Do you mean Z?", etc.
+- Follow instructions: anything explicitly requested, plus the instructions in [Exploring](#exploring), [Writing](#writing), [Security](#security), [Fixing](#fixing), [Refactoring](#refactoring), [Testing](#testing), [Common Mistakes](#common-mistakes), [Checklist](#checklist), and [Pull Request Checklist](#pull-request-checklist).
+- Resolve conflicts by priority: user requests, local idiomatic style (unless unsafe or broken), the rules in this file.
+- Read rule strength from its verb: a rule stated as a plain command (Keep, Use, Write, ...) is mandatory, and so are Always and Must; Never, Avoid, and Do not (don't) are mandatory prohibitions; Prefer is a default, deviate only with a stated reason.
+- Plan first: plan by default, unless the user explicitly says to skip it; when the change spans more than one file, share the plan and wait for the user's approval before the first edit.
+- Ask when in doubt: if you are unsure about an instruction, need help, or have a better solution, ask: "Do you actually need X?", "Does Y cover it?", "Do you mean Z?", etc.
 - Understand the problem: read the task and the code it touches, trace the real flow end to end.
 - Follow the simple design priorities: tests pass, no duplicated knowledge, intent expressed, fewest elements.
 - Avoid common loopholes: stop and reassess when you catch yourself thinking any of the rationalizations in [Anti-Loopholes](#anti-loopholes).
-- Write clean code: safe and maintainable, per [Writing](#writing).
-- Never trust memory: verify every API, function, option, and config key against this codebase and installed dependency versions.
-- Report honestly: say what actually ran; never claim unverified success or present a stub or placeholder as finished; anything that could not run is named with its remaining risk.
+- Write clean code: safe and maintainable, per [Coding Conventions](#coding-conventions) and [Naming Conventions](#naming-conventions).
+- Never trust recall: verify every API, function, option, and config key against this codebase and installed dependency versions.
+- Confirm irreversible actions: ask before deleting files outside the change, rewriting history, force-pushing, publishing, or moving a published tag.
+- Commit only on request: never create a commit unless the user asks for one.
+- Report fully: say what ran and what didn't, what was skipped or assumed, and what was found along the way; never present unverified success or a stub or placeholder as finished; name anything that could not run with its remaining risk.
 
 ## Layout
 
@@ -40,28 +44,30 @@ List of important folders, files and their roles in the project:
 
 ```text
 ├── .agents/                              # shared AI agent instruction templates (`*.md.jinja`), copied into generated projects
-│   ├── attunic-protocol.md.jinja         # defines the `.attunic/` memory layer: files, read order, write rules
-│   ├── coding-conventions.md.jinja       # naming, formatting, comment, and error conventions; plus per-language and per-framework sections
-│   ├── development-guideline.md.jinja    # exploring/writing/security/fixing/testing rules, common mistakes, coding checklist
-│   ├── license-header.md.jinja           # license header to put at the top of every code file
-│   ├── memory-template.md.jinja          # skeleton for `wip.md`, copied when an audit starts
+│   ├── attunic-protocol.md.jinja         # defines the `.attunic/` project memory: files, read order, write rules
+│   ├── coding-conventions.md.jinja       # naming, formatting, comment, error, and concurrency conventions; plus per-language and per-framework sections
+│   ├── development-guideline.md.jinja    # exploring/writing/security/fixing/refactoring/testing rules, common mistakes, coding checklist; plus per-language and per-framework sections
+│   ├── license-header.md.jinja           # license header to put at the top of every new code file
+│   ├── memory-template.md.jinja          # skeleton for `wip.md`, copied when an audit or cleanup campaign starts
 │   ├── project-structure.md.jinja        # standard project structures of languages and frameworks, kept for reference
 │   └── pull-request-guideline.md.jinja   # guideline and checklist run before opening/updating a PR
-├── .attunic/                             # project memory layer templates, pre-seeded into generated projects
-│   ├── context.md.jinja                  # renders `context.md`: specs, layout, layer dependencies, tools, confirmed facts
+├── .attunic/                             # project memory templates, pre-seeded into generated projects
+│   ├── context.md.jinja                  # renders `context.md`: abstract, specs, layout, layer dependencies with deliberate exceptions, tools, confirmed facts
 │   └── memory.md.jinja                   # renders `memory.md`: append-only decisions and open questions; `wip.md` created on demand (gitignored)
 ├── frameworks/<framework>/               # framework fragments included by root templates for every selected framework; included, never copied
 │   ├── coding-conventions.md.jinja       # framework-specific coding conventions
+│   ├── development-guideline.md.jinja    # framework-specific development guideline
 │   └── project-structure.md.jinja        # framework-specific standard project structure
-├── languages/<language>/                 # language fragments included by root templates for every selected language; included, never copied
+├── languages/<language>/                 # language fragments included by root templates for every selected language (`typescript` also pulls in `javascript`'s rules); included, never copied
 │   ├── .editorconfig.jinja               # language-specific editor formatting rules
 │   ├── .gitignore.jinja                  # language-specific ignore patterns
 │   ├── coding-conventions.md.jinja       # language-specific coding conventions
+│   ├── development-guideline.md.jinja    # language-specific development guideline
 │   └── project-structure.md.jinja        # language-specific standard project structure
-├── licenses/                             # license text and notice fragments (not copied), included by the license renderers below
+├── licenses/                             # license text and notice fragments (not copied), included by the license renderers below and `.agents/license-header.md.jinja`
 ├── .copier-answers.yml.jinja             # emits `.copier-answers.yml` in generated projects; never hand-edited (replayed by `copier update`)
-├── .editorconfig.jinja                   # generic editor formatting rules; includes its language fragment
-├── .gitignore.jinja                      # generic ignore rules; includes its language fragment
+├── .editorconfig.jinja                   # generic editor formatting rules; includes the fragment of every selected language
+├── .gitignore.jinja                      # generic ignore rules; includes the fragment of every selected language
 ├── AGENTS.md                             # agents' entry point of this repo itself; maintained manually, not copied
 ├── AGENTS.md.jinja                       # renders `AGENTS.md`, the agents' entry point; this flat `AGENTS.md` is maintained manually in parallel
 ├── CLAUDE.md                             # this repo's pointer to `AGENTS.md`; not copied
@@ -113,9 +119,13 @@ Template engine; version floor `>= 9.0.0` (declared in `copier.yml`). Template v
 
 Facts about the project which have been confirmed; they outrank anything derived or guessed.
 
-- Project is in early development, migration is skipped for faster development, downstream dataloss is acceptable.
-- Project breaks some languages indent rule by forcing the use of `tab` for code files (go, js, rs, ts,...), and `space` for data files (json, md, xml, yaml,...).
-- License text in [./licenses](./licenses) are canonical text, it's safe to skip checking them for most tasks.
+| Fact | Reason |
+|------|--------|
+| `AGENTS.md` and other files without the `.jinja` extension serve template development; `AGENTS.md.jinja` and every `*.jinja` file serve downstream projects, so rules written inside them are content to maintain, not instructions to follow here. | Every plain file is excluded in `copier.yml` or shadowed by its `.jinja` sibling, so only rendered `*.jinja` files reach downstream projects. |
+| Marker ownership is mirrored between the two audiences: template development edits above a marker and leaves below it empty; downstream projects add below a marker and never edit above it. | Downstream projects own everything below a marker (see [README.md's Customize](README.md#customize)), and `copier update` replays their additions by matching the marker line as diff context. |
+| Migration is skipped; downstream data loss is acceptable. | Project is in early development; skipping migration makes development faster. |
+| `.editorconfig`'s `[*]` default (`indent_style = tab`, `indent_size = 2`) is this template's proposal for anything whose owner defines no indentation; every `indent_style` or `indent_size` a language or format owner defines (official style guide, official formatter, or spec) must be declared explicitly in its own section, even when it equals the default. | Owner rules take priority, and declaring them explicitly prevents mistakes. |
+| License text in [./licenses](./licenses) is safe to skip checking for most tasks. | It is canonical license text. |
 
 ## Coding Conventions
 
@@ -124,13 +134,23 @@ Template authoring conventions for this repository:
 - End each section of every template file with a `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker; content above the marker is template-owned, content below is project-owned.
 - Use a plain `# Project-specific` comment as the marker in `.editorconfig` and `.gitignore`.
 - Keep marker text byte-identical across template versions: Copier matches the marker line as diff context, so a whitespace or punctuation change can break the anchor and produce spurious conflicts on `copier update`.
-- Supplement the template rules with project-specific rules; add them below the marker of the section being overridden, or below the final `Project-specific` section's marker for general additions.
+- Never move or duplicate a marker: Copier anchors downstream additions to the marker line, so either change can misplace them or produce conflicts on `copier update`; treat it as a contract break (see [Writing](#writing)).
+- Write template content only above a marker; leave everything below it empty for downstream projects, which add their project-specific rules there (see [README.md's Customize](README.md#customize)).
+- Keep [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) and [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja) to generic principles: language/framework agnostic and tool-neutral; put language and framework specifics only in the `languages/` and `frameworks/` fragments.
 - Keep the language/framework guides tool-neutral; it's up to the downstream project to pick the tools and declare them in the context.
-- Include all sections declared in [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) in the language/framework Coding Conventions, even when empty; add new sections after the shared ones.
+- Keep the framework guides version-neutral: state rules that hold across the framework's maintained versions, with no "since vN" claims; where versions differ, defer to what the project already uses.
+- Include all sections declared in [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) in the language/framework Coding Conventions, and all sections but Checklist declared in [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja) in the language/framework Development Guidelines, even when empty; add new sections after the shared ones.
+- Use ASCII punctuation and straight quotes by default; keep encoding UTF-8 without a BOM.
+- End every file with a single final newline; strip trailing blank lines.
+- Separate headings from body text with exactly one blank line; never indent paragraphs or headings except intentional block quotes.
+- Never delete or reword comments a tool reads downstream, such as the `SPDX-License-Identifier` line emitted by [licenses/spdx-notice.jinja](licenses/spdx-notice.jinja); markers follow the rules above.
 
 ## Naming Conventions
 
+- Use one word per concept across templates and docs; never one word for two concepts (e.g. *fragment* always means an included, never-copied file under `languages/`, `frameworks/`, or `licenses/`).
+- Never number or version a name instead of replacing the original (`coding-conventions-v2.md.jinja`, `_new`, `_copy`).
 - Name markers uniquely after the section they close: `<!-- Project-specific / <Section> -->`.
+- Name a fragment's markers `<!-- Project-specific / <Name>-<Section> -->`, where `<Name>` is the language or framework name as in its heading (e.g. `Go-Errors`, `React-Hooks`); spell `<Section>` as its heading does, spaces included.
 - Name template files after the generated file with the `.jinja` suffix (e.g. `AGENTS.md.jinja` renders `AGENTS.md`).
 - Name language folders with the lowercase codes listed in the `languages` choices in `copier.yml`: `go`, `javascript`, `powershell`, `python`, `rust`, `shell`, `typescript`, `text`.
 - Name framework folders with the lowercase codes listed in the `frameworks` choices in `copier.yml`: `angular`, `react`.
@@ -141,67 +161,71 @@ Template authoring conventions for this repository:
 When exploring for a solution to the task, try to reuse existing code following this priority order and stop at the first one that is satisfied; this step is needed to make the project easy to maintain and understandable in the long run:
 
 - Does it already exist in this codebase? Reuse the helper, util, or pattern that's already here; don't rewrite it.
+- Does a closely matching implementation that needs adaptation exist in this codebase? Report it and propose extending it before writing anything new.
 - Does the standard library already do this? Use it.
 - Does a native platform feature cover it? Use it.
 - Does an already-installed dependency solve it? Use it.
-- Does a closely matching implementation that needs adaptation exist in this codebase? Report it.
+- Would a well-maintained new dependency solve it? Propose it with its name, version, and license before adding it; its license must be compatible with the project's.
 - If none of the above applies, writing new code is fine.
 
 ## Writing
 
 When writing code, follow these rules:
 
-- Explore carefully before writing; make use of what is available in the codebase first; see [Exploring](#exploring).
 - Write the minimum that satisfies the task; never cut safety: validation, error handling, security, accessibility; see [Security](#security).
-- Make targeted edits, never whole-file regeneration; every changed line should trace to the request.
-- Keep one job per unit at every scale (function, type, package); if describing its job needs "and", split it. Parsing, domain rules, persistence, external calls, presentation, and wiring stay in separate homes.
-- Use the narrowest access modifier; keep the public API surface small.
-- Grep every caller of the function/method you touch to make sure a signature or behavior change doesn't introduce a new bug or leave a bug half-fixed.
+- Make targeted edits, never whole-file regeneration; every changed line must trace to the request.
+- Keep one job per unit at every scale (function, type, module); if describing its job needs "and", split it. Parsing, domain rules, persistence, external calls, presentation, and wiring stay in separate homes.
+- Find every usage of a template variable, marker, section anchor, or file you change, by text search, including `README.md` and this file; make sure a rename or behavior change doesn't introduce a new bug or leave a bug half-fixed.
 - Report unrelated findings; never do drive-by renames, reformats, or dependency bumps.
-- Prefer small, focused functions and files; avoid large "god" packages or files.
-- Prefer surrounding code's local, idiomatic style over general rules unless it is unsafe or broken.
-- Prefer early exits for invalid or terminal cases over nested conditionals.
-- Prefer allowlists over denylists.
-- Remove what your change orphaned (unused code, imports, tests, files).
-- When assigning values to object fields, follow the order of field declarations if possible.
-- When renaming types, methods, functions, remember to check relevant tests.
-- When moving files, use the source control move command to retain history.
-- Avoid magic numbers or strings; use a named constant for the meaning, or attach an inline *why* comment.
-- Avoid sibling variants (`_v2`, `_new`, `_final`, `_copy`); replace the original.
-- Avoid unrelated code in `utils`/`helpers`/`common`; name the domain concept instead.
-- Avoid unnecessary abstraction; don't introduce an interface until there are two or more real implementations.
-- Never modify arguments of functions/methods as side effects; return values instead.
+- Prefer surrounding code's local, idiomatic style over general rules unless it is unsafe or broken; see the priority order in [Core Rules](#core-rules).
+- Remove what your change orphaned (unused fragments, variables, sections, files).
+- Update the docs that describe changed behavior (`README.md`, this file) in the same change.
+- Treat `copier.yml` question names, marker text and placement, and generated file paths as contracts with downstream projects; ask before breaking one, and call out every break, since migration is skipped (see [Confirmed Facts](#confirmed-facts)).
+- When moving files, use the source control move command and keep content edits out of the same commit; Git detects renames by content similarity.
+- Never hand-edit rendered output to verify a change; change the template and render again.
 
 ## Security
 
-When writing code or verifying changes, follow these supplementary rules:
+When writing code or verifying changes, follow these rules:
 
-- Use parameterized queries and safe APIs.
+- Never build queries, shell commands, markup, or code by concatenating untrusted input; use parameterized queries, argument lists, and context-aware escaping.
 - Keep authorization checks beside the operation they protect, or centralized in one enforced policy layer.
 - Perform input validation at trust boundaries. Boundaries are external APIs, databases, file systems, clocks, queues, UI events, network calls, subprocesses, generated code.
-- Prefer well-maintained standard libraries for crypto, parsing, auth, and serialization.
+- Prefer allowlists over denylists when validating input, permissions, and file types.
+- Grant least privilege: the narrowest permissions, token scopes, file modes, and network exposure that work.
+- Never hand-roll crypto or auth; for crypto, auth, parsing, and serialization, prefer the standard library or a well-maintained, established library.
 - Never log secrets, tokens, and sensitive data in error messages and logs.
 - Never hardcode secrets or commit them to the repository; read them from the environment or a secret store.
 
 ## Fixing
 
-When fixing issues, instructions of [Writing](#writing) apply, plus:
+When fixing issues, follow these rules:
 
 - Fix the root cause, not just the symptom.
-- Write a test that reproduces the bug first, watch it fail, then make it pass.
-- For refactoring, run the relevant tests before and after; behavior must not change.
-- For deduplication, only merge true duplication (copies that must always change together); merging accidental lookalikes is harder to undo than leaving them apart.
+- Write a test that reproduces the bug first, watch it fail, then make it pass; without a test harness, as in this repository, reproduce it with the smallest check that runs (a `copier copy` render into a scratch directory) and report that check.
+- Search for the same defect elsewhere and report other occurrences; fix them only when the task covers them.
+
+## Refactoring
+
+When restructuring code without changing its behavior, follow these rules:
+
+- Render the affected templates before and after with the same answers; the generated files must not change.
+- For deduplication, only merge true duplication (copies that must always change together, owned by the same actor); merging accidental lookalikes is harder to undo than leaving them apart.
+- Run cleanup or audit work spanning more than one batch as a campaign: record the baseline before the first change, keep one intent per batch, verify after each batch, and keep the batch list current in the plan shared with the user.
 
 ## Testing
 
 When writing tests, follow these rules:
 
 - Write one concept per test; split a test whose name needs "and"; prefer behavior-focused names.
-- Write at least three deterministic expectations, and make sure at least one fails on the untouched fixture.
+- Write at least three deterministic expectations for each changed behavior, spread across tests as needed (e.g. the expected case, a boundary, a failure), and make sure at least one fails against the unchanged code.
+- Cover boundaries and failure paths (empty, null, limits, invalid input, errors), not just the happy path.
 - Keep the three parts of a test visibly distinct: arrange, act, assert; this is about code structure, don't place comments to distinguish these parts.
 - Keep tests F.I.R.S.T.: fast, independent, repeatable, self-validating, timely.
-- Keep results deterministic: no sleeps or timing guesses, no real network or filesystem call.
+- Keep results deterministic: no sleeps or timing guesses; unit tests make no real network, filesystem, or clock call, and integration tests use only isolated, disposable resources (temp directories, local containers).
 - Assert on outcomes, not implementation.
+- Treat a flaky test as a bug to fix; never rerun it until it passes.
+- Treat a test that already failed before your change as a known failure only once the user confirms it; then propose recording it in [Confirmed Facts](#confirmed-facts) with the reason.
 - Never weaken, skip, or delete failing tests: restore the test, fix the code, or report the conflict and stop.
 
 ## Common Mistakes
@@ -209,30 +233,33 @@ When writing tests, follow these rules:
 Check your diff against these failure patterns; each must be fixed before completion:
 
 - Hallucinated API: a function, method, option, or config key not in this codebase or the installed version => verify at the installed version, replace or remove.
-- Unverified dependency: a new package or import without checking its registry name, version, or whether an installed dependency does the job => confirm the exact name/version (an invented name may be attacker-registered); prefer what is installed.
+- Unverified dependency: a new package or import without checking its registry name, version, license, or whether an installed dependency does the job => confirm the exact name/version (an invented name may be attacker-registered) and that its license is compatible with the project's; prefer what is installed.
 - Context loss: a stale or partial read that contradicts existing code, restores deleted code, or drops error handling in a rewrite => re-read target files, callers, tests.
 - Scope creep: changed lines that trace to no request such as drive-by renames, reformatting, dependency bumps => revert them and report instead.
-- Duplicate implementation: a helper or sibling variant paralleling one that exists => search before writing, extend the original, merge only true duplication, never code owned by different actors.
-- Wrong-file gravity: logic added to whatever file was open, a god file growing, a new file at the repository root or current directory => place by role per the project layout, see [Layout](#layout).
+- Duplicated implementation: a helper or sibling variant paralleling one that exists => search before writing, extend the original, merge only true duplication, never code owned by different actors.
+- Wrong-file gravity: logic added to whatever file was open, a god file growing, a new file at the repository root or current directory => place by role per [Layout](#layout).
 - Phantom success: "should work now" with nothing run; a stub, pass, placeholder, or demo value presented as done => run the check and quote the result, name what did not run, and state plainly what remains.
 - Test weakening: an assertion loosened; a test skipped, deleted, or rewritten to match the bug, a snapshot re-accepted unread => restore the test and fix the code, or report the conflict and stop.
-- Silent structure drift: a fragment including a root template or a sibling fragment; fragment content hard-coded into a root template; a rule edited in its wrong home; content above a marker; names off [Naming Convention](#naming-convention) => keep includes as the only wiring (root templates include fragments, never the reverse), one home per rule, names per convention.
+- Silent structure drift: a fragment including a root template or a sibling fragment; fragment content hard-coded into a root template; a rule edited in its wrong home; template content below a marker; names off [Naming Conventions](#naming-conventions) => keep includes as the only wiring (root templates include fragments, never the reverse), one home per rule, names per convention.
 - Missing validation: an input from a trust boundary accepted unchecked, including empty, null, or boundary values => validate at the boundary where the data enters.
 - Missing error handling: a failing path swallowed or ignored, such as an unchecked error or an empty catch => handle it, wrap it, or propagate it explicitly.
+- Edited generated file: a hand edit to rendered output => revert it, change the template, and render again.
+- Stale docs: `README.md` or this file still describing the old behavior => update them in the same change.
+- Unannounced breaking change: a `copier.yml` question name, marker text or placement, or generated file path changed without the user's agreement => restore compatibility or ask, then call out the break.
 
 ## Anti-Loopholes
 
 Stop and reassess when you catch yourself thinking:
 
 | Rationalization | Reality |
-| --- | --- |
+|-----------------|---------|
 | "I will clean this up while I am here." | Unrelated work unless the task needs it; report it instead. |
 | "A framework will make this cleaner." | A dependency is a cost, and a one-sided commitment; prove the need. |
 | "This abstraction will help later." | Later requirements can pay for later abstraction. |
 | "The code is bad, so a rewrite is cleaner." | Rewrites need scope, tests, migration risk control. |
 | "There are no tests, so verification is impossible." | Use the best available check and report remaining risk. |
 | "I will put it here for now." | "For now" placements become permanent. Place it correctly once. |
-| "The user asked for cleanup, so everything is in scope." | Campaign mode has a protocol: baseline, batches, wip, verification. |
+| "The user asked for cleanup, so everything is in scope." | Campaign mode has a protocol: baseline, batches, verification; see [Refactoring](#refactoring). |
 | "Clean code means following this document over local style." | Local, idiomatic style wins unless unsafe or broken. |
 | "It is only one include; the include structure still basically holds." | One wrong-direction include is the violation. Structure is a rule, not a tendency. |
 | "Splitting it into services will decouple it." | A process boundary is not a boundary; shared data still couples through it. |
@@ -241,16 +268,32 @@ Stop and reassess when you catch yourself thinking:
 
 ## Checklist
 
-Before considering any coding task complete, please verify the following to ensure nothing is missed during implementation:
+Before considering any coding task complete, verify the following to ensure nothing is missed during implementation:
 
 - [ ] The task's requirements are fulfilled; acceptance criteria (if any) are verified against real behavior, not assumed from passing tests.
-- [ ] Changed code files follow project convention (see [Coding Convention](#coding-convention) and [Naming Convention](#naming-convention)).
+- [ ] Changed templates render with `copier copy` into a scratch directory, and the generated files are inspected (see [Supporting Tools](#supporting-tools)).
+- [ ] Changed code files follow project convention (see [Coding Conventions](#coding-conventions) and [Naming Conventions](#naming-conventions)).
 - [ ] Changes are scoped to the task, unrelated fixes are reported, not bundled in.
 - [ ] The complete final diff has been read line by line; every change is intentional and understood.
 - [ ] Changes are reviewed for security requirements (see [Security](#security)).
 - [ ] Changes are reviewed for common mistakes (see [Common Mistakes](#common-mistakes)).
+- [ ] Every usage of changed template variables, markers, section anchors, and files is checked; no rename or behavior change left half-applied (see [Writing](#writing)).
 - [ ] No secrets, tokens, or sensitive payloads in logs, error messages, or hardcoded values.
 - [ ] No unused code, debug prints, or commented-out blocks left behind.
+- [ ] Docs describing changed behavior are updated.
 - [ ] New or moved top-level files and folders are reflected in [Layout](#layout) (prompt the user per its rule).
-- [ ] Lasting choices and confirmed facts are recorded in [Confirmed Facts](#confirmed-facts).
+- [ ] Lasting choices and confirmed facts are recorded in [Confirmed Facts](#confirmed-facts), each once the user explicitly confirms it (unconfirmed ones are named in the report).
 - [ ] Every applicable item above was verified by actually running the check; anything not run is explicitly reported, not claimed.
+
+## Pull Request Checklist
+
+Before opening or updating a pull request, verify:
+
+- [ ] Development checklist is completed (see [Checklist](#checklist)).
+- [ ] Commit messages are clear and describe the *why*, not just the *what*.
+- [ ] PR is scoped to a single logical change.
+- [ ] PR description explains the motivation and summarizes the change.
+- [ ] Breaking changes to downstream contracts are called out explicitly (see [Writing](#writing)).
+- [ ] Duplicated template content is justified.
+- [ ] Any new dependency is justified.
+- [ ] Linked issues/tickets are referenced, if applicable.

@@ -29,6 +29,11 @@
 
 <!-- Project-specific / Angular-Errors -->
 
+### Concurrency
+
+- Never subscribe inside a `subscribe` callback; compose with `switchMap`, `mergeMap`, or `toSignal` instead.
+<!-- Project-specific / Angular-Concurrency -->
+
 ### Components
 
 - Write standalone components, directives, and pipes; `standalone: true` is the default since v19, and a new `NgModule`-based one needs `standalone: false` stated explicitly.
@@ -48,14 +53,9 @@
 - Keep templates free of method calls that carry business logic; bind to a signal or a getter that calls the one function that owns the rule.
 <!-- Project-specific / Angular-Templates -->
 
-### Async
-
-- Never subscribe inside a `subscribe` callback; compose with `switchMap`, `mergeMap`, or `toSignal` instead.
-<!-- Project-specific / Angular-Async -->
-
 ### Tests
 
-- Check which runner this project uses before assuming either: new projects get Vitest (`@angular/build:unit-test`) since v21, older ones may still run Karma.
+- Check which test runner this project uses before writing tests; Angular's default runner changed in v21, so projects created earlier may still run the old one.
 - Test a component through `TestBed` and its rendered template or public API, never a private method.
 - Test an injected service by providing a fake for its own dependencies (`HttpClient`, a repository), not the real network.
 - Test a business rule as a plain function or class, with no `TestBed` needed.

@@ -8,20 +8,18 @@
 ### Names
 
 - Case marks visibility: MixedCaps (exported) or mixedCaps (unexported); never underscores.
+- Initialisms: one case throughout (`ID`, `URL`, `HTTP`), e.g. `userID`, `ServeHTTP`; never `userId` or `ServeHttp`.
 - Package names: short, lowercase, single word, no underscores or mixedCaps; never `util`, `common`, or `base`.
 - Interface names: prefer the `-er` suffix for single-method interfaces (e.g. `Reader`, `Closer`); never an `I` prefix.
 - Avoid stuttering: don't repeat the package name in exported identifiers (e.g. `log.Logger`, not `log.LogLogger`).
 - Receiver names: short (one or two letters) and identical across every method of the type.
 - Getters: name after the value returned, without a `Get` prefix (e.g. `Owner`, not `GetOwner`).
-- Never write a vague name (`data`, `info`, `obj`, `ret`), a bare-verb function with no object (`handle`, `process`), or a numbered or versioned name (`user2`, `dataV2`).
-- Never suffix a type with a noise word (`Manager`, `Helper`, `Util`) or name it after a verb (`ProcessOrder`).
 <!-- Project-specific / Go-Names -->
 
 ### Packages
 
 - Default to unexported; export only the names another package must call.
 - Keep one package per directory; never split a single package's files across unrelated directories.
-- Never add to a `utils` or `common` package; name the concept the code implements.
 - Keep `init()` to registration only; never reach out to a database, file, or network from one.
 <!-- Project-specific / Go-Packages -->
 
@@ -33,8 +31,6 @@
 
 ### Functions
 
-- Keep exported functions to a handful of parameters; past three related values, group them into a struct.
-- Never switch behavior on a `bool` parameter; write two functions or a small typed enum instead.
 - Use named returns only to document a short function's intent, never to smuggle a late, hidden mutation.
 <!-- Project-specific / Go-Functions -->
 
@@ -49,9 +45,19 @@
 - Wrap with context and keep the cause: `fmt.Errorf("loading order %s: %w", id, err)`.
 - Compare with `errors.Is` and extract with `errors.As`; never compare an error's `.Error()` string.
 - Return `(T, error)` rather than a sentinel zero value standing in for failure.
-- Never panic for an expected failure in library code; reserve `panic` for a programmer error the caller cannot act on.
+- Write error strings lowercase, without trailing punctuation; they are composed into larger messages.
 - Check every returned error where it is returned; assigning one to `_` outside a test is a defect, not a shortcut.
 <!-- Project-specific / Go-Errors -->
+
+### Concurrency
+
+- Give every goroutine an owner for its shutdown; never start one with `go func() { ... }()` and no way to wait for or cancel it.
+- Take `context.Context` as the first parameter and check `ctx.Done()`/`ctx.Err()` on any path that can block; never store it on a struct field.
+- Run goroutines that share a lifetime and must fail together under one group that waits for all and returns the first error, rather than a `sync.WaitGroup` plus a hand-rolled error slice.
+- The sender closes a channel, never the receiver; closing one with a live sender still writing to it panics.
+- Keep package-level state immutable; mutable package state read or written from more than one goroutine is a defect.
+- Since Go 1.22 each `for` iteration owns its own loop variables; add a `v := v` capture only when the module still targets an older Go version.
+<!-- Project-specific / Go-Concurrency -->
 
 ### Tests
 
@@ -60,16 +66,6 @@
 - Run with `-race` whenever a test touches a goroutine or shared state; a flake there is a bug to fix, not noise to rerun.
 - Reach for `t.Parallel()` only once a test's fixtures are verified independent of its siblings'.
 <!-- Project-specific / Go-Tests -->
-
-### Concurrency
-
-- Give every goroutine an owner for its shutdown; never start one with `go func() { ... }()` and no way to wait for or cancel it.
-- Take `context.Context` as the first parameter and check `ctx.Done()`/`ctx.Err()` on any path that can block; never store it on a struct field.
-- Use `errgroup.Group` for goroutines that share a lifetime and must fail together, rather than a `sync.WaitGroup` plus a hand-rolled error slice.
-- The sender closes a channel, never the receiver; closing one with a live sender still writing to it panics.
-- Keep package-level state immutable; mutable package state read or written from more than one goroutine is a defect.
-- Since Go 1.22 each `for` iteration owns its own loop variables; add a `v := v` capture only when the module still targets an older Go version.
-<!-- Project-specific / Go-Concurrency -->
 
 ### Smells
 

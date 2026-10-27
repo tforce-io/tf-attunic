@@ -8,9 +8,6 @@
 
 - Name functions and locals `snake_case`; reserve `UPPER_SNAKE_CASE` for exported or readonly globals (`CONFIG_PATH`) so scope is visible at a glance.
 - Prefix a sourced library's private functions with the library's name (`_mylib_parse_args`); shell has no real module privacy.
-- Name a function for the action it performs (`deploy_release`, never `do_stuff` or `run2`); never a bare `data`/`tmp` for a variable holding one thing.
-- Never encode a type into a name (`str_path`, `int_count`); never leave a rename half-done with `_v2`, `_old`, or `_final`.
-- Keep a name that short only for a loop index (`for i in`) or a shell idiom (`$#`, `$?`); name anything read later on.
 <!-- Project-specific / Shell-Names -->
 
 ### Packages
@@ -45,6 +42,10 @@
 - Use `trap 'cleanup' EXIT` (and `INT`/`TERM` when the script holds a lock or a temp file) so cleanup runs on every exit path.
 - Never swallow a failure with `2>/dev/null` alone; redirect, then act on the exit status, or let the error surface.
 <!-- Project-specific / Shell-Errors -->
+
+### Concurrency
+
+<!-- Project-specific / Shell-Concurrency -->
 
 ### Tests
 

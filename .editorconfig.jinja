@@ -8,7 +8,10 @@ indent_style = tab
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{json,md,toml,yaml,yml}]
+[{Makefile,makefile,GNUmakefile,*.mk}]
+indent_style = tab
+
+[*.{yaml,yml}]
 indent_style = space
 
 {% set blocks = [] -%}

@@ -60,13 +60,13 @@ To customize the generated files to follow your project, add your rules below th
 ├── AGENTS.md                  # agents' entry point of this repo itself; maintained manually, not copied
 ├── AGENTS.md.jinja            # entry point for AI agents in generated projects
 ├── CLAUDE.md                  # this repo's pointer to AGENTS.md; not copied
-├── CLAUDE.md.jinja            # instructions specific for Claude coding agents
+├── CLAUDE.md.jinja            # renders CLAUDE.md, which points to AGENTS.md
 ├── COPYING.jinja              # renders COPYING for GPL-3.0-only, GPL-3.0-or-later, the GPL part of LGPL-3.0-only / LGPL-3.0-or-later, AGPL-3.0-only, AGPL-3.0-or-later
 ├── COPYING.LESSER.jinja       # renders COPYING.LESSER with the LGPL text (LGPL-3.0-only and LGPL-3.0-or-later)
 ├── LICENSE                    # MIT License Text for this template (not copied)
 ├── LICENSE.jinja              # renders LICENSE for LICENSE-based licenses (MIT, ISC, BSD-2-Clause, BSD-3-Clause, 0BSD, Apache-2.0, MPL-2.0)
-└── README.md                  # template documentation; not copied
-├── copier.yml                 # template questions and settings
+├── README.md                  # template documentation; not copied
+└── copier.yml                 # template questions and settings
 ```
 
 ### Project Memory Layer (`.attunic/`)
@@ -81,21 +81,21 @@ Generated projects carry a markdown-only project memory layer in `.attunic/`, ad
 
 ### Language Fragments (`languages/<lang>/`)
 
-| Fragment                     | Included by                              |
-|------------------------------|------------------------------------------|
-| `.editorconfig.jinja`        | `.editorconfig.jinja`                    |
-| `.gitignore.jinja`           | `.gitignore.jinja`                       |
-| `coding-conventions.md.jinja`| `.agents/coding-conventions.md.jinja`    |
-| `project-structure.md.jinja` | `.agents/project-structure.md.jinja`     |
+| Fragment                         | Included by                              |
+|----------------------------------|------------------------------------------|
+| `.editorconfig.jinja`            | `.editorconfig.jinja`                    |
+| `.gitignore.jinja`               | `.gitignore.jinja`                       |
+| `coding-conventions.md.jinja`    | `.agents/coding-conventions.md.jinja`    |
+| `project-structure.md.jinja`     | `.agents/project-structure.md.jinja`     |
 
 Shared/general sections live in the root templates; each root template `{% include %}`s the language fragment of every language selected in the multi-select `languages` answer (in the question's choices order). These fragments are never emitted as project files.
 
 ### Framework Fragments (`frameworks/<framework>/`)
 
-| Fragment                      | Included by                              |
-|-------------------------------|------------------------------------------|
-| `coding-conventions.md.jinja` | `.agents/coding-conventions.md.jinja`    |
-| `project-structure.md.jinja`  | `.agents/project-structure.md.jinja`     |
+| Fragment                         | Included by                              |
+|----------------------------------|------------------------------------------|
+| `coding-conventions.md.jinja`    | `.agents/coding-conventions.md.jinja`    |
+| `project-structure.md.jinja`     | `.agents/project-structure.md.jinja`     |
 
 Each root template `{% include %}`s the framework fragment of every framework selected in the multi-select `frameworks` answer (in the question's choices order), right after the language fragments. These fragments are never emitted as project files.
 
@@ -123,10 +123,9 @@ Each root template `{% include %}`s the framework fragment of every framework se
 - Keep the marker convention from the [Customize](#customize) section above in every new template file, including the language fragments in `languages/<lang>/`.
 - Keep the marker text byte-identical across versions; Copier matches on this line as diff context, so even a whitespace or punctuation change can break the anchor and produce spurious conflicts.
 - Only make changes to content above the `<!-- Project-specific -->`, `<!-- Project-specific / ... -->`, or `# Project-specific` marker in each section.
-- To add a new language, create `languages/<lang_code>/` with all the fragments listed above and add `<lang_code>` to the `languages` question's choices (an array multiselect) in `copier.yml`.
-- To add a new framework, create `frameworks/<framework_code>/` with both fragments listed above and add `<framework_code>` under each supported language block in the `frameworks` question's dynamic choices in `copier.yml` (a framework supporting several languages is listed under each of them; see [Appendix](#supported-frameworks)).
+- To add a new language, create `languages/<lang_code>/` with all the fragments listed above and add `<lang_code>` to the `languages` question's choices (an array multiselect) in `copier.yml`; declare its owner-defined indentation in its `.editorconfig.jinja` and list it under [Indentation](#indentation).
+- To add a new framework, create `frameworks/<framework_code>/` with all the fragments listed above and add `<framework_code>` under each supported language block in the `frameworks` question's dynamic choices in `copier.yml` (a framework supporting several languages is listed under each of them; see [Appendix](#supported-frameworks)).
 - To add a new license, update `copier.yml` (choices, `_exclude` branches), create the `licenses/<id>.jinja` and `licenses/<id>-notice.jinja` fragments, update the `LICENSE.jinja` / `COPYING.jinja` includes, and update the README tables (Questions, License File Mapping, Supported Licenses) in the same commit.
-- Never rename or delete a shipped file without adding a `_migrations` entry in `copier.yml` (e.g. `git mv old new`) so downstream projects keep any content users appended past that file's marker instead of losing it.
 - Never move or re-point a published tag (no force-push to tags); ship corrections as a new tag instead.
 
 ## Appendix
@@ -162,6 +161,20 @@ Each root template `{% include %}`s the framework fragment of every framework se
 - `LGPL-3.0-or-later`
 - `MIT`
 - `MPL-2.0`
+
+### Indentation
+
+Reference for `.editorconfig`: every `indent_style` or `indent_size` a language or format owner defines is declared explicitly; everything else falls back to the `[*]` default (`indent_style = tab`, `indent_size = 2`), a proposal of this template.
+
+| Files | `indent_style` | `indent_size` | Defined by |
+|-------|----------------|---------------|------------|
+| Go: `*.go`, `go.mod`, `go.work` | `tab` | `2` (default) | [gofmt](https://pkg.go.dev/cmd/gofmt), [`go mod edit -fmt`](https://go.dev/ref/mod#go-mod-edit), [`go work edit -fmt`](https://go.dev/ref/mod#go-work-edit) |
+| Make: `Makefile`, `makefile`, `GNUmakefile`, `*.mk` | `tab` | `2` (default) | [GNU make recipe syntax](https://www.gnu.org/software/make/manual/html_node/Recipe-Syntax.html) |
+| PowerShell: `*.ps1`, `*.psd1`, `*.psm1` | `space` | `4` | [PSScriptAnalyzer UseConsistentIndentation](https://learn.microsoft.com/en-us/powershell/utility-modules/psscriptanalyzer/rules/useconsistentindentation) |
+| Python: `*.py`, `*.pyi` | `space` | `4` | [PEP 8](https://peps.python.org/pep-0008/#indentation) |
+| Rust: `*.rs` | `space` | `4` | [Rust Style Guide](https://doc.rust-lang.org/style-guide/#indentation-and-line-width) |
+| YAML: `*.yaml`, `*.yml` | `space` | `2` (default) | [YAML 1.2.2, 6.1 Indentation Spaces](https://yaml.org/spec/1.2.2/#61-indentation-spaces) |
+| Everything else, e.g. JavaScript, TypeScript, Shell, Text, JSON, Markdown, TOML | `tab` (default) | `2` (default) | No owner rule |
 
 ## Attributions
 

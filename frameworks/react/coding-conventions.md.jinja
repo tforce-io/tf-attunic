@@ -29,6 +29,10 @@
 
 <!-- Project-specific / React-Errors -->
 
+### Concurrency
+
+<!-- Project-specific / React-Concurrency -->
+
 ### Components
 
 - Keep components pure: same props and state render the same output, no side effects during render.
@@ -42,7 +46,7 @@
 - Keep state as close as possible to its use; lift it only when two components need it.
 - Never store derived data in state; compute it during render.
 - Use effects only to synchronize with systems outside React — subscriptions, the DOM, timers. Respond to events in event handlers, not effects.
-- Fetch data outside render effects: through the framework's loaders, server components, or a query library (TanStack Query, SWR) handling caching, races, and cancellation.
+- Fetch data outside render effects: through the framework's loaders, server components, or a data-fetching library that handles caching, races, and cancellation.
 - Key list items by stable data identity, never the array index when order can change.
 <!-- Project-specific / React-State -->
 

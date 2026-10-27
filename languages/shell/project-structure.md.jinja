@@ -3,7 +3,7 @@
 ### Guideline
 
 - Keep one script per operational task; when unrelated subcommands accumulate, split the script or add a real subcommand dispatcher.
-- Put shared functions in `lib/`, entry points in `bin/` or the project root — whichever the project already uses; never duplicate a helper across scripts.
+- Put shared functions in `lib/`, entry points in `bin/` or the project root, whichever the project already uses; never duplicate a helper across scripts.
 - Keep generated or vendored scripts out of the directories you hand-edit.
 <!-- Project-specific / Shell-Guideline -->
 
@@ -21,7 +21,7 @@
 ├── .editorconfig   # editor formatting rules
 ├── .gitignore      # git ignore patterns
 ├── AGENTS.md       # instructions for AI coding agents
-├── CLAUDE.md       # instructions specific for Claude coding agents
+├── CLAUDE.md       # points to AGENTS.md
 ├── CONTRIBUTING.md # contribution guidelines
 ├── Makefile        # build/test/lint task automation (optional)
 ├── README.md       # project overview and pointing entry

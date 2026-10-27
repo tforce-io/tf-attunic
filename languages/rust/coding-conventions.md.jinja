@@ -10,8 +10,6 @@
 - Wrap a primitive in a newtype to name the invariant it carries (`struct OrderId(String)`), instead of passing a bare `String` or `u64` everywhere.
 - Name a trait for the capability it grants (`Cache`, `Clock`); never with an `I`- prefix or `Trait` suffix.
 - Give every enum variant a name that reads as a state (`Shipped { at: Timestamp }`), not a flag hiding inside a struct.
-- Never write a vague name (`data`, `info`, `item`, `temp`) or a bare-verb function with no object (`handle`, `process`); a loop index, closure parameter, or `_` for a discarded value may stay short, nothing else should.
-- Never number or version a name instead of replacing it (`user2`, `_old`); never suffix a type with a noise word (`Manager`, `Helper`, `Util`) or name it after a verb (`ProcessOrder`).
 <!-- Project-specific / Rust-Names -->
 
 ### Packages
@@ -19,7 +17,6 @@
 - Default every item to private; use `pub(crate)` for cross-module use inside the crate, `pub` only for the crate's real public surface.
 - Give each concept its own module under `src/`, re-exported from `lib.rs`; do not mirror folders into a `mod` tree nobody reads.
 - Keep a trait beside the module that owns its concept; put a second implementation (a test double, an alternate backend) in its own module.
-- Never add a catch-all `utils.rs` or `helpers.rs`; name the module for the concept it implements.
 <!-- Project-specific / Rust-Packages -->
 
 ### Types
@@ -31,7 +28,6 @@
 ### Functions
 
 - Borrow (`&T`, `&mut T`) by default; clone only where ownership must move, or the type is `Copy` and cheap.
-- Keep a function's parameter count small; past three related values, group them into a struct.
 <!-- Project-specific / Rust-Functions -->
 
 ### Comments
@@ -41,12 +37,19 @@
 ### Errors
 
 - Return `Result<T, E>` for a recoverable failure and propagate it with `?`; reserve `panic!` for a broken invariant the type system should prevent.
-- Define a library's errors as an enum with `#[derive(thiserror::Error)]`, one variant per distinguishable cause, implementing `std::error::Error`.
-- In a binary, collect errors with `anyhow::Result` and `.context("...")`; do not invent a parallel enum the binary never matches on.
+- Define a library's errors as an enum, one variant per distinguishable cause, implementing `std::error::Error`.
+- In a binary, collect errors into one dynamic error type (such as `Box<dyn std::error::Error>`) with added context; do not invent a parallel enum the binary never matches on.
 - Never call `.unwrap()` or `.expect()` on a path reachable from library code; return the `Result`/`Option` to the caller instead.
-- Preserve the source error with `#[source]` or `.context(...)`; never format it away into a plain `String`.
-- Model an expected absence as `Option<T>` or a dedicated variant, not a sentinel value.
+- Preserve the source error through `std::error::Error::source`; never format it away into a plain `String`.
+- Write `Display` error messages lowercase, without trailing punctuation; they are composed into larger messages.
 <!-- Project-specific / Rust-Errors -->
+
+### Concurrency
+
+- Prefer message passing (`std::sync::mpsc`, or the async runtime's channels) over a shared `Mutex<T>` when ownership can move instead.
+- Push blocking or CPU-heavy work onto the async runtime's blocking-task pool; never call blocking I/O from an async task on the runtime's worker threads.
+- Treat an `Rc<RefCell<T>>` or `Arc<Mutex<T>>` reachable from many owners as a design smell to resolve, not a default to reach for.
+<!-- Project-specific / Rust-Concurrency -->
 
 ### Tests
 
@@ -54,14 +57,6 @@
 - Name a test for the behavior it proves (`rejects_empty_input`), and assert on `Result`/`Option` values with a pattern match, not `.unwrap()` on the tested path.
 - Reserve `#[should_panic]` for a genuine panic contract; never use it to paper over an untested `Result` path.
 <!-- Project-specific / Rust-Tests -->
-
-### Concurrency
-
-- Prefer message passing (`std::sync::mpsc`, `tokio::sync::mpsc`) over a shared `Mutex<T>` when ownership can move instead.
-- Push blocking or CPU-heavy work into `tokio::task::spawn_blocking`; never call blocking I/O from an async task on the runtime's worker threads.
-- Scope a `Mutex`/`RwLock` guard as narrowly as possible; never hold one across an `.await`.
-- Treat an `Rc<RefCell<T>>` or `Arc<Mutex<T>>` reachable from many owners as a design smell to resolve, not a default to reach for.
-<!-- Project-specific / Rust-Concurrency -->
 
 ### Smells
 

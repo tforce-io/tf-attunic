@@ -7,11 +7,10 @@
 ### Names
 
 - Use `snake_case` for functions, variables, and modules; `PascalCase` for classes; `UPPER_SNAKE_CASE` for module-level constants (PEP 8).
-- Name booleans as predicates (`is_active`, `has_items`) and generators for what they yield, not how they compute it.
-- Never encode type or container shape in a name (`str_name`, `lst_items`), or prefix a `Protocol`/ABC with `I` (`IRepository`) — name it for its role.
+- Capitalize every letter of an acronym inside a `PascalCase` name, per PEP 8 (`HTTPServerError`, not `HttpServerError`).
+- Name generators for what they yield, not how they compute it.
+- Never prefix a `Protocol` or ABC with `I` (`IRepository`); name it for its role.
 - Give a module one job and a name for it; a package's `__init__.py` re-exports the public surface and does nothing else.
-- Never write a vague name (`data`, `info`, `obj`, `temp`) or a bare-verb function with no object (`handle`, `process`); a loop or comprehension index, lambda parameter, caught exception, or established short form (`df`, `id`) may stay short, nothing else should.
-- Never number or version a name instead of replacing it (`user2`, `_old`); never suffix a class with a noise word (`Manager`, `Helper`, `Util`) or name it after a verb (`ProcessOrder`).
 <!-- Project-specific / Python-Names -->
 
 ### Packages
@@ -20,7 +19,6 @@
 - Never use a wildcard import (`from x import *`) outside a `__init__.py` re-export.
 - Break a circular import by moving the shared symbol to the module both sides already depend on; never paper over it with a function-local import.
 - Keep a class's public methods few and cohesive; unrelated public methods on one class are more than one reason to change.
-- Name a module for the domain concept it owns (`pricing.py`, `refunds.py`), never `utils.py` or `helpers.py`.
 <!-- Project-specific / Python-Packages -->
 
 ### Types
@@ -32,8 +30,7 @@
 
 ### Functions
 
-- Keep functions small, at one abstraction level; extract a function instead of nesting another branch.
-- Make optional and behavior-selecting parameters keyword-only after `*`; never add a boolean flag that branches behavior — write two functions.
+- Make optional and behavior-selecting parameters keyword-only after `*`.
 - Never default a mutable value (`def f(items=[])`): default to `None`, build it inside the body.
 <!-- Project-specific / Python-Functions -->
 
@@ -46,24 +43,21 @@
 - Raise the most specific built-in or project exception; never raise a bare `Exception` or a string.
 - Chain the cause across a re-raise (`raise ServiceError("refund failed") from error`); never write a bare `except:` that discards it.
 - Catch only the exception type you can act on; let everything else propagate.
-- Model expected alternate outcomes — not found, declined, empty — as a return value or a small result type, not an exception.
-- Handle an error once, where a decision can be made; never log-and-reraise the same error at every frame up the stack.
 <!-- Project-specific / Python-Errors -->
-
-### Tests
-
-- Use pytest; express setup and teardown with fixtures, not repeated per test.
-- Use `@pytest.mark.parametrize` for boundary and equivalence-class variations instead of copy-pasted test functions.
-- Name tests for the behavior they prove (`test_cancel_refunds_payment`), and assert outcomes, never internals.
-- Keep tests deterministic: an injected clock or `freezegun`, no real network or filesystem call.
-<!-- Project-specific / Python-Tests -->
 
 ### Concurrency
 
 - Group sibling tasks with `asyncio.TaskGroup` (3.11+) instead of unsupervised `create_task` calls; a group cancels the rest when one member fails.
 - Never call blocking I/O or CPU-bound work inside `async def`; use an async client, or hand the call to `asyncio.to_thread`.
-- Treat every `await` as a point where shared state can change underneath it; re-check invariants after.
 <!-- Project-specific / Python-Concurrency -->
+
+### Tests
+
+- Express setup and teardown with the test runner's fixtures, not repeated per test.
+- Parametrize boundary and equivalence-class variations instead of copy-pasting test functions.
+- Name tests for the behavior they prove (`test_cancel_refunds_payment`), and assert outcomes, never internals.
+- Keep tests deterministic: an injected clock, no real network or filesystem call.
+<!-- Project-specific / Python-Tests -->
 
 ### Smells
 

@@ -2,7 +2,7 @@
 
 ### Formats
 
-- Keep imports single-line-per-module and grouped in sections: Node built-ins, then third-party, then local, then relative, separated by a blank line.
+- Keep imports single-line-per-module and grouped in sections: runtime built-ins, then third-party, then local, then relative, separated by a blank line.
 - Prefer `import type` (or `import { type ... }`) for type-only imports so they are erased at compile time.
 - Use `const` by default, `let` only for reassigned variables, never `var`.
 - Do not use `any`; use `unknown` when a value's type is not known and narrow it before use.
@@ -11,6 +11,7 @@
 - Use named exports; never `export default` or mutable exports like `export let`.
 - Compare with `===`/`!==`; use `==`/`!= null` only to catch both `null` and `undefined`.
 - Iterate with `for...of`; never `for...in` over arrays or objects (string indices, prototype chain).
+- Always brace control-flow bodies (`if`/`else`, `for`, `while`, `do`) even for a single statement.
 <!-- Project-specific / TypeScript-Formats -->
 
 ### Names
@@ -18,7 +19,6 @@
 - `PascalCase` for types, classes, enums, and their members.
 - `camelCase` for variables, functions, and properties.
 - `CONSTANT_CASE` for module-level constants.
-- Booleans: never a bare `isXxx` negation like `isNotReady`.
 <!-- Project-specific / TypeScript-Names -->
 
 ### Packages
@@ -36,16 +36,40 @@
 ### Functions
 
 - Consolidate more than two parameters into one destructured options object.
-- Never pass boolean flags that branch behavior; split the function instead.
 - Use `async`/`await`; do not mix callbacks and promises in the same code path.
 <!-- Project-specific / TypeScript-Functions -->
 
 ### Comments
 
-- Document every exported identifier (constants, vars, types, classes, functions) with a JSDoc comment.
+- Write doc comments in JSDoc format.
 - Refer to [TypeScript JSDoc Reference](https://www.typescriptlang.org/docs/handbook/jsdoc-supported.html) for supported tags.
 <!-- Project-specific / TypeScript-Comments -->
 
 ### Errors
 
+- Throw `Error` subclasses, never strings or plain objects; chain the cause: `throw new PaymentError("charge failed", { cause: error })`.
+- Never leave a promise floating: await it, return it, or hand it to a handler; never write an empty `catch`.
+- Cancel with `AbortController` and pass its `signal` through every call that can wait.
 <!-- Project-specific / TypeScript-Errors -->
+
+### Concurrency
+
+- Start independent operations with `Promise.all` or `Promise.allSettled`, not one `await` at a time in a loop.
+<!-- Project-specific / TypeScript-Concurrency -->
+
+### Tests
+
+- Use the project's test runner; control time with fake timers or an injected clock.
+- Await every asynchronous assertion; a missing `await` makes a test pass forever.
+<!-- Project-specific / TypeScript-Tests -->
+
+### Smells
+
+- Callback pyramids and `.then` chains that drop rejections.
+- Truthiness bugs with `0`, `""`, and `NaN`.
+- Functions that mutate their arguments.
+- A `utils.ts` collecting unrelated helpers.
+- Barrels that re-export everything and hide cycles.
+- Built-in prototypes extended by the application.
+- `console.log` left on production paths.
+<!-- Project-specific / TypeScript-Smells -->

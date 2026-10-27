@@ -5,7 +5,7 @@
 - Keep sources under `src/`, one module per concept.
 - Keep entry points (`src/main.js`, `server.js`, a CLI's `bin/`) thin: read configuration, compose, start.
 - In a workspace monorepo (npm, yarn, pnpm, or bun), keep shared tooling at the repo root and give each package under `packages/` its own `package.json` and `src/`.
-- Put tests beside their module (`order.test.js`) or under `test/` mirroring `src/` — whichever the project already does.
+- Put tests beside their module (`order.test.js`) or under `test/` mirroring `src/`, whichever the project already does.
 <!-- Project-specific / JavaScript-Guideline -->
 
 ### Layout
@@ -31,7 +31,7 @@
 ├── .npmrc              # npm/pnpm package-manager config (registry, install, publish settings)
 ├── .yarnrc.yml         # yarn config (yarn berry; yarn classic uses .yarnrc)
 ├── AGENTS.md           # instructions for AI coding agents
-├── CLAUDE.md           # instructions specific for Claude coding agents
+├── CLAUDE.md           # points to AGENTS.md
 ├── CONTRIBUTING.md     # contribution guidelines
 ├── Dockerfile          # container build definition
 ├── Makefile            # build/test/lint task automation (optional)

@@ -4,26 +4,22 @@
 
 - Use `const` by default, `let` only for reassignment, never `var`.
 - Compare with `===`/`!==`; use `??`/`?.` where `0` and `""` are valid values.
+- Always brace control-flow bodies (`if`/`else`, `for`, `while`, `do`) even for a single statement.
 <!-- Project-specific / JavaScript-Formats -->
 
 ### Names
 
 - Use `camelCase` for values and functions, `PascalCase` for classes and components, `UPPER_SNAKE_CASE` only for constants shared across modules.
-- Name booleans as questions (`isPaid`, `hasItems`) and functions by what they do or return (`loadOrders`, `totalPrice`).
-- Never encode types or scope in names (`strName`, `arrItems`, `_self`).
 - Name a file after the one thing it exports, in the project's casing convention — never two conventions in one folder.
-- Never write a vague name (`data`, `info`, `obj`, `temp`), a bare-verb function with no object (`handle`, `process`), or a numbered, versioned, or noise-word class (`user2`, `Manager`, `ProcessOrder`); a loop index or callback parameter may stay short.
-- Give magic numbers and strings a name.
 <!-- Project-specific / JavaScript-Names -->
 
 ### Packages
 
-- Write ES modules (`import`/`export`, `"type": "module"`); never mix `require` into new code.
+- Write ES modules (`import`/`export`); never mix `require` into new code.
 - Prefer named exports; use a default export only where a framework demands one.
 - Export only what another module uses; everything else stays module-private.
 - Avoid barrel files re-exporting whole folders — they hide cycles and load unwanted code; import from the owning module.
 - Never keep mutable state at module level; pass collaborators in.
-- Never add to `utils.js` or `helpers.js`; name the concept (`money.js`, `business-days.js`).
 <!-- Project-specific / JavaScript-Packages -->
 
 ### Types
@@ -33,9 +29,6 @@
 
 ### Functions
 
-- Keep functions small, at one abstraction level; extract a named function instead of commenting a block.
-- Take at most two or three positional parameters; beyond that, one destructured options object.
-- Never switch behavior with a boolean parameter; write two functions.
 - Never mutate arguments; prefer `map`, `filter`, spread, `toSorted`, `toSpliced`, `with`.
 <!-- Project-specific / JavaScript-Functions -->
 
@@ -47,25 +40,21 @@
 
 - Throw `Error` subclasses, never strings or plain objects; chain the cause: `throw new PaymentError("charge failed", { cause: error })`.
 - Never leave a promise floating: await it, return it, or hand it to a handler; never write an empty `catch`.
-- Catch only where a decision can be made; otherwise let it travel up.
-- Return expected outcomes as values (`{ ok: false, reason: "card declined" }`); keep exceptions for genuine failures.
 - Cancel with `AbortController` and pass its `signal` through every call that can wait.
 <!-- Project-specific / JavaScript-Errors -->
 
+### Concurrency
+
+- Start independent operations with `Promise.all` or `Promise.allSettled`, not one `await` at a time in a loop.
+<!-- Project-specific / JavaScript-Concurrency -->
+
 ### Tests
 
-- Use the project's runner — Vitest, Jest, or `node:test`; keep tests deterministic: fake timers or an injected clock, no real network.
+- Use the project's test runner; keep tests deterministic: fake timers or an injected clock, no real network.
 - Name tests for behavior (`rejects an empty cart`) and assert outcomes, never internals.
 - Await every asynchronous assertion; a missing `await` makes a test pass forever.
 - Test boundary values; add tests around recent bugs.
 <!-- Project-specific / JavaScript-Tests -->
-
-### Concurrency
-
-- Never block the event loop with synchronous I/O or long computation; use an async API or a worker thread.
-- Start independent operations with `Promise.all` or `Promise.allSettled`, not one `await` at a time in a loop.
-- Treat every `await` as a point where other code runs: re-check shared state after it.
-<!-- Project-specific / JavaScript-Concurrency -->
 
 ### Smells
 

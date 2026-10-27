@@ -5,7 +5,7 @@
 - Keep `src/main.ts` as the composition root: `bootstrapApplication`, providers, and nothing else.
 - Group each feature under `src/app/<feature>/` with its components, services, guards, and routes colocated (Angular's flat layout, not a type-based tree).
 - Keep `src/app/core/` for singleton services, guards, and interceptors provided once, at the root.
-- Keep `src/app/shared/` for presentational components, directives, and pipes reused by several features — not a dumping ground for unrelated helpers.
+- Keep `src/app/shared/` for presentational components, directives, and pipes reused by several features, not a dumping ground for unrelated helpers.
 - Declare the root `Routes` array in `src/app/app.routes.ts`; lazy-load features with `loadComponent`/`loadChildren`.
 <!-- Project-specific / Angular-Guideline -->
 

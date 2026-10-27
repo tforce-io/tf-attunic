@@ -50,19 +50,3 @@
 - Push blocking or CPU-heavy work onto the async runtime's blocking-task pool; never call blocking I/O from an async task on the runtime's worker threads.
 - Treat an `Rc<RefCell<T>>` or `Arc<Mutex<T>>` reachable from many owners as a design smell to resolve, not a default to reach for.
 <!-- Project-specific / Rust-Concurrency -->
-
-### Tests
-
-- Put unit tests beside their code in `#[cfg(test)] mod tests`; put tests of the public API under `tests/`.
-- Name a test for the behavior it proves (`rejects_empty_input`), and assert on `Result`/`Option` values with a pattern match, not `.unwrap()` on the tested path.
-- Reserve `#[should_panic]` for a genuine panic contract; never use it to paper over an untested `Result` path.
-<!-- Project-specific / Rust-Tests -->
-
-### Smells
-
-- `.clone()` reached for to silence a borrow-checker error instead of restructuring ownership.
-- An error carried as a `String` instead of a typed enum, leaving callers only a text match.
-- An `Rc<RefCell<_>>` (or `Arc<Mutex<_>>`) web threaded through modules that do not otherwise share state.
-- `unsafe` with no `// SAFETY:` comment naming the invariant that makes it sound.
-- A trait with every method `pub` and only one implementation, built "just in case".
-<!-- Project-specific / Rust-Smells -->

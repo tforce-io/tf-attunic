@@ -1,0 +1,39 @@
+## Angular
+
+### Exploring
+
+<!-- Project-specific / Angular-Exploring -->
+
+### Writing
+
+<!-- Project-specific / Angular-Writing -->
+
+### Security
+
+<!-- Project-specific / Angular-Security -->
+
+### Fixing
+
+<!-- Project-specific / Angular-Fixing -->
+
+### Refactoring
+
+<!-- Project-specific / Angular-Refactoring -->
+
+### Testing
+
+- Check which test runner this project uses before writing tests; Angular's default runner changed in v21, so projects created earlier may still run the old one.
+- Test a component through `TestBed` and its rendered template or public API, never a private method.
+- Test an injected service by providing a fake for its own dependencies (`HttpClient`, a repository), not the real network.
+- Test a business rule as a plain function or class, with no `TestBed` needed.
+<!-- Project-specific / Angular-Testing -->
+
+### Common Mistakes
+
+- Nested subscription: a `.subscribe()` call inside another `.subscribe()` callback => compose with a piped operator (`switchMap`, `mergeMap`) or `toSignal`.
+- Hand-synced signal: a computed value copied into a `signal` and kept in sync by hand => derive it with `computed()`.
+- Side-effecting template call: a template expression calling a method that fetches or mutates => bind to a signal, and move the work into the function that owns it.
+- Catch-all shared folder: a `shared/` folder accumulating components, pipes, and services with nothing in common => move each to the feature that uses it, or to `core/` if it is a root singleton.
+- Class-based single check: a class-based guard or interceptor added for a single, stateless check => write a functional `CanActivateFn` or `HttpInterceptorFn`.
+- HTTP in a component: a component injecting `HttpClient` directly => move the call into an injectable service the component only calls.
+<!-- Project-specific / Angular-Common Mistakes -->

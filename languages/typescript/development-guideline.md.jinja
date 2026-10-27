@@ -1,0 +1,38 @@
+## TypeScript
+
+### Exploring
+
+<!-- Project-specific / TypeScript-Exploring -->
+
+### Writing
+
+<!-- Project-specific / TypeScript-Writing -->
+
+### Security
+
+<!-- Project-specific / TypeScript-Security -->
+
+### Fixing
+
+<!-- Project-specific / TypeScript-Fixing -->
+
+### Refactoring
+
+<!-- Project-specific / TypeScript-Refactoring -->
+
+### Testing
+
+- Use the project's test runner; control time with fake timers or an injected clock.
+- Await every asynchronous assertion; a missing `await` makes a test pass forever.
+<!-- Project-specific / TypeScript-Testing -->
+
+### Common Mistakes
+
+- Dropped rejection: callback pyramids or `.then` chains that lose a rejection => flatten into `async`/`await` and handle or propagate every rejection.
+- Truthiness bug: a check that treats `0`, `""`, or `NaN` as missing => compare explicitly, or use `??`/`?.`.
+- Mutated argument: a function that changes an object or array it was given => return a new value instead.
+- Catch-all module: a `utils.ts` collecting unrelated helpers => move each helper to the module named for its concept.
+- Re-export barrel: a barrel file re-exporting a whole folder and hiding cycles => import from the owning module.
+- Extended built-in: an application adding to a built-in prototype => write a standalone function or a wrapper instead.
+- Leftover console output: `console.log` on a production path => remove it, or route it through the project's logger.
+<!-- Project-specific / TypeScript-Common Mistakes -->

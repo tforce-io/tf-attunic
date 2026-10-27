@@ -86,6 +86,7 @@ Generated projects carry a markdown-only project memory layer in `.attunic/`, ad
 | `.editorconfig.jinja`            | `.editorconfig.jinja`                    |
 | `.gitignore.jinja`               | `.gitignore.jinja`                       |
 | `coding-conventions.md.jinja`    | `.agents/coding-conventions.md.jinja`    |
+| `development-guideline.md.jinja` | `.agents/development-guideline.md.jinja` |
 | `project-structure.md.jinja`     | `.agents/project-structure.md.jinja`     |
 
 Shared/general sections live in the root templates; each root template `{% include %}`s the language fragment of every language selected in the multi-select `languages` answer (in the question's choices order). These fragments are never emitted as project files.
@@ -95,6 +96,7 @@ Shared/general sections live in the root templates; each root template `{% inclu
 | Fragment                         | Included by                              |
 |----------------------------------|------------------------------------------|
 | `coding-conventions.md.jinja`    | `.agents/coding-conventions.md.jinja`    |
+| `development-guideline.md.jinja` | `.agents/development-guideline.md.jinja` |
 | `project-structure.md.jinja`     | `.agents/project-structure.md.jinja`     |
 
 Each root template `{% include %}`s the framework fragment of every framework selected in the multi-select `frameworks` answer (in the question's choices order), right after the language fragments. These fragments are never emitted as project files.

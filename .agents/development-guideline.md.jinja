@@ -102,6 +102,17 @@ Check your diff against these failure patterns; each must be fixed before comple
 - Unannounced breaking change: a public API, config key, CLI flag, or persisted data format changed without the user's agreement => restore compatibility or ask, then call out the break.
 <!-- Project-specific / Common Mistakes -->
 
+{% set blocks = [] -%}
+{% for language in languages -%}
+{%- set snippet %}{% include 'languages/' ~ language ~ '/development-guideline.md.jinja' %}{% endset -%}
+{% if snippet | trim %}{% set _ = blocks.append(snippet | trim) %}{% endif -%}
+{%- endfor -%}
+{% set fblocks = [] -%}
+{% for framework in frameworks -%}
+{%- set snippet %}{% include 'frameworks/' ~ framework ~ '/development-guideline.md.jinja' %}{% endset -%}
+{% if snippet | trim %}{% set _ = fblocks.append(snippet | trim) %}{% endif -%}
+{%- endfor -%}
+{{ ((blocks + fblocks) | join('\n\n')) ~ '\n\n' if blocks or fblocks else '' -}}
 ## Checklist
 
 Before considering any coding task complete, verify the following to ensure nothing is missed during implementation:

@@ -45,7 +45,7 @@
 
 - Keep state as close as possible to its use; lift it only when two components need it.
 - Never store derived data in state; compute it during render.
-- Use effects only to synchronize with systems outside React — subscriptions, the DOM, timers. Respond to events in event handlers, not effects.
+- Use effects only to synchronize with systems outside React: subscriptions, the DOM, timers. Respond to events in event handlers, not effects.
 - Fetch data outside render effects: through the framework's loaders, server components, or a data-fetching library that handles caching, races, and cancellation.
 - Key list items by stable data identity, never the array index when order can change.
 <!-- Project-specific / React-State -->
@@ -57,22 +57,3 @@
 - Pass `ref` as an ordinary prop; new code does not need `forwardRef`.
 - With React Compiler on, hand-write `useMemo`, `useCallback`, or `memo` only where profiling shows a need.
 <!-- Project-specific / React-Hooks -->
-
-### Tests
-
-- Test behavior through rendered output with the project's component-testing library: query by role and label, interact with realistic user events, assert what the user sees.
-- Mock the network at the request boundary rather than mocking modules.
-- Test custom hooks through a component or a hook-rendering helper, and business rules as plain functions without rendering.
-- Keep snapshots small and deliberate; a large snapshot asserts nothing anyone reads.
-<!-- Project-specific / React-Tests -->
-
-### Smells
-
-- A component of hundreds of lines that fetches, transforms, and renders.
-- An effect that fetches without cancellation, or copies derived values into state.
-- State duplicated from props.
-- Props drilled through many levels where composition or context fits.
-- Index keys on lists that reorder.
-- Business rules inside JSX event handlers.
-- Hand memoization everywhere while the compiler is on.
-<!-- Project-specific / React-Smells -->

@@ -1,0 +1,37 @@
+## PowerShell
+
+### Exploring
+
+<!-- Project-specific / PowerShell-Exploring -->
+
+### Writing
+
+<!-- Project-specific / PowerShell-Writing -->
+
+### Security
+
+<!-- Project-specific / PowerShell-Security -->
+
+### Fixing
+
+<!-- Project-specific / PowerShell-Fixing -->
+
+### Refactoring
+
+<!-- Project-specific / PowerShell-Refactoring -->
+
+### Testing
+
+- Write specs around behavior, and mock the filesystem, network, or registry a function calls rather than hitting them for real (F.I.R.S.T.).
+- Test parameter validation and the `ShouldProcess` branch explicitly; `-WhatIf` must produce no side effect.
+<!-- Project-specific / PowerShell-Testing -->
+
+### Common Mistakes
+
+- Alias in a script: an alias (`gci`, `%`, `?`, `echo`) left in a script => write the full cmdlet name.
+- Text instead of objects: a function emitting formatted text that a caller must regex-parse back into data => return objects.
+- String-built command: `Invoke-Expression` running a command built by string concatenation => use a script block or splatted parameters.
+- Missing `ShouldProcess`: a state-changing function without `SupportsShouldProcess`, so `-WhatIf` and `-Confirm` silently do nothing => add it and gate the change with `$PSCmdlet.ShouldProcess(...)`.
+- Unapproved verb: a verb outside the approved list (`Create-`, `Delete-`, `Update-`) forcing an import warning => pick the matching approved verb from `Get-Verb`.
+- Global as parameter: a `$global:` variable standing in for a parameter or a module-scoped value => pass a parameter, or use a module-scoped variable.
+<!-- Project-specific / PowerShell-Common Mistakes -->

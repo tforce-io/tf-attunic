@@ -44,7 +44,7 @@
 ### State
 
 - Hold state in `signal()`, derive it with `computed()`, and accept it through `input()`/`model()`; never derive a value into a second signal that `computed()` should own.
-- Write every component to work without Zone.js and under `OnPush` — new apps are zoneless since v21 and `OnPush` is the default strategy since v22: change state through signals and inputs, never by mutating an object in place and waiting for the view to notice.
+- Write every component to work without Zone.js and under `OnPush` (new apps are zoneless since v21 and `OnPush` is the default strategy since v22): change state through signals and inputs, never by mutating an object in place and waiting for the view to notice.
 - Use `effect()` only to synchronize with something outside Angular's reactivity; a template or a computed signal answers most other needs.
 <!-- Project-specific / Angular-State -->
 
@@ -52,11 +52,3 @@
 
 - Keep templates free of method calls that carry business logic; bind to a signal or a getter that calls the one function that owns the rule.
 <!-- Project-specific / Angular-Templates -->
-
-### Tests
-
-- Check which test runner this project uses before writing tests; Angular's default runner changed in v21, so projects created earlier may still run the old one.
-- Test a component through `TestBed` and its rendered template or public API, never a private method.
-- Test an injected service by providing a fake for its own dependencies (`HttpClient`, a repository), not the real network.
-- Test a business rule as a plain function or class, with no `TestBed` needed.
-<!-- Project-specific / Angular-Tests -->

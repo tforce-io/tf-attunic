@@ -1,0 +1,40 @@
+## JavaScript
+
+### Exploring
+
+<!-- Project-specific / JavaScript-Exploring -->
+
+### Writing
+
+<!-- Project-specific / JavaScript-Writing -->
+
+### Security
+
+<!-- Project-specific / JavaScript-Security -->
+
+### Fixing
+
+<!-- Project-specific / JavaScript-Fixing -->
+
+### Refactoring
+
+<!-- Project-specific / JavaScript-Refactoring -->
+
+### Testing
+
+- Use the project's test runner; keep tests deterministic: fake timers or an injected clock, no real network.
+- Name tests for behavior (`rejects an empty cart`) and assert outcomes, never internals.
+- Await every asynchronous assertion; a missing `await` makes a test pass forever.
+- Test boundary values; add tests around recent bugs.
+<!-- Project-specific / JavaScript-Testing -->
+
+### Common Mistakes
+
+- Dropped rejection: callback pyramids or `.then` chains that lose a rejection => flatten into `async`/`await` and handle or propagate every rejection.
+- Truthiness bug: a check that treats `0`, `""`, or `NaN` as missing => compare explicitly, or use `??`/`?.`.
+- Mutated argument: a function that changes an object or array it was given => return a new value instead.
+- Catch-all module: a `utils.js` collecting unrelated helpers => move each helper to the module named for its concept.
+- Re-export barrel: a barrel file re-exporting a whole folder and hiding cycles => import from the owning module.
+- Extended built-in: an application adding to a built-in prototype => write a standalone function or a wrapper instead.
+- Leftover console output: `console.log` on a production path => remove it, or route it through the project's logger.
+<!-- Project-specific / JavaScript-Common Mistakes -->

@@ -46,20 +46,3 @@
 ### Concurrency
 
 <!-- Project-specific / Shell-Concurrency -->
-
-### Tests
-
-- Guard `main "$@"` behind `[[ "${BASH_SOURCE[0]}" == "${0}" ]]` so a test can load its functions without running it.
-- Assert on exit status and stdout/stderr, not on incidental formatting; use real temp directories, cleaned up in teardown.
-- Add a test for every argument-parsing edge case and every past incident: a missing argument, an unwritable path, a missing dependency on `PATH`.
-<!-- Project-specific / Shell-Tests -->
-
-### Smells
-
-- An unquoted expansion (`$1`, `$var`, `$@` instead of `"$@"`) that breaks on a space, a glob character, or an empty value.
-- Parsing `ls`, or any column-formatted command output, instead of `find`, a glob, or a tool with stable output.
-- `eval`, or a command built as a string and piped to `sh -c`, where a plain array or a function call would do.
-- Backticks instead of `$(...)` for command substitution.
-- An unchecked `cd` — a failed one leaves later commands running against the wrong files.
-- A script hundreds of lines long with no functions and no `main`, that nobody wants to touch.
-<!-- Project-specific / Shell-Smells -->

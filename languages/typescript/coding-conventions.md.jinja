@@ -56,20 +56,3 @@
 
 - Start independent operations with `Promise.all` or `Promise.allSettled`, not one `await` at a time in a loop.
 <!-- Project-specific / TypeScript-Concurrency -->
-
-### Tests
-
-- Use the project's test runner; control time with fake timers or an injected clock.
-- Await every asynchronous assertion; a missing `await` makes a test pass forever.
-<!-- Project-specific / TypeScript-Tests -->
-
-### Smells
-
-- Callback pyramids and `.then` chains that drop rejections.
-- Truthiness bugs with `0`, `""`, and `NaN`.
-- Functions that mutate their arguments.
-- A `utils.ts` collecting unrelated helpers.
-- Barrels that re-export everything and hide cycles.
-- Built-in prototypes extended by the application.
-- `console.log` left on production paths.
-<!-- Project-specific / TypeScript-Smells -->

@@ -48,19 +48,3 @@
 ### Concurrency
 
 <!-- Project-specific / PowerShell-Concurrency -->
-
-### Tests
-
-- Write specs around behavior, and mock the filesystem, network, or registry a function calls rather than hitting them for real (F.I.R.S.T.).
-- Test parameter validation and the `ShouldProcess` branch explicitly; `-WhatIf` must produce no side effect.
-<!-- Project-specific / PowerShell-Tests -->
-
-### Smells
-
-- An alias (`gci`, `%`, `?`, `echo`) left in a script instead of the full cmdlet name.
-- A function that writes formatted text and expects a caller to regex-parse it back into data instead of returning an object.
-- `Invoke-Expression` building a command from string concatenation, where a script block or splatted parameters would do.
-- A state-changing function with no `SupportsShouldProcess`, so `-WhatIf` and `-Confirm` silently do nothing.
-- A verb outside the approved list (`Create-`, `Delete-`, `Update-`) forcing an import warning.
-- A `$global:` variable standing in for a parameter or a module-scoped value.
-<!-- Project-specific / PowerShell-Smells -->

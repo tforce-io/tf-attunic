@@ -1,0 +1,38 @@
+## Shell
+
+### Exploring
+
+<!-- Project-specific / Shell-Exploring -->
+
+### Writing
+
+<!-- Project-specific / Shell-Writing -->
+
+### Security
+
+<!-- Project-specific / Shell-Security -->
+
+### Fixing
+
+<!-- Project-specific / Shell-Fixing -->
+
+### Refactoring
+
+<!-- Project-specific / Shell-Refactoring -->
+
+### Testing
+
+- Guard `main "$@"` behind `[[ "${BASH_SOURCE[0]}" == "${0}" ]]` so a test can load its functions without running it.
+- Assert on exit status and stdout/stderr, not on incidental formatting; use real temp directories, cleaned up in teardown.
+- Add a test for every argument-parsing edge case and every past incident: a missing argument, an unwritable path, a missing dependency on `PATH`.
+<!-- Project-specific / Shell-Testing -->
+
+### Common Mistakes
+
+- Unquoted expansion: `$1`, `$var`, or `$@` left unquoted, breaking on a space, a glob character, or an empty value => quote it (`"$var"`, `"$@"`).
+- Parsed `ls`: parsing `ls`, or any column-formatted command output => use `find`, a glob, or a tool with stable output.
+- String-built command: `eval`, or a command built as a string and piped to `sh -c` => use a plain array or a function call.
+- Backtick substitution: backticks for command substitution => use `$(...)`.
+- Unchecked `cd`: a `cd` whose failure goes unnoticed, so later commands run against the wrong files => check it (`cd "$dir" || exit 1`).
+- Monolithic script: hundreds of lines with no functions and no `main` => split the logic into functions called from one `main "$@"`.
+<!-- Project-specific / Shell-Common Mistakes -->

@@ -10,7 +10,7 @@
 ### Names
 
 - Use `camelCase` for values and functions, `PascalCase` for classes and components, `UPPER_SNAKE_CASE` only for constants shared across modules.
-- Name a file after the one thing it exports, in the project's casing convention — never two conventions in one folder.
+- Name a file after the one thing it exports, in the project's casing convention; never two conventions in one folder.
 <!-- Project-specific / JavaScript-Names -->
 
 ### Packages
@@ -18,7 +18,7 @@
 - Write ES modules (`import`/`export`); never mix `require` into new code.
 - Prefer named exports; use a default export only where a framework demands one.
 - Export only what another module uses; everything else stays module-private.
-- Avoid barrel files re-exporting whole folders — they hide cycles and load unwanted code; import from the owning module.
+- Avoid barrel files re-exporting whole folders: they hide cycles and load unwanted code; import from the owning module.
 - Never keep mutable state at module level; pass collaborators in.
 <!-- Project-specific / JavaScript-Packages -->
 
@@ -47,22 +47,3 @@
 
 - Start independent operations with `Promise.all` or `Promise.allSettled`, not one `await` at a time in a loop.
 <!-- Project-specific / JavaScript-Concurrency -->
-
-### Tests
-
-- Use the project's test runner; keep tests deterministic: fake timers or an injected clock, no real network.
-- Name tests for behavior (`rejects an empty cart`) and assert outcomes, never internals.
-- Await every asynchronous assertion; a missing `await` makes a test pass forever.
-- Test boundary values; add tests around recent bugs.
-<!-- Project-specific / JavaScript-Tests -->
-
-### Smells
-
-- Callback pyramids and `.then` chains that drop rejections.
-- Truthiness bugs with `0`, `""`, and `NaN`.
-- Functions that mutate their arguments.
-- A `utils.js` collecting unrelated helpers.
-- Barrels that re-export everything and hide cycles.
-- Built-in prototypes extended by the application.
-- `console.log` left on production paths.
-<!-- Project-specific / JavaScript-Smells -->

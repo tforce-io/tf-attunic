@@ -1,0 +1,40 @@
+## React
+
+### Exploring
+
+<!-- Project-specific / React-Exploring -->
+
+### Writing
+
+<!-- Project-specific / React-Writing -->
+
+### Security
+
+<!-- Project-specific / React-Security -->
+
+### Fixing
+
+<!-- Project-specific / React-Fixing -->
+
+### Refactoring
+
+<!-- Project-specific / React-Refactoring -->
+
+### Testing
+
+- Test behavior through rendered output with the project's component-testing library: query by role and label, interact with realistic user events, assert what the user sees.
+- Mock the network at the request boundary rather than mocking modules.
+- Test custom hooks through a component or a hook-rendering helper, and business rules as plain functions without rendering.
+- Keep snapshots small and deliberate; a large snapshot asserts nothing anyone reads.
+<!-- Project-specific / React-Testing -->
+
+### Common Mistakes
+
+- God component: a component of hundreds of lines that fetches, transforms, and renders => move data access into a hook, rules into functions, and repeated markup into components.
+- Unsafe effect: an effect that fetches without cancellation, or copies derived values into state => cancel in the effect's cleanup or fetch outside effects; compute derived values during render.
+- Duplicated props state: state copied from props => read the prop directly, or lift the state to one owner.
+- Prop drilling: props passed through many levels => use composition or context.
+- Index keys: array indexes as keys on a list that reorders => key by stable data identity.
+- Rule in a JSX handler: business rules inside JSX event handlers => call the hook or function that owns the rule.
+- Manual memoization under the compiler: hand-written `useMemo`, `useCallback`, or `memo` everywhere while React Compiler is on => remove it unless profiling shows a need.
+<!-- Project-specific / React-Common Mistakes -->

@@ -1,0 +1,39 @@
+## Go
+
+### Exploring
+
+<!-- Project-specific / Go-Exploring -->
+
+### Writing
+
+<!-- Project-specific / Go-Writing -->
+
+### Security
+
+<!-- Project-specific / Go-Security -->
+
+### Fixing
+
+<!-- Project-specific / Go-Fixing -->
+
+### Refactoring
+
+<!-- Project-specific / Go-Refactoring -->
+
+### Testing
+
+- Write table-driven tests with `t.Run(tt.name, func(t *testing.T) {...})`; name each case for behavior, not the input shape.
+- Call `t.Helper()` in every test helper so a failure reports the caller's line.
+- Run with `-race` whenever a test touches a goroutine or shared state; a flake there is a bug to fix, not noise to rerun.
+- Reach for `t.Parallel()` only once a test's fixtures are verified independent of its siblings'.
+<!-- Project-specific / Go-Testing -->
+
+### Common Mistakes
+
+- Catch-all package: a `util` or `common` package absorbing unrelated helpers => move each helper to the package named for its concept.
+- Shared package state: package-level mutable state read or written from more than one goroutine => make it immutable, or give it one owning goroutine or a lock.
+- Side-effecting `init()`: an `init()` reaching out to a database, file, or network => move the work into an explicit setup call; keep `init()` to registration.
+- Stored context: a `context.Context` kept on a struct field => pass it as the first parameter of each call that needs it.
+- String-compared error: an error matched by its formatted text => compare with `errors.Is` or extract with `errors.As`.
+- Producer-side interface: a wide interface declared next to its one implementation => declare the small interface the consumer needs, at the consumer.
+<!-- Project-specific / Go-Common Mistakes -->

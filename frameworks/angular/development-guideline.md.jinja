@@ -10,6 +10,7 @@
 
 ### Security
 
+- Never pass untrusted content through `DomSanitizer.bypassSecurityTrust*`; let Angular's built-in sanitization handle `[innerHTML]` and URL bindings.
 <!-- Project-specific / Angular-Security -->
 
 ### Fixing
@@ -22,7 +23,7 @@
 
 ### Testing
 
-- Check which test runner this project uses before writing tests; Angular's default runner changed in v21, so projects created earlier may still run the old one.
+- Check which test runner the project uses before writing tests; never assume the Angular CLI's current default.
 - Test a component through `TestBed` and its rendered template or public API, never a private method.
 - Test an injected service by providing a fake for its own dependencies (`HttpClient`, a repository), not the real network.
 - Test a business rule as a plain function or class, with no `TestBed` needed.

@@ -6,7 +6,7 @@
 
 ### Names
 
-- Name for the concept (`Orders`, not `OrdersService`): since v20, `ng generate` no longer appends `Component`/`Service`/`Directive`/`Pipe` suffixes; match whichever naming the project's `angular.json` already requests.
+- Match the project's naming for classes and files, with or without type suffixes (`Orders` in `orders.ts`, or `OrdersService` in `orders.service.ts`), as its `angular.json` generator settings request; never mix the two styles.
 <!-- Project-specific / Angular-Names -->
 
 ### Packages
@@ -15,10 +15,12 @@
 
 ### Types
 
+- Keep `strictTemplates` enabled; never turn it off to silence a template error.
 <!-- Project-specific / Angular-Types -->
 
 ### Functions
 
+- Prefer functional guards, interceptors, and resolvers (`CanActivateFn`, `HttpInterceptorFn`, `ResolveFn`) over class-based ones; they need no `@Injectable()` ceremony for a single decision.
 <!-- Project-specific / Angular-Functions -->
 
 ### Comments
@@ -36,19 +38,19 @@
 
 ### Components
 
-- Write standalone components, directives, and pipes; `standalone: true` is the default since v19, and a new `NgModule`-based one needs `standalone: false` stated explicitly.
+- Write standalone components, directives, and pipes; declare one in an `NgModule` only where the surrounding code is still module-based.
 - Inject collaborators with `inject()` or the constructor; never `new` a service directly.
-- Prefer functional guards, interceptors, and resolvers (`CanActivateFn`, `HttpInterceptorFn`, `ResolveFn`) over class-based ones; they need no `@Injectable()` ceremony for a single decision.
 <!-- Project-specific / Angular-Components -->
 
 ### State
 
 - Hold state in `signal()`, derive it with `computed()`, and accept it through `input()`/`model()`; never derive a value into a second signal that `computed()` should own.
-- Write every component to work without Zone.js and under `OnPush` (new apps are zoneless since v21 and `OnPush` is the default strategy since v22): change state through signals and inputs, never by mutating an object in place and waiting for the view to notice.
+- Write every component to work without Zone.js and under `OnPush`: change state through signals and inputs, never by mutating an object in place and waiting for the view to notice.
 - Use `effect()` only to synchronize with something outside Angular's reactivity; a template or a computed signal answers most other needs.
 <!-- Project-specific / Angular-State -->
 
 ### Templates
 
 - Keep templates free of method calls that carry business logic; bind to a signal or a getter that calls the one function that owns the rule.
+- Track list items by stable data identity (`track item.id` in `@for`, `trackBy` in `*ngFor`), never the index when order can change.
 <!-- Project-specific / Angular-Templates -->

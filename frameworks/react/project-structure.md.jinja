@@ -3,11 +3,12 @@
 ### Guideline
 
 - Group each feature under `src/features/<feature>/` with its components, hooks, and API calls.
+- Co-locate a component's test, styles, and stories beside it when the project co-locates.
 - Keep shared presentational components used by several features under `src/components/`.
 - Keep shared custom hooks (`useDebounce`, `useMediaQuery`) under `src/hooks/`.
 - Keep HTTP clients and data access under `src/api/` or `src/services/`; no JSX there.
 - Keep providers, router, and composition in `src/main.jsx`/`src/main.tsx` or `src/app/`.
-- Co-locate a component's test, styles, and stories beside it when the project co-locates.
+- Never import one feature's internal modules from another feature; move shared code to `src/components/`, `src/hooks/`, or `src/api/`.
 <!-- Project-specific / React-Guideline -->
 
 ### Layout
@@ -38,7 +39,7 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 |-------|--------------|------------|--------------------|
 | domain | src/domain | itself | framework types, database, HTTP |
 | application | src/application | domain | HTTP handlers, framework types |
-| infrastructure | src/api | application (its ports), domain | business rules, JSX |
-| ui | src/components, src/features, src/hooks | application, domain | SQL, external clients |
+| infrastructure | src/api, src/services | application (its ports), domain | business rules, JSX |
+| ui | src/components, src/features, src/hooks | application, infrastructure, domain | SQL, external clients |
 | main | src/main.jsx\|src/main.tsx, src/app/ | application, infrastructure, ui, domain | business rules |
 <!-- Project-specific / React-Layer-Dependencies -->

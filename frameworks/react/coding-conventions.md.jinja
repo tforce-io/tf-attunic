@@ -38,7 +38,7 @@
 - Keep components pure: same props and state render the same output, no side effects during render.
 - Keep business rules out of components: a component calls a hook or function that owns the rule.
 - Build accessible controls: semantic elements first, labels on inputs, keyboard support for custom widgets.
-- Never render HTML from strings with `dangerouslySetInnerHTML` unless sanitized.
+- Accept `ref` as an ordinary prop where the project's React version passes it to function components; use `forwardRef` only where it does not.
 <!-- Project-specific / React-Components -->
 
 ### State
@@ -46,14 +46,14 @@
 - Keep state as close as possible to its use; lift it only when two components need it.
 - Never store derived data in state; compute it during render.
 - Use effects only to synchronize with systems outside React: subscriptions, the DOM, timers. Respond to events in event handlers, not effects.
-- Fetch data outside render effects: through the framework's loaders, server components, or a data-fetching library that handles caching, races, and cancellation.
+- Fetch data through the framework's loaders, server components, or a data-fetching library that handles caching, races, and cancellation; when an effect must fetch, cancel the request in its cleanup.
 - Key list items by stable data identity, never the array index when order can change.
 <!-- Project-specific / React-State -->
 
 ### Hooks
 
 - Follow the Rules of Hooks: call hooks only at the top level of components and custom hooks.
+- List every reactive value an effect, `useMemo`, or `useCallback` reads in its dependency array; never omit one to control when it runs.
 - Extract reusable stateful logic into a custom hook named `use<Thing>`, repeated markup into a component.
-- Pass `ref` as an ordinary prop; new code does not need `forwardRef`.
 - With React Compiler on, hand-write `useMemo`, `useCallback`, or `memo` only where profiling shows a need.
 <!-- Project-specific / React-Hooks -->

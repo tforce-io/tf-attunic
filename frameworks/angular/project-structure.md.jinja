@@ -36,6 +36,7 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 |-------|--------------|------------|--------------------|
 | domain | src/app/domain | itself | framework types, database, HTTP |
 | application | src/app/application | domain | HTTP handlers, framework types |
-| infrastructure | src/app/infrastructure, \*.service.ts, \*.interceptor.ts | application (its ports), domain | business rules |
-| ui | src/app/** | application, domain | SQL, external clients |
+| infrastructure | src/app/infrastructure; elsewhere, services and interceptors that call `HttpClient` or another external client | application (its ports), domain | business rules |
+| ui | the rest of src/app (features, core, shared) | application, infrastructure, domain | SQL, external clients |
+| main | src/main.ts | application, infrastructure, ui, domain | business rules |
 <!-- Project-specific / Angular-Layer-Dependencies -->

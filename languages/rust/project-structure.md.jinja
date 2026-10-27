@@ -11,9 +11,6 @@
 ### Layout
 
 ```
-├── .agents/            # shared AI agent instructions (coding conventions, PR/task checklists, project structure)
-├── .github/            # GitHub-specific config (workflows, issue/PR templates)
-├── .vscode/            # VS Code editor/workspace settings
 ├── assets/             # repository assets (images, logos, etc)
 ├── benches/            # benchmarks (cargo bench)
 ├── crates/             # workspace member crates (workspace projects)
@@ -22,17 +19,12 @@
 ├── scripts/            # build/install/analysis scripts
 ├── src/                # library/binary source (lib.rs, main.rs, bin/*.rs)
 ├── tests/              # integration tests of the public API
-├── .editorconfig       # editor formatting rules
-├── .gitignore          # git ignore patterns
-├── AGENTS.md           # instructions for AI coding agents
-├── CLAUDE.md           # points to AGENTS.md
-├── CONTRIBUTING.md     # contribution guidelines
 ├── Cargo.lock          # dependency lockfile (committed for binaries)
 ├── Cargo.toml          # package manifest / workspace definition
-├── clippy.toml         # Clippy lint configuration (optional)
-├── deny.toml           # cargo-deny policy: licenses, advisories, banned crates (optional)
 ├── Dockerfile          # container build definition
 ├── Makefile            # build/test/lint task automation (optional)
+├── clippy.toml         # Clippy lint configuration (optional)
+├── deny.toml           # cargo-deny policy: licenses, advisories, banned crates (optional)
 ├── rust-toolchain.toml # pinned Rust toolchain (optional)
 <!-- Project-specific / Rust-Layout -->
 ```
@@ -53,4 +45,4 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 
 - Declare ports as traits in the domain or application crate; adapter crates implement them, and path dependencies point outward-to-inward only.
 - Check by hand: `cargo tree` (or reading each crate's `Cargo.toml`) must never show an inner crate depending on an outer one.
-<!-- Project-specific / Rust-Layer-Dependencies -->
+<!-- Project-specific / Rust-Layer Dependencies -->

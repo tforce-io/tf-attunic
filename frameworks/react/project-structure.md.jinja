@@ -39,7 +39,7 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 |-------|--------------|------------|--------------------|
 | domain | src/domain | itself | framework types, database, HTTP |
 | application | src/application | domain | HTTP handlers, framework types |
-| infrastructure | src/api, src/services | application (its ports), domain | business rules, JSX |
-| ui | src/components, src/features, src/hooks | application, infrastructure, domain | SQL, external clients |
+| infrastructure | src/api, src/services; elsewhere, modules that call `fetch` or another external client, such as a feature's API calls | application (its ports), domain | business rules, JSX |
+| ui | src/components, src/hooks, and the rest of src/features | application, infrastructure, domain | SQL, external clients |
 | main | src/main.jsx\|src/main.tsx, src/app/ | application, infrastructure, ui, domain | business rules |
-<!-- Project-specific / React-Layer-Dependencies -->
+<!-- Project-specific / React-Layer Dependencies -->

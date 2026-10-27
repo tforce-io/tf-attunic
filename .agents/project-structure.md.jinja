@@ -6,6 +6,27 @@ The file holding the layout attuned to this project is [context.md](../.attunic/
 
 The files holding the rules for working with this project are [coding-conventions.md](coding-conventions.md) and [development-guideline.md](development-guideline.md).
 
+## General structure
+
+### Layout
+
+Entries every project has at its root, whatever its languages; each layout below lists only what its language or framework adds:
+
+```
+├── .agents/            # shared AI agent instructions (coding conventions, PR/task checklists, project structure)
+├── .attunic/           # project memory (context, decisions, work in progress)
+├── .github/            # GitHub-specific config (workflows, issue/PR templates)
+├── .vscode/            # VS Code editor/workspace settings
+├── .copier-answers.yml # Copier answers replayed by `copier update`; never edited by hand
+├── .editorconfig       # editor formatting rules
+├── .gitignore          # git ignore patterns
+├── AGENTS.md           # instructions for AI coding agents
+├── CLAUDE.md           # points to AGENTS.md
+├── CONTRIBUTING.md     # contribution guidelines
+├── README.md           # project overview
+<!-- Project-specific / Layout -->
+```
+
 {% set blocks = [] -%}
 {% for language in languages -%}
 {%- set snippet %}{% include 'languages/' ~ language ~ '/project-structure.md.jinja' %}{% endset -%}

@@ -11,9 +11,6 @@
 ### Layout
 
 ```
-├── .agents/            # shared AI agent instructions (coding conventions, PR/task checklists, project structure)
-├── .github/            # GitHub-specific config (workflows, issue/PR templates)
-├── .vscode/            # VS Code editor/workspace settings
 ├── api/                # OpenAPI/Swagger specs, JSON schemas, protocol definitions
 ├── assets/             # repository assets (images, logos, etc)
 ├── bin/                # CLI entry points (thin: read configuration, compose, start)
@@ -26,19 +23,14 @@
 ├── src/                # application/library source code (default entrypoint: main.js)
 ├── test/               # additional external test apps, fixtures, and test data
 ├── web/                # web app components: static assets, server-side templates, SPAs
-├── .editorconfig       # editor formatting rules
-├── .gitignore          # git ignore patterns
 ├── .npmrc              # npm/pnpm package-manager config (registry, install, publish settings)
 ├── .yarnrc.yml         # yarn config (yarn berry; yarn classic uses .yarnrc)
-├── AGENTS.md           # instructions for AI coding agents
-├── CLAUDE.md           # points to AGENTS.md
-├── CONTRIBUTING.md     # contribution guidelines
 ├── Dockerfile          # container build definition
 ├── Makefile            # build/test/lint task automation (optional)
 ├── bun.lock            # bun dependency lockfile
 ├── bunfig.toml         # bun package-manager and runtime config
-├── package.json        # package manifest: scripts, dependencies, and workspaces (npm/yarn/bun)
 ├── package-lock.json   # npm dependency lockfile
+├── package.json        # package manifest: scripts, dependencies, and workspaces (npm/yarn/bun)
 ├── pnpm-lock.yaml      # pnpm dependency lockfile
 ├── pnpm-workspace.yaml # pnpm workspace configuration (workspace globs, settings)
 ├── yarn.lock           # yarn dependency lockfile
@@ -61,4 +53,4 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 
 - Declare ports as object shapes documented with JSDoc `@typedef` in the domain or application layer; adapter modules implement them.
 - Check by hand: read the imports of changed files; a domain module importing Express, a database driver, `fetch`, or `process.env` is a violation.
-<!-- Project-specific / JavaScript-Layer-Dependencies -->
+<!-- Project-specific / JavaScript-Layer Dependencies -->

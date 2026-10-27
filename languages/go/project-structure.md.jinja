@@ -13,9 +13,6 @@
 ### Layout
 
 ```
-├── .agents/        # shared AI agent instructions (coding conventions, PR/task checklists, project structure)
-├── .github/        # GitHub-specific config (workflows, issue/PR templates)
-├── .vscode/        # VS Code editor/workspace settings
 ├── api/            # OpenAPI/Swagger specs, JSON schemas, protocol definitions
 ├── assets/         # repository assets (images, logos, etc)
 ├── cmd/            # main packages (one subdirectory per binary)
@@ -31,11 +28,6 @@
 ├── tui/            # terminal UI components
 ├── vendor/         # application dependencies (created by `go mod vendor`)
 ├── web/            # web app components: static assets, server-side templates, SPAs
-├── .editorconfig   # editor formatting rules
-├── .gitignore      # git ignore patterns
-├── AGENTS.md       # instructions for AI coding agents
-├── CLAUDE.md       # points to AGENTS.md
-├── CONTRIBUTING.md # contribution guidelines
 ├── Dockerfile      # container build definition
 ├── Makefile        # build/test/lint task automation (optional)
 ├── go.mod          # Go module definition
@@ -60,4 +52,4 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 
 - `pkg/` is a public boundary for other modules; keep application-internal layer types out of it.
 - Check by hand: reading imports or `go list -deps ./...` must never show an inner package importing an outer one.
-<!-- Project-specific / Go-Layer-Dependencies -->
+<!-- Project-specific / Go-Layer Dependencies -->

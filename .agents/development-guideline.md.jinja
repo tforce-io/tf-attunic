@@ -62,7 +62,7 @@ When restructuring code without changing its behavior, follow these rules:
 
 - Run the relevant tests before and after; behavior must not change.
 - For deduplication, only merge true duplication (copies that must always change together, owned by the same actor); merging accidental lookalikes is harder to undo than leaving them apart.
-- Run cleanup or audit work spanning more than one batch as a campaign: create [wip.md](../.attunic/wip.md) from [memory-template.md](memory-template.md) with the user's consent, record the baseline before the first change, keep one intent per batch, verify after each batch, and keep `wip.md` current.
+- Run cleanup or audit work spanning more than one batch as a campaign: once the user consents to it, create [wip.md](../.attunic/wip.md) from [memory-template.md](memory-template.md), record the baseline before the first change, keep one intent per batch, verify after each batch, and keep `wip.md` current.
 <!-- Project-specific / Refactoring -->
 
 ## Testing
@@ -77,7 +77,7 @@ When writing tests, follow these rules:
 - Keep results deterministic: no sleeps or timing guesses; unit tests make no real network, filesystem, or clock call, and integration tests use only isolated, disposable resources (temp directories, local containers).
 - Assert on outcomes, not implementation.
 - Treat a flaky test as a bug to fix; never rerun it until it passes.
-- Treat a test that already failed before your change as a known failure only once the user confirms it; then propose recording it in [context.md's Confirmed Facts](../.attunic/context.md#confirmed-facts) with the reason.
+- Treat a test that already failed before your change as a known failure only once the user confirms it; then propose recording it in [memory.md](../.attunic/memory.md) as an exception, with the reason.
 - Never weaken, skip, or delete failing tests: restore the test, fix the code, or report the conflict and stop.
 <!-- Project-specific / Testing -->
 
@@ -137,7 +137,7 @@ Before considering any coding task complete, verify the following to ensure noth
 - [ ] No new suppression of a linter, type checker, compiler warning, or test without a *why* comment.
 - [ ] Docs describing changed behavior are updated.
 - [ ] New or moved top-level files and folders are reflected in [context.md's Layout](../.attunic/context.md#layout) (prompt the user per its rule).
-- [ ] Lasting choices and confirmed facts are recorded per [attunic-protocol.md's Write Rules](attunic-protocol.md#write-rules); ensure nothing is missed: decisions and open questions go to [memory.md](../.attunic/memory.md) and confirmed facts to [context.md's Confirmed Facts](../.attunic/context.md#confirmed-facts), each once the user explicitly confirms it (unconfirmed ones are named in the report).
+- [ ] Exceptions, deferrals, and open questions are recorded in [memory.md](../.attunic/memory.md) per [attunic-protocol.md's Write Rules](attunic-protocol.md#write-rules), each once the user explicitly confirms it (unconfirmed ones are named in the report).
 - [ ] Every applicable item above was verified by actually running the check; anything not run is explicitly reported, not claimed.
 <!-- Project-specific / Checklist -->
 

@@ -73,11 +73,11 @@ To customize the generated files to follow your project, add your rules below th
 
 Generated projects carry a markdown-only project memory layer in `.attunic/`, adapted from [clean-code-skills](https://github.com/btseee/clean-code-skills)' memory protocol. It lets a new agent session resume instead of guessing, with no scripts and no runtime tooling:
 
-| File         | Created by                                                      |
-|--------------|-----------------------------------------------------------------|
-| `context.md` | Pre-seeded by this template                                     |
-| `memory.md`  | Pre-seeded by this template; append-only log of settled choices |
-| `wip.md`     | On demand, when an audit or cleanup campaign starts; gitignored |
+| File         | Created by                                                               |
+|--------------|--------------------------------------------------------------------------|
+| `context.md` | Pre-seeded by this template                                              |
+| `memory.md`  | Pre-seeded by this template; append-only log of exceptions and deferrals |
+| `wip.md`     | On demand, when an audit or cleanup campaign starts; gitignored          |
 
 ### Language Fragments (`languages/<lang>/`)
 

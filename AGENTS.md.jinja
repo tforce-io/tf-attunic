@@ -1,6 +1,6 @@
 # AGENTS.md - {{ project_name }}
 
-This file is the entry point for AI coding assistants working on this repository. It is an index to detailed topic guides in the `.agents/` and `.attunic/` directories. Read every `.attunic/` file before work; from `.agents/`, read the file(s) relevant to the task at hand, you don't need to load all of them.
+This file is the entry point for AI coding assistants working on this repository. It is an index to detailed topic guides in the `.agents/` and `.attunic/` directories. Read the `.attunic/` files in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order) before work; from `.agents/`, read the file(s) relevant to the task at hand, you don't need to load all of them.
 
 Project-specific rules supplement the template rules; put them below the `<!-- Project-specific / X -->` marker of the corresponding section.
 
@@ -18,7 +18,7 @@ Project-specific rules supplement the template rules; put them below the `<!-- P
 | [.agents/project-structure.md](.agents/project-structure.md) | When placing a file that [context.md's Layout](.attunic/context.md#layout) doesn't cover: standard project structures of languages and frameworks |
 | [.agents/pull-request-guideline.md](.agents/pull-request-guideline.md) | Before opening or updating a pull request: guideline and checklist |
 | [.attunic/context.md](.attunic/context.md) | Every session, first: technical specifications, file layout, layer dependencies, tool usage, confirmed facts |
-| [.attunic/memory.md](.attunic/memory.md) | Every session, after `context.md`; again before proposing a design change: append-only log of settled decisions and open questions |
+| [.attunic/memory.md](.attunic/memory.md) | Before proposing a design change: append-only log of confirmed exceptions, deferrals, and open questions |
 <!-- Project-specific / Topics -->
 
 ## Core Rules
@@ -28,7 +28,7 @@ Important rules when working with the project; these must be strictly followed:
 - Follow instructions: anything explicitly requested, plus the instructions in [development-guideline.md](.agents/development-guideline.md).
 - Resolve conflicts by priority: user requests, project-specific rules, local idiomatic style (unless unsafe or broken), framework sections, language sections, general rules.
 - Read rule strength from its verb: Always, Never, and Must are mandatory; Prefer and Avoid are defaults, deviate only with a stated reason.
-- Load project memory first: read every existing `.attunic/` file before work, in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order); recorded decisions are settled, and a change to [context.md](.attunic/context.md) or [memory.md](.attunic/memory.md) is written only after the user explicitly confirms that change (see [attunic-protocol.md's Write Rules](.agents/attunic-protocol.md#write-rules)).
+- Load project memory first: read the `.attunic/` files in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order) before work; [context.md's Confirmed Facts](.attunic/context.md#confirmed-facts) are binding, and a change to [context.md](.attunic/context.md) or [memory.md](.attunic/memory.md) is written only after the user explicitly confirms that change (see [attunic-protocol.md's Write Rules](.agents/attunic-protocol.md#write-rules)).
 - Plan first: plan by default, unless the user explicitly says to skip it.
 - Ask when in doubt: if you are unsure about an instruction, need help, or have a better solution, ask: "Do you actually need X?", "Does Y cover it?", "Do you mean Z?", etc.
 - Understand the problem: read the task and the code it touches, trace the real flow end to end.

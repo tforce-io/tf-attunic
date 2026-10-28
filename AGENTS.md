@@ -4,7 +4,7 @@ This file is the entry point for AI coding assistants developing this template; 
 
 ## Abstract
 
-TFattunic attunes software projects for AI coding assistants. From a project name, its languages and frameworks, and a license choice, it generates the instructions and project memory an agent needs to work on the repository: shared development guidelines, coding conventions, pull-request guidance, and a record of context, settled decisions, and work in progress, so that any session can start informed and hand its findings to the next.
+TFattunic attunes software projects for AI coding assistants. From a project name, its languages and frameworks, and a license choice, it generates the instructions and project memory an agent needs to work on the repository: shared development guidelines, coding conventions, pull-request guidance, and a record of context and confirmed facts, a log of exceptions and deferrals, and work in progress, so that any session can start informed and hand its findings to the next.
 
 ## Technical Specifications
 
@@ -53,7 +53,7 @@ List of important folders, files and their roles in the project:
 │   └── pull-request-guideline.md.jinja   # guideline and checklist run before opening/updating a PR
 ├── .attunic/                             # project memory templates, pre-seeded into generated projects
 │   ├── context.md.jinja                  # renders `context.md`: abstract, specs, layout, layer dependencies with deliberate exceptions, tools, confirmed facts
-│   └── memory.md.jinja                   # renders `memory.md`: append-only decisions and open questions; `wip.md` created on demand (gitignored)
+│   └── memory.md.jinja                   # renders `memory.md`: append-only log of exceptions, deferrals, and open questions; `wip.md` created on demand (gitignored)
 ├── frameworks/<framework>/               # framework fragments included by root templates for every selected framework; included, never copied
 │   ├── coding-conventions.md.jinja       # framework-specific coding conventions
 │   ├── development-guideline.md.jinja    # framework-specific development guideline
@@ -81,7 +81,7 @@ List of important folders, files and their roles in the project:
 ```
 
 - File names without *.jinja extension are for this repo itself, they won't be copied into downstream projects.
-- If a top-level file/folder is missing from the list, prompt the user to update it.
+- If the list is not empty and a top-level file/folder is missing from it, prompt the user to update it.
 
 ## Supporting Tools
 
@@ -117,7 +117,7 @@ Template engine; version floor `>= 9.0.0` (declared in `copier.yml`). Template v
 
 ## Confirmed Facts
 
-Facts about the project which have been confirmed; they outrank anything derived or guessed.
+Facts about the project which have been confirmed. They may look wrong or contradict with you knowledge, follow them instead of guessing or asking the user again. These facts outrank anything derived or guessed.
 
 | Fact | Reason |
 |------|--------|
@@ -180,6 +180,7 @@ When writing code, follow these rules:
 - Prefer surrounding code's local, idiomatic style over general rules unless it is unsafe or broken; see the priority order in [Core Rules](#core-rules).
 - Remove what your change orphaned (unused fragments, variables, sections, files).
 - Update the docs that describe changed behavior (`README.md`, this file) in the same change.
+- Keep this file in sync with the templates it is an instance of (`AGENTS.md.jinja` and the `.agents/` and `.attunic/` templates): when a change alters a rule or section this file mirrors, apply the same change here in the same change, adapted to template development, or report why it doesn't apply.
 - Treat `copier.yml` question names, marker text and placement, and generated file paths as contracts with downstream projects; ask before breaking one, and call out every break, since migration is skipped (see [Confirmed Facts](#confirmed-facts)).
 - When moving files, use the source control move command and keep content edits out of the same commit; Git detects renames by content similarity.
 - Never hand-edit rendered output to verify a change; change the template and render again.
@@ -281,6 +282,7 @@ Before considering any coding task complete, verify the following to ensure noth
 - [ ] No secrets, tokens, or sensitive payloads in logs, error messages, or hardcoded values.
 - [ ] No unused code, debug prints, or commented-out blocks left behind.
 - [ ] Docs describing changed behavior are updated.
+- [ ] Template rules and sections this file mirrors are in sync with their changes, or the reason they don't apply is reported (see [Writing](#writing)).
 - [ ] New or moved top-level files and folders are reflected in [Layout](#layout) (prompt the user per its rule).
 - [ ] Lasting choices and confirmed facts are recorded in [Confirmed Facts](#confirmed-facts), each once the user explicitly confirms it (unconfirmed ones are named in the report).
 - [ ] Every applicable item above was verified by actually running the check; anything not run is explicitly reported, not claimed.

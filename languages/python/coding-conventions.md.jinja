@@ -10,15 +10,14 @@
 - Capitalize every letter of an acronym inside a `PascalCase` name, per PEP 8 (`HTTPServerError`, not `HttpServerError`).
 - Name generators for what they yield, not how they compute it.
 - Never prefix a `Protocol` or ABC with `I` (`IRepository`); name it for its role.
-- Give a module one job and a name for it; a package's `__init__.py` re-exports the public surface and does nothing else.
 <!-- Project-specific / Python-Names -->
 
 ### Packages
 
+- Give a module one job and a name for it; a package's `__init__.py` re-exports the public surface and does nothing else.
 - Prefix a name with `_` for anything outside a module's public surface; declare `__all__` where its star-import surface must be explicit.
 - Never use a wildcard import (`from x import *`) outside a `__init__.py` re-export.
 - Break a circular import by moving the shared symbol to the module both sides already depend on; never paper over it with a function-local import.
-- Keep a class's public methods few and cohesive; unrelated public methods on one class are more than one reason to change.
 <!-- Project-specific / Python-Packages -->
 
 ### Types
@@ -26,6 +25,7 @@
 - Put type hints on every public function, method, and attribute.
 - Model plain data with `@dataclass(frozen=True)` or `NamedTuple`; reserve ordinary mutable classes for objects with real identity and behavior.
 - Declare a `typing.Protocol` for a structural contract a caller depends on; reach for an ABC only where shared implementation matters.
+- Keep a class's public methods few and cohesive; unrelated public methods on one class are more than one reason to change.
 <!-- Project-specific / Python-Types -->
 
 ### Functions
@@ -43,6 +43,7 @@
 - Raise the most specific built-in or project exception; never raise a bare `Exception` or a string.
 - Chain the cause across a re-raise (`raise ServiceError("refund failed") from error`); never write a bare `except:` that discards it.
 - Catch only the exception type you can act on; let everything else propagate.
+- Return `None`, annotated as optional, from a lookup where absence is normal; raise a specific `LookupError` subclass (`KeyError` for a mapping) where the contract promises a value.
 <!-- Project-specific / Python-Errors -->
 
 ### Concurrency

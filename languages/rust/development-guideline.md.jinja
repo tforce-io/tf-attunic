@@ -33,5 +33,5 @@
 - String error: an error carried as a `String`, leaving callers only a text match => return a typed error enum.
 - Shared-ownership web: an `Rc<RefCell<_>>` or `Arc<Mutex<_>>` threaded through modules that do not otherwise share state => give the state one owner and pass messages or borrows.
 - Unjustified `unsafe`: an `unsafe` block with no `// SAFETY:` comment => name the invariant that makes it sound, or remove the `unsafe`.
-- Speculative trait: a trait with every method `pub` and only one implementation, built "just in case" => use the concrete type until a second implementation exists.
+- Speculative trait: a `pub` trait with only one implementation, built "just in case" => use the concrete type until a second implementation exists.
 <!-- Project-specific / Rust-Common Mistakes -->

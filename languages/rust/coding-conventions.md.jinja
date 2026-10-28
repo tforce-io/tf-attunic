@@ -15,7 +15,7 @@
 ### Packages
 
 - Default every item to private; use `pub(crate)` for cross-module use inside the crate, `pub` only for the crate's real public surface.
-- Give each concept its own module under `src/`, re-exported from `lib.rs`; do not mirror folders into a `mod` tree nobody reads.
+- Give each concept its own module under `src/`, re-exported from `lib.rs`; nest modules only where a concept has sub-concepts, never just to mirror a folder layout.
 - Keep a trait beside the module that owns its concept; put a second implementation (a test double, an alternate backend) in its own module.
 <!-- Project-specific / Rust-Packages -->
 

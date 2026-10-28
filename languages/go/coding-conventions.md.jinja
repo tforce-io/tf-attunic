@@ -7,18 +7,17 @@
 
 ### Names
 
-- Case marks visibility: MixedCaps (exported) or mixedCaps (unexported); never underscores.
-- Initialisms: one case throughout (`ID`, `URL`, `HTTP`), e.g. `userID`, `ServeHTTP`; never `userId` or `ServeHttp`.
-- Package names: short, lowercase, single word, no underscores or mixedCaps; never `util`, `common`, or `base`.
-- Interface names: prefer the `-er` suffix for single-method interfaces (e.g. `Reader`, `Closer`); never an `I` prefix.
-- Avoid stuttering: don't repeat the package name in exported identifiers (e.g. `log.Logger`, not `log.LogLogger`).
-- Receiver names: short (one or two letters) and identical across every method of the type.
-- Getters: name after the value returned, without a `Get` prefix (e.g. `Owner`, not `GetOwner`).
+- Use MixedCaps (exported) or mixedCaps (unexported), since case marks visibility; never underscores.
+- Name packages short, lowercase, and single-word, with no underscores or mixedCaps; never `util`, `common`, or `base`.
+- Name a getter after the value it returns, without a `Get` prefix (e.g. `Owner`, not `GetOwner`).
+- Keep receiver names short (one or two letters) and identical across every method of the type.
+- Keep an initialism in one case throughout (`ID`, `URL`, `HTTP`), e.g. `userID`, `ServeHTTP`; never `userId` or `ServeHttp`.
+- Prefer the `-er` suffix for a single-method interface (e.g. `Reader`, `Closer`); never an `I` prefix.
+- Never repeat the package name in an exported identifier (e.g. `log.Logger`, not `log.LogLogger`).
 <!-- Project-specific / Go-Names -->
 
 ### Packages
 
-- Default to unexported; export only the names another package must call.
 - Keep one package per directory; never split a single package's files across unrelated directories.
 - Keep `init()` to registration only; never reach out to a database, file, or network from one.
 <!-- Project-specific / Go-Packages -->
@@ -31,6 +30,7 @@
 
 ### Functions
 
+- Keep the success path unindented and last, returning early on each error or unmet precondition.
 - Use named returns only to document a short function's intent, never to smuggle a late, hidden mutation.
 <!-- Project-specific / Go-Functions -->
 
@@ -45,6 +45,7 @@
 - Wrap with context and keep the cause: `fmt.Errorf("loading order %s: %w", id, err)`.
 - Compare with `errors.Is` and extract with `errors.As`; never compare an error's `.Error()` string.
 - Return `(T, error)` rather than a sentinel zero value standing in for failure.
+- Report an expected miss with the comma-ok form `(T, bool)` when absence is the only other outcome, and with an exported sentinel error (`ErrNotFound`) matched by `errors.Is` when the call can also fail for other reasons.
 - Write error strings lowercase, without trailing punctuation; they are composed into larger messages.
 - Check every returned error where it is returned; assigning one to `_` outside a test is a defect, not a shortcut.
 <!-- Project-specific / Go-Errors -->

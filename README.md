@@ -50,10 +50,10 @@ To customize the generated files to follow your project, add your rules below th
 
 ```
 ├── .agents/                   # shared AI agent instructions copied into generated projects
-├── .attunic/                  # project memory layer (see Project Memory Layer section below)
+├── .attunic/                  # project memory (see Project Memory section below)
 ├── frameworks/<framework>/    # framework-specific content, included by the root templates above, one folder per supported framework (not copied)
 ├── languages/<language>/      # language-specific content, included by the root templates above, one folder per supported language (not copied)
-├── licenses/                  # license text snippets, license notice snippets, included by LICENSE.jinja / COPYING*.jinja / .agents/license-header.md.jinja (not copied)
+├── licenses/                  # license text fragments, license notice fragments, included by LICENSE.jinja / COPYING*.jinja / .agents/license-header.md.jinja (not copied)
 ├── .copier-answers.yml.jinja  # emits .copier-answers.yml (required by copier update)
 ├── .editorconfig.jinja        # generic editor formatting rules + language fragment included before the Project-specific marker
 ├── .gitignore.jinja           # generic ignore rules + language fragment included before the Project-specific marker
@@ -69,9 +69,9 @@ To customize the generated files to follow your project, add your rules below th
 └── copier.yml                 # template questions and settings
 ```
 
-### Project Memory Layer (`.attunic/`)
+### Project Memory (`.attunic/`)
 
-Generated projects carry a markdown-only project memory layer in `.attunic/`, adapted from [clean-code-skills](https://github.com/btseee/clean-code-skills)' memory protocol. It lets a new agent session resume instead of guessing, with no scripts and no runtime tooling:
+Generated projects carry a markdown-only project memory in `.attunic/`, adapted from [clean-code-skills](https://github.com/btseee/clean-code-skills)' memory protocol. It lets a new agent session resume instead of guessing, with no scripts and no runtime tooling:
 
 | File         | Created by                                                               |
 |--------------|--------------------------------------------------------------------------|
@@ -90,6 +90,8 @@ Generated projects carry a markdown-only project memory layer in `.attunic/`, ad
 | `project-structure.md.jinja`     | `.agents/project-structure.md.jinja`     |
 
 Shared/general sections live in the root templates; each root template `{% include %}`s the language fragment of every language selected in the multi-select `languages` answer (in the question's choices order). These fragments are never emitted as project files.
+
+TypeScript inherits JavaScript's rules: when `typescript` is selected without `javascript`, the `.gitignore.jinja`, `coding-conventions.md.jinja`, and `development-guideline.md.jinja` fragments of `javascript` are included right before the TypeScript ones; the `typescript` fragments hold only what TypeScript adds.
 
 ### Framework Fragments (`frameworks/<framework>/`)
 
@@ -166,22 +168,23 @@ Each root template `{% include %}`s the framework fragment of every framework se
 
 ### Indentation
 
-Reference for `.editorconfig`: every `indent_style` or `indent_size` a language or format owner defines is declared explicitly; everything else falls back to the `[*]` default (`indent_style = tab`, `indent_size = 2`), a proposal of this template.
+Reference for `.editorconfig`: every `indent_style` or `indent_size` a language or format owner defines is declared explicitly; Markdown is declared with spaces by this template's choice, matching the Markdown it generates; everything else falls back to the `[*]` default (`indent_style = tab`, `indent_size = 2`), a proposal of this template.
 
 | Files | `indent_style` | `indent_size` | Defined by |
 |-------|----------------|---------------|------------|
 | Go: `*.go`, `go.mod`, `go.work` | `tab` | `2` (default) | [gofmt](https://pkg.go.dev/cmd/gofmt), [`go mod edit -fmt`](https://go.dev/ref/mod#go-mod-edit), [`go work edit -fmt`](https://go.dev/ref/mod#go-work-edit) |
 | Make: `Makefile`, `makefile`, `GNUmakefile`, `*.mk` | `tab` | `2` (default) | [GNU make recipe syntax](https://www.gnu.org/software/make/manual/html_node/Recipe-Syntax.html) |
+| Markdown: `*.md` | `space` | `2` (default) | This template: generated Markdown nests lists with spaces |
 | PowerShell: `*.ps1`, `*.psd1`, `*.psm1` | `space` | `4` | [PSScriptAnalyzer UseConsistentIndentation](https://learn.microsoft.com/en-us/powershell/utility-modules/psscriptanalyzer/rules/useconsistentindentation) |
 | Python: `*.py`, `*.pyi` | `space` | `4` | [PEP 8](https://peps.python.org/pep-0008/#indentation) |
 | Rust: `*.rs` | `space` | `4` | [Rust Style Guide](https://doc.rust-lang.org/style-guide/#indentation-and-line-width) |
 | YAML: `*.yaml`, `*.yml` | `space` | `2` (default) | [YAML 1.2.2, 6.1 Indentation Spaces](https://yaml.org/spec/1.2.2/#61-indentation-spaces) |
-| Everything else, e.g. JavaScript, TypeScript, Shell, Text, JSON, Markdown, TOML | `tab` (default) | `2` (default) | No owner rule |
+| Everything else, e.g. JavaScript, TypeScript, Shell, Text, JSON, TOML | `tab` (default) | `2` (default) | No owner rule |
 
 ## Attributions
 
 - Topic-based structure referenced from [LocalAI](https://github.com/mudler/LocalAI) by Ettore Di Giacinto (mudler), licensed under the MIT license.
-- General [Coding Convention](.agents/coding-conventions.md.jinja), [Development Guideline](.agents/development-guideline.md.jinja), and [Project Memory Layer](.agents/attunic-protocol.md.jinja) (`.attunic/`) referenced from [clean-code-skills](https://github.com/btseee/clean-code-skills) by Battseren Badral, licensed under the MIT license.
+- General [Coding Convention](.agents/coding-conventions.md.jinja), [Development Guideline](.agents/development-guideline.md.jinja), and [Project Memory](.agents/attunic-protocol.md.jinja) (`.attunic/`) referenced from [clean-code-skills](https://github.com/btseee/clean-code-skills) by Battseren Badral, licensed under the MIT license.
 
 Referenced repositories (listed in alphabetical order):
 

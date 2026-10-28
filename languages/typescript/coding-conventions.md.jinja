@@ -3,40 +3,40 @@
 ### Formats
 
 - Keep imports single-line-per-module and grouped in sections: runtime built-ins, then third-party, then local, then relative, separated by a blank line.
-- Prefer `import type` (or `import { type ... }`) for type-only imports so they are erased at compile time.
-- Use `const` by default, `let` only for reassigned variables, never `var`.
-- Do not use `any`; use `unknown` when a value's type is not known and narrow it before use.
-- Do not suppress the type checker with `@ts-ignore` or `@ts-nocheck`; fix the types or narrow with a well-scoped `@ts-expect-error` and a *why* comment.
-- Use `private` visibility modifiers, never `#private` fields.
-- Use named exports; never `export default` or mutable exports like `export let`.
-- Compare with `===`/`!==`; use `==`/`!= null` only to catch both `null` and `undefined`.
-- Iterate with `for...of`; never `for...in` over arrays or objects (string indices, prototype chain).
-- Always brace control-flow bodies (`if`/`else`, `for`, `while`, `do`) even for a single statement.
 <!-- Project-specific / TypeScript-Formats -->
 
 ### Names
 
-- `PascalCase` for types, classes, enums, and their members.
-- `camelCase` for variables, functions, and properties.
-- `CONSTANT_CASE` for module-level constants.
+- Use `PascalCase` for types, classes, enums, and enum members, named for what they are (`Order`, `PaymentGateway`); never with an `I` prefix or `Type` suffix.
+- Name type parameters for their role when there are several (`TItem`, `TKey`); a lone `T` is fine.
+- Use one discriminant field name (`kind` or `type`) across the codebase.
 <!-- Project-specific / TypeScript-Names -->
 
 ### Packages
 
+- Use `import type` (or `import { type ... }`) for type-only imports, so erased imports never turn into runtime dependencies; keep `verbatimModuleSyntax` enabled, and propose it where it is off instead of turning it on unasked.
+- Use `paths` aliases only where the project defines them, written relative to the tsconfig; TypeScript 6 deprecates `baseUrl` and TypeScript 7 removes it.
+- Keep `.d.ts` files for ambient declarations; types for your own code live beside that code.
 <!-- Project-specific / TypeScript-Packages -->
 
 ### Types
 
+- Keep `strict`, `noUncheckedIndexedAccess`, and `noImplicitOverride` enabled, and propose any that are off instead of turning them on unasked; never relax a compiler flag to silence an error.
+- Use classes when state and behavior belong together, plain types and functions otherwise; prefer composition over inheritance.
+- Use `private` visibility modifiers, never `#private` fields.
+- Mark fields `readonly`, and type inputs as `readonly T[]`, wherever nothing mutates them; freeze literal collections with `as const`.
 - Use `type` for unions and intersections; use `interface` for `extends`/`implements` contracts.
-- Prefer immutability: mark never-reassigned properties `readonly`, freeze literal collections with `as const`, return new arrays/objects instead of mutating inputs.
-- Prefer composition over inheritance; compose small classes, each with one responsibility.
-- Prefer passing dependencies in (constructor injection) over module-level singletons.
+- Model alternatives as discriminated unions, and end every `switch` over one with a `never` exhaustiveness check.
+- Prefer literal unions or `as const` objects to `enum`; under `erasableSyntaxOnly` or a runtime's type stripping, write no `enum`, `namespace`, or parameter properties.
+- Use `satisfies` to check a literal against a type without widening it.
+- Brand identifiers that must not mix: `type OrderId = string & { readonly __brand: "OrderId" }`.
+- Avoid `as` assertions; when one is unavoidable, assert once, at the boundary, after validation.
+- Never use `any`; take `unknown` and narrow it before use, and confine an unavoidable `any` to one adapter, with the reason beside it.
+- Never suppress the type checker with `@ts-ignore` or `@ts-nocheck`; fix the types, or use a narrowly scoped `@ts-expect-error` with a *why* comment.
 <!-- Project-specific / TypeScript-Types -->
 
 ### Functions
 
-- Consolidate more than two parameters into one destructured options object.
-- Use `async`/`await`; do not mix callbacks and promises in the same code path.
 <!-- Project-specific / TypeScript-Functions -->
 
 ### Comments
@@ -47,12 +47,11 @@
 
 ### Errors
 
-- Throw `Error` subclasses, never strings or plain objects; chain the cause: `throw new PaymentError("charge failed", { cause: error })`.
-- Never leave a promise floating: await it, return it, or hand it to a handler; never write an empty `catch`.
-- Cancel with `AbortController` and pass its `signal` through every call that can wait.
+- Treat `catch (error)` as `unknown`: narrow it with `instanceof` before reading anything from it.
+- Return expected outcomes as a discriminated union (`{ ok: true; value: T } | { ok: false; reason: Reason }`), and keep `throw` for genuine failures.
+- Validate external data at the boundary with a schema, and derive the type from the schema; a cast validates nothing.
 <!-- Project-specific / TypeScript-Errors -->
 
 ### Concurrency
 
-- Start independent operations with `Promise.all` or `Promise.allSettled`, not one `await` at a time in a loop.
 <!-- Project-specific / TypeScript-Concurrency -->

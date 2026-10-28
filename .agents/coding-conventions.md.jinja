@@ -2,7 +2,11 @@
 
 ## General
 
-The principles below are for all languages. They use camelCase for demonstration purposes; adapt casing to the language's style. Language and framework sections refine them; on conflict, follow the priority order in [AGENTS.md's Core Rules](../AGENTS.md#core-rules).
+The principles below are for all languages. They use camelCase for demonstration purposes; adapt casing to the language's style.
+
+Language and framework sections refine them; on conflict, follow the priority order in [AGENTS.md's Core Rules](../AGENTS.md#core-rules).
+
+When a language's established idiom contradicts a principle below, follow the idiom even when its section doesn't name it (e.g. PowerShell's `-Force` switch parameter, Python's keyword-only `reverse=True` flag).
 
 ### Formats
 
@@ -11,7 +15,7 @@ The principles below are for all languages. They use camelCase for demonstration
 - Order file content top-down: high-level intent first, details descending (newspaper metaphor).
 - Keep related things close: declarations near first use, callers near callees.
 {%- if license != 'None' and license_header != 'None' %}
-- Start every code file, including test files, with the license header defined in [license-header.md](license-header.md).
+- Start every new code file, including test files, with the license header defined in [license-header.md](license-header.md).
 {%- endif %}
 <!-- Project-specific / Formats -->
 
@@ -25,8 +29,8 @@ The principles below are for all languages. They use camelCase for demonstration
 - Name booleans as predicates (`isReady`, `hasItems`, `canRetry`), never as negations (`isNotReady`).
 - Avoid magic numbers or strings; use a named constant for the meaning, or attach an inline *why* comment.
 - Avoid noise: names that differ only by noise words or loose abbreviations.
-- Never write a vague name (`data`, `info`, `obj`, `temp`, `result`) when a domain name exists; a loop index, a lambda or callback parameter, a caught error, or an established short form may stay short, nothing else should.
-- Never write a bare-verb function with no object (`handle`, `process`).
+- Never write a vague name (`data`, `info`, `obj`, `temp`, `result`) when a domain name exists; a loop index, a lambda or callback parameter, a caught error, or an established short form may stay short; nothing else may.
+- Never write a bare-verb function with no object (`handle`, `process`); a method's receiver counts as its object (`file.close()`).
 - Never number or version a name instead of replacing the original (`user2`, `dataV2`, `_new`, `_final`, `_copy`).
 - Never suffix a type with a noise word (`Manager`, `Helper`, `Util`) or name it after a verb (`ProcessOrder`).
 - Never encode a type or scope into a name (`strName`, `arrItems`, `iCount`).
@@ -86,8 +90,11 @@ The principles below are for all languages. They use camelCase for demonstration
 
 {% set blocks = [] -%}
 {% for language in languages -%}
-{%- set snippet %}{% include 'languages/' ~ language ~ '/coding-conventions.md.jinja' %}{% endset -%}
+{%- set included_languages = ['javascript', language] if language == 'typescript' and 'javascript' not in languages else [language] -%}
+{%- for included_language in included_languages -%}
+{%- set snippet %}{% include 'languages/' ~ included_language ~ '/coding-conventions.md.jinja' %}{% endset -%}
 {% if snippet | trim %}{% set _ = blocks.append(snippet | trim) %}{% endif -%}
+{%- endfor -%}
 {%- endfor -%}
 {% set fblocks = [] -%}
 {% for framework in frameworks -%}

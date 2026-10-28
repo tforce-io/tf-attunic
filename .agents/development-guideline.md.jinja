@@ -20,7 +20,7 @@ When exploring for a solution to the task, try to reuse existing code following 
 When writing code, follow these rules:
 
 - Write the minimum that satisfies the task; never cut safety: validation, error handling, security, accessibility; see [Security](#security).
-- Make targeted edits, never whole-file regeneration; every changed line should trace to the request.
+- Make targeted edits, never whole-file regeneration; every changed line must trace to the request.
 - Keep one job per unit at every scale (function, type, module); if describing its job needs "and", split it. Parsing, domain rules, persistence, external calls, presentation, and wiring stay in separate homes.
 - Find every usage of a symbol, config key, route, or file you change, by text search as well as code references, including tests and docs; make sure a signature or behavior change doesn't introduce a new bug or leave a bug half-fixed.
 - Report unrelated findings; never do drive-by renames, reformats, or dependency bumps.
@@ -104,8 +104,11 @@ Check your diff against these failure patterns; each must be fixed before comple
 
 {% set blocks = [] -%}
 {% for language in languages -%}
-{%- set snippet %}{% include 'languages/' ~ language ~ '/development-guideline.md.jinja' %}{% endset -%}
+{%- set included_languages = ['javascript', language] if language == 'typescript' and 'javascript' not in languages else [language] -%}
+{%- for included_language in included_languages -%}
+{%- set snippet %}{% include 'languages/' ~ included_language ~ '/development-guideline.md.jinja' %}{% endset -%}
 {% if snippet | trim %}{% set _ = blocks.append(snippet | trim) %}{% endif -%}
+{%- endfor -%}
 {%- endfor -%}
 {% set fblocks = [] -%}
 {% for framework in frameworks -%}

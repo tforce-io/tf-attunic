@@ -22,7 +22,7 @@
 
 ### Testing
 
-- Write specs around behavior, and mock the filesystem, network, or registry a function calls rather than hitting them for real (F.I.R.S.T.).
+- Mock the registry a function reads or writes, as you would the filesystem or network; never touch the real one from a unit test.
 - Test parameter validation and the `ShouldProcess` branch explicitly; `-WhatIf` must produce no side effect.
 <!-- Project-specific / PowerShell-Testing -->
 

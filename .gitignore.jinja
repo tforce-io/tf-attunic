@@ -4,6 +4,7 @@
 # Local env and secrets
 .env
 .env.*
+!.env.example
 *.local.env
 
 # OS files
@@ -13,8 +14,11 @@ desktop.ini
 
 {% set blocks = [] -%}
 {% for language in languages -%}
-{%- set snippet %}{% include 'languages/' ~ language ~ '/.gitignore.jinja' %}{% endset -%}
+{%- set included_languages = ['javascript', language] if language == 'typescript' and 'javascript' not in languages else [language] -%}
+{%- for included_language in included_languages -%}
+{%- set snippet %}{% include 'languages/' ~ included_language ~ '/.gitignore.jinja' %}{% endset -%}
 {% if snippet | trim %}{% set _ = blocks.append(snippet | trim) %}{% endif -%}
+{%- endfor -%}
 {%- endfor -%}
 {{ ((blocks | join('\n\n')) ~ '\n\n' if blocks else '') -}}
 # Project-specific

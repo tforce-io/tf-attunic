@@ -43,6 +43,7 @@
 - Set `$ErrorActionPreference = 'Stop'` at script scope so a cmdlet's non-terminating error becomes catchable; pass `-ErrorAction Stop` to calls inside a shared module.
 - Catch specific exception types (`catch [System.IO.IOException]`) before a general `catch`; never catch everything to swallow it.
 - Re-raise from a function with `$PSCmdlet.ThrowTerminatingError($_)` so the original `ErrorRecord`, category, and target survive for the caller.
+- Return an expected alternate outcome (not found, already exists) as a value or a `-PassThru` result, not a thrown error.
 <!-- Project-specific / PowerShell-Errors -->
 
 ### Concurrency

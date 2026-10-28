@@ -22,17 +22,16 @@
 
 ### Testing
 
-- Use the project's test runner; control time with fake timers or an injected clock.
-- Await every asynchronous assertion; a missing `await` makes a test pass forever.
+- Run the type check (`tsc --noEmit`, or the build's own) as a test step; a type error is a failing test.
+- Pin important type-level contracts with the test runner's type assertions or `@ts-expect-error` lines.
+- Never loosen a production type to make a test compile; fix the test's data.
 <!-- Project-specific / TypeScript-Testing -->
 
 ### Common Mistakes
 
-- Dropped rejection: callback pyramids or `.then` chains that lose a rejection => flatten into `async`/`await` and handle or propagate every rejection.
-- Truthiness bug: a check that treats `0`, `""`, or `NaN` as missing => compare explicitly, or use `??`/`?.`.
-- Mutated argument: a function that changes an object or array it was given => return a new value instead.
-- Catch-all module: a `utils.ts` collecting unrelated helpers => move each helper to the module named for its concept.
-- Re-export barrel: a barrel file re-exporting a whole folder and hiding cycles => import from the owning module.
-- Extended built-in: an application adding to a built-in prototype => write a standalone function or a wrapper instead.
-- Leftover console output: `console.log` on a production path => remove it, or route it through the project's logger.
+- Leaking `any`: an `any` from one untyped boundary spreading across the codebase => type the boundary as `unknown` and narrow it there.
+- Silencing cast: an `as` cast that hides a type error instead of narrowing => narrow with a type guard, or validate first.
+- Non-exhaustive union: a `switch` over a union without a `never` check, so a new variant compiles and is silently ignored => add the exhaustiveness check.
+- Junk-drawer types: one global `types.ts` holding unrelated types => move each type next to the code that owns it.
+- Drifting schema type: a hand-written type that duplicates a schema and drifts from it => derive the type from the schema.
 <!-- Project-specific / TypeScript-Common Mistakes -->

@@ -1,5 +1,7 @@
 ## Shell
 
+The rules below assume Bash. In a POSIX `sh` script (`#!/bin/sh`), use `[ ]` instead of `[[ ]]`, and drop each Bash-only construct the target shell lacks (e.g. arrays, `local -r`, `BASH_SOURCE`).
+
 ### Formats
 
 <!-- Project-specific / Shell-Formats -->
@@ -13,7 +15,7 @@
 ### Packages
 
 - Keep reusable functions in `lib/*.sh`, loaded with `source`.
-- Guard a sourced library against double-sourcing (`[[ -n "${MYLIB_SOURCED:-}" ]] && return`).
+- Guard a sourced library against double-sourcing (`[[ -n "${MYLIB_SOURCED:-}" ]] && return; readonly MYLIB_SOURCED=1`).
 - Never `export` a variable a sourced library does not document as its interface; keep the rest local to the sourcing script.
 <!-- Project-specific / Shell-Packages -->
 

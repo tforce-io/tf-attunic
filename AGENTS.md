@@ -24,7 +24,7 @@ A brief overview of the ingredients used for developing this project. These are 
 
 Important rules when working with the project; these must be strictly followed:
 
-- Follow instructions: anything explicitly requested, plus the instructions in [Exploring](#exploring), [Writing](#writing), [Security](#security), [Fixing](#fixing), [Refactoring](#refactoring), [Testing](#testing), [Common Mistakes](#common-mistakes), [Checklist](#checklist), and [Pull Request Checklist](#pull-request-checklist).
+- Follow instructions: anything explicitly requested, plus the instructions in [Exploring](#exploring), [Writing](#writing), [Security](#security), [Fixing](#fixing), [Refactoring](#refactoring), [Testing](#testing), [Common Mistakes](#common-mistakes), [Checklist](#checklist), [Pull Request Guideline](#pull-request-guideline), and [Pull Request Checklist](#pull-request-checklist).
 - Resolve conflicts by priority: user requests, local idiomatic style (unless unsafe or broken), the rules in this file.
 - Read rule strength from its verb: a rule stated as a plain command (Keep, Use, Write, ...) is mandatory, and so are Always and Must; Never, Avoid, and Do not (don't) are mandatory prohibitions; Prefer is a default, deviate only with a stated reason.
 - Plan first: plan by default, unless the user explicitly says to skip it; when the change spans more than one file, share the plan and wait for the user's approval before the first edit.
@@ -35,7 +35,7 @@ Important rules when working with the project; these must be strictly followed:
 - Write clean code: safe and maintainable, per [Coding Conventions](#coding-conventions) and [Naming Conventions](#naming-conventions).
 - Never trust recall: verify every API, function, option, and config key against this codebase and installed dependency versions.
 - Confirm irreversible actions: ask before deleting files outside the change, rewriting history, force-pushing, publishing, or moving a published tag.
-- Commit only on request: never create a commit unless the user asks for one.
+- Commit and push only on request: never create a commit or push unless the user asks for it.
 - Report fully: say what ran and what didn't, what was skipped or assumed, and what was found along the way; never present unverified success or a stub or placeholder as finished; name anything that could not run with its remaining risk.
 
 ## Layout
@@ -45,7 +45,7 @@ List of important folders, files and their roles in the project:
 ```text
 ├── .agents/                              # shared AI agent instruction templates (`*.md.jinja`), copied into generated projects
 │   ├── attunic-protocol.md.jinja         # defines the `.attunic/` project memory: files, read order, write rules
-│   ├── coding-conventions.md.jinja       # naming, formatting, comment, error, and concurrency conventions; plus per-language and per-framework sections
+│   ├── coding-conventions.md.jinja       # formatting, naming, package, type, function, comment, error, and concurrency conventions; plus per-language and per-framework sections
 │   ├── development-guideline.md.jinja    # exploring/writing/security/fixing/refactoring/testing rules, common mistakes, coding checklist; plus per-language and per-framework sections
 │   ├── license-header.md.jinja           # license header to put at the top of every new code file
 │   ├── memory-template.md.jinja          # skeleton for `wip.md`, copied when an audit or cleanup campaign starts
@@ -80,8 +80,31 @@ List of important folders, files and their roles in the project:
 └── copier.yml                            # template questions and settings
 ```
 
-- File names without *.jinja extension are for this repo itself, they won't be copied into downstream projects.
+- File names without `*.jinja` extension are for this repo itself, they won't be copied into downstream projects.
 - If the list is not empty and a top-level file/folder is missing from it, prompt the user to update it.
+
+## Layer Dependencies
+
+List of layers and their relationships:
+
+- Declare the innermost layer first.
+- A layer may depend only on the layers in its `Depends on` column, all declared before it; a template depends on what it includes.
+- The dependency graph below must be enforced.
+
+| Layer | Path | Depends on | Must never contain |
+|-------|------|------------|--------------------|
+| Fragments | `languages/`, `frameworks/`, `licenses/` | None | An include of any template or fragment |
+| Root templates | `*.jinja` at the root, `.agents/`, `.attunic/` | Fragments | Language, framework, or license content that belongs in a fragment |
+
+### Deliberate Exceptions
+
+List of documented exceptions that cannot follow the architecture rules above:
+
+- Any place the rules above are knowingly broken, with the reason and the condition for fixing it.
+- An undocumented exception is a defect; a documented one is a decision.
+
+| What | Why | Revisit-if |
+|------|-----|------------|
 
 ## Supporting Tools
 
@@ -108,39 +131,44 @@ Template engine; version floor `>= 9.0.0` (declared in `copier.yml`). Template v
 
 - Generate a downstream project (also the manual verification path: copy into a scratch directory and inspect the generated files):
   ```sh
-  copier copy --trust gh:tforce-io/tf-attunic <target>
+  copier copy gh:tforce-io/tf-attunic <target>
   ```
 - Update an existing downstream project (run inside the project):
   ```sh
-  copier update --trust
+  copier update
   ```
 
 ## Confirmed Facts
 
-Facts about the project which have been confirmed. They may look wrong or contradict with you knowledge, follow them instead of guessing or asking the user again. These facts outrank anything derived or guessed.
+Facts about the project which have been confirmed. They may look wrong or contradict your knowledge or understanding; follow them instead of guessing or asking the user again. These facts outrank anything derived or guessed.
 
 | Fact | Reason |
 |------|--------|
+| This file follows the templates without the attunic protocol: this repo keeps no project memory of its own (`context.md`'s sections are inline here; no `memory.md` or `wip.md`). | This project doesn't have a complex structure; a single amalgamated `AGENTS.md` is sufficient. |
 | `AGENTS.md` and other files without the `.jinja` extension serve template development; `AGENTS.md.jinja` and every `*.jinja` file serve downstream projects, so rules written inside them are content to maintain, not instructions to follow here. | Every plain file is excluded in `copier.yml` or shadowed by its `.jinja` sibling, so only rendered `*.jinja` files reach downstream projects. |
 | Marker ownership is mirrored between the two audiences: template development edits above a marker and leaves below it empty; downstream projects add below a marker and never edit above it. | Downstream projects own everything below a marker (see [README.md's Customize](README.md#customize)), and `copier update` replays their additions by matching the marker line as diff context. |
 | Migration is skipped; downstream data loss is acceptable. | Project is in early development; skipping migration makes development faster. |
 | `.editorconfig`'s `[*]` default (`indent_style = tab`, `indent_size = 2`) is this template's proposal for anything whose owner defines no indentation; every `indent_style` or `indent_size` a language or format owner defines (official style guide, official formatter, or spec) must be declared explicitly in its own section, even when it equals the default. | Owner rules take priority, and declaring them explicitly prevents mistakes. |
 | License text in [./licenses](./licenses) is safe to skip checking for most tasks. | It is canonical license text. |
+| In downstream projects, exceptions and deferrals, known-failing tests included, are logged as entries under `memory.md`'s Decisions for later review; it's the user's discretion to update `context.md`'s Confirmed Facts, agents never move them. | `memory.md` is a non-binding log, while Confirmed Facts are binding and `context.md` belongs to the user (see the Write Rules in [.agents/attunic-protocol.md.jinja](.agents/attunic-protocol.md.jinja)). |
+| The `Layout` sections of the language/framework project-structure fragments are reference layouts: they may name tool-specific files (e.g. `uv.lock`, `clippy.toml`, `deny.toml`, each package manager's lockfile); every other part of the language/framework guides stays tool-neutral. | A reference layout lists files a project may already have so agents recognize them; listing one doesn't pick the tool, which stays the downstream project's choice. |
 
 ## Coding Conventions
 
 Template authoring conventions for this repository:
 
-- End each section of every template file with a `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker; content above the marker is template-owned, content below is project-owned.
-- Use a plain `# Project-specific` comment as the marker in `.editorconfig` and `.gitignore`.
+- End each section of every Markdown template (`*.md.jinja`, fragments included) with a `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker; content above the marker is template-owned, content below is project-owned.
+- Use a single plain `# Project-specific` comment as the last line of `.editorconfig.jinja` and `.gitignore.jinja`, below the included fragments; their language fragments carry no marker.
+- In a section that ends with a fenced block, place the marker inside the fence, before its closing line, when the block is a layout tree, so project additions extend the tree; otherwise place it below the closing fence.
+- Never add a marker to a file without sections: `CLAUDE.md.jinja`, `.copier-answers.yml.jinja`, the license renderers, and the `licenses/` fragments; there it would be rendered into the generated file as content.
 - Keep marker text byte-identical across template versions: Copier matches the marker line as diff context, so a whitespace or punctuation change can break the anchor and produce spurious conflicts on `copier update`.
 - Never move or duplicate a marker: Copier anchors downstream additions to the marker line, so either change can misplace them or produce conflicts on `copier update`; treat it as a contract break (see [Writing](#writing)).
 - Write template content only above a marker; leave everything below it empty for downstream projects, which add their project-specific rules there (see [README.md's Customize](README.md#customize)).
 - Keep [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) and [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja) to generic principles: language/framework agnostic and tool-neutral; put language and framework specifics only in the `languages/` and `frameworks/` fragments.
 - Keep the language/framework guides tool-neutral; it's up to the downstream project to pick the tools and declare them in the context.
-- Keep the framework guides version-neutral: state rules that hold across the framework's maintained versions, with no "since vN" claims; where versions differ, defer to what the project already uses.
-- Include all sections declared in [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) in the language/framework Coding Conventions, and all sections but Checklist declared in [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja) in the language/framework Development Guidelines, even when empty; add new sections after the shared ones.
-- Use ASCII punctuation and straight quotes by default; keep encoding UTF-8 without a BOM.
+- Keep the language/framework guides version-neutral: state rules that hold across the language's or framework's maintained versions, with no "since vN" claims; where versions differ, defer to what the project already uses.
+- Include all sections declared in [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) in the language/framework Coding Conventions, all sections but Checklist declared in [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja) in the language/framework Development Guidelines, and the Guideline, Layout, and Layer Dependencies sections, in that order, in the language/framework Project Structures, even when empty; add new sections after the shared ones.
+- Use ASCII punctuation and straight quotes by default; use non-ASCII characters only where the content requires them (names, quoted text, symbols with no ASCII form, box-drawing in layout trees); keep encoding UTF-8 without a BOM.
 - End every file with a single final newline; strip trailing blank lines.
 - Separate headings from body text with exactly one blank line; never indent paragraphs or headings except intentional block quotes.
 - Never delete or reword comments a tool reads downstream, such as the `SPDX-License-Identifier` line emitted by [licenses/spdx-notice.jinja](licenses/spdx-notice.jinja); markers follow the rules above.
@@ -182,7 +210,7 @@ When writing code, follow these rules:
 - Update the docs that describe changed behavior (`README.md`, this file) in the same change.
 - Keep this file in sync with the templates it is an instance of (`AGENTS.md.jinja` and the `.agents/` and `.attunic/` templates): when a change alters a rule or section this file mirrors, apply the same change here in the same change, adapted to template development, or report why it doesn't apply.
 - Treat `copier.yml` question names, marker text and placement, and generated file paths as contracts with downstream projects; ask before breaking one, and call out every break, since migration is skipped (see [Confirmed Facts](#confirmed-facts)).
-- When moving files, use the source control move command and keep content edits out of the same commit; Git detects renames by content similarity.
+- When moving files, use the source control move command; when the user asks for a commit, keep content edits out of the move's commit, since Git detects renames by content similarity.
 - Never hand-edit rendered output to verify a change; change the template and render again.
 
 ## Security
@@ -241,7 +269,7 @@ Check your diff against these failure patterns; each must be fixed before comple
 - Wrong-file gravity: logic added to whatever file was open, a god file growing, a new file at the repository root or current directory => place by role per [Layout](#layout).
 - Phantom success: "should work now" with nothing run; a stub, pass, placeholder, or demo value presented as done => run the check and quote the result, name what did not run, and state plainly what remains.
 - Test weakening: an assertion loosened; a test skipped, deleted, or rewritten to match the bug, a snapshot re-accepted unread => restore the test and fix the code, or report the conflict and stop.
-- Silent structure drift: a fragment including a root template or a sibling fragment; fragment content hard-coded into a root template; a rule edited in its wrong home; template content below a marker; names off [Naming Conventions](#naming-conventions) => keep includes as the only wiring (root templates include fragments, never the reverse), one home per rule, names per convention.
+- Silent structure drift: a fragment including a root template or a sibling fragment, or fragment content hard-coded into a root template, unless listed in [Deliberate Exceptions](#deliberate-exceptions); a rule edited in its wrong home; template content below a marker; names off [Naming Conventions](#naming-conventions) => check every changed include against [Layer Dependencies](#layer-dependencies), keep includes as the only wiring, one home per rule, names per convention.
 - Missing validation: an input from a trust boundary accepted unchecked, including empty, null, or boundary values => validate at the boundary where the data enters.
 - Missing error handling: a failing path swallowed or ignored, such as an unchecked error or an empty catch => handle it, wrap it, or propagate it explicitly.
 - Edited generated file: a hand edit to rendered output => revert it, change the template, and render again.
@@ -274,6 +302,7 @@ Before considering any coding task complete, verify the following to ensure noth
 - [ ] The task's requirements are fulfilled; acceptance criteria (if any) are verified against real behavior, not assumed from passing tests.
 - [ ] Changed templates render with `copier copy` into a scratch directory, and the generated files are inspected (see [Supporting Tools](#supporting-tools)).
 - [ ] Changed code files follow project convention (see [Coding Conventions](#coding-conventions) and [Naming Conventions](#naming-conventions)).
+- [ ] Includes respect [Layer Dependencies](#layer-dependencies), except its [Deliberate Exceptions](#deliberate-exceptions).
 - [ ] Changes are scoped to the task, unrelated fixes are reported, not bundled in.
 - [ ] The complete final diff has been read line by line; every change is intentional and understood.
 - [ ] Changes are reviewed for security requirements (see [Security](#security)).
@@ -286,6 +315,17 @@ Before considering any coding task complete, verify the following to ensure noth
 - [ ] New or moved top-level files and folders are reflected in [Layout](#layout) (prompt the user per its rule).
 - [ ] Lasting choices and confirmed facts are recorded in [Confirmed Facts](#confirmed-facts), each once the user explicitly confirms it (unconfirmed ones are named in the report).
 - [ ] Every applicable item above was verified by actually running the check; anything not run is explicitly reported, not claimed.
+
+## Pull Request Guideline
+
+- Keep one logical change per pull request; split unrelated work into separate ones.
+- Title the pull request with a short imperative summary of the change (e.g. `Add Rust coding conventions`).
+- Follow the repository's pull request template when it has one; otherwise write the description in these parts, writing "None" for an empty one:
+  - Motivation: the problem or request, with linked issues/tickets.
+  - Changes: what changed, grouped by intent.
+  - Verification: the `copier copy` renders that ran, with their answers and what was inspected; the checks that did not run, and why.
+  - Breaking changes: every broken downstream contract (see [Writing](#writing)), and what downstream projects must do.
+  - Follow-ups: findings reported but not fixed.
 
 ## Pull Request Checklist
 

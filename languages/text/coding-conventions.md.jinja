@@ -1,9 +1,11 @@
 ## Text
 
+The rules below cover plain text and lightweight markup such as Markdown; structured formats (e.g. JSON, YAML) follow their own format instead.
+
 ### Formats
 
-- Write whole sentence per paragraph line; do not hard-wrap mid-sentence unless the file targets a fixed-width form (e.g. changelogs, README headings) - then wrap at 72-79 columns consistently.
-- Use ASCII punctuation and straight quotes by default; keep encoding UTF-8 without a BOM.
+- Write each paragraph on one line; never hard-wrap mid-sentence, unless the file targets a fixed-width form (e.g. a plain-text changelog or license notice), then hard-wrap the whole file at one width between 72 and 79 columns.
+- Use ASCII punctuation and straight quotes by default; use non-ASCII characters only where the content requires them (names, quoted text, symbols with no ASCII form, box-drawing in layout trees); keep encoding UTF-8 without a BOM.
 - End every file with a single final newline; strip trailing blank lines.
 - Separate headings from body text with exactly one blank line; never indent paragraphs or headings except intentional block quotes.
 <!-- Project-specific / Text-Formats -->

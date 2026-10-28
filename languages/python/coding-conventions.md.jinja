@@ -48,6 +48,6 @@
 
 ### Concurrency
 
-- Group sibling tasks with `asyncio.TaskGroup` (3.11+) instead of unsupervised `create_task` calls; a group cancels the rest when one member fails.
+- Group sibling tasks with `asyncio.TaskGroup`, where the project's Python version provides it, instead of unsupervised `create_task` calls; a group cancels the rest when one member fails.
 - Never call blocking I/O or CPU-bound work inside `async def`; use an async client, or hand the call to `asyncio.to_thread`.
 <!-- Project-specific / Python-Concurrency -->

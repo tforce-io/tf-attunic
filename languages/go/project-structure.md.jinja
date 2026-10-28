@@ -47,8 +47,8 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 |-------|--------------|------------|--------------------|
 | domain | internal/\<app\>/domain | itself | framework types, database, HTTP |
 | application | internal/\<app\>/app | domain | database access, HTTP handlers |
-| adapter | internal/\<app\>/transport | application, domain | SQL, external clients |
-| infrastructure | internal/\<app\>/infra | application (its ports), domain | business rules |
+| adapters | internal/\<app\>/adapters | application (its ports), domain | business rules |
+| transport | internal/\<app\>/transport | application, domain | SQL, external clients |
 
 - `pkg/` is a public boundary for other modules; keep application-internal layer types out of it.
 - Check by hand: reading imports or `go list -deps ./...` must never show an inner package importing an outer one.

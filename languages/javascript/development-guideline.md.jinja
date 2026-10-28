@@ -30,7 +30,7 @@
 
 - Dropped rejection: callback pyramids or `.then` chains that lose a rejection => flatten into `async`/`await` and handle or propagate every rejection.
 - Truthiness bug: a check that treats `0`, `""`, or `NaN` as missing => compare explicitly, or use `??`/`?.`.
-- Mutated argument: a function that changes an object or array it was given => return a new value instead.
+- Mutated argument: a function that changes an object or array its caller does not expect to change => return a new value instead.
 - Catch-all module: a `utils.js` collecting unrelated helpers => move each helper to the module named for its concept.
 - Re-export barrel: a barrel file re-exporting a whole folder and hiding cycles => import from the owning module.
 - Extended built-in: an application adding to a built-in prototype => write a standalone function or a wrapper instead.

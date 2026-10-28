@@ -12,6 +12,7 @@ When a language's established idiom contradicts a principle below, follow the id
 
 - Let the project's formatter own the format: run the formatter declared in [context.md's Supporting Tools](../.attunic/context.md#supporting-tools), if any; its check mode must report no file to change.
 - Follow `.editorconfig` for indentation, line endings, charset, and final newline; it wins over editor and community defaults (e.g. tab indentation where a language has no official rule).
+- Use ASCII punctuation and straight quotes by default in code, comments, and docs; use non-ASCII characters only where the content requires them (names, quoted text, symbols with no ASCII form, box-drawing in layout trees).
 - Order file content top-down: high-level intent first, details descending (newspaper metaphor).
 - Keep related things close: declarations near first use, callers near callees.
 {%- if license != 'None' and license_header != 'None' %}

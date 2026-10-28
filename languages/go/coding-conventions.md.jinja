@@ -57,5 +57,5 @@
 - Run goroutines that share a lifetime and must fail together under one group that waits for all and returns the first error, rather than a `sync.WaitGroup` plus a hand-rolled error slice.
 - The sender closes a channel, never the receiver; closing one with a live sender still writing to it panics.
 - Keep package-level state immutable; mutable package state read or written from more than one goroutine is a defect.
-- Since Go 1.22 each `for` iteration owns its own loop variables; add a `v := v` capture only when the module still targets an older Go version.
+- Copy a loop variable (`v := v`) only where the `go` directive in `go.mod` still selects one variable shared by every iteration; otherwise each iteration already owns its own.
 <!-- Project-specific / Go-Concurrency -->

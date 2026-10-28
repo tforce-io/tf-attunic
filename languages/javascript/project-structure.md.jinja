@@ -46,11 +46,11 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 
 | Layer | Typical path | Depends on | Must never contain |
 |-------|--------------|------------|--------------------|
-| domain | src/domain | itself | Express, database drivers, `fetch`, `process.env` |
+| domain | src/domain | itself | HTTP frameworks, database drivers, `fetch`, `process.env` |
 | application | src/application | domain | database access, HTTP handlers |
 | adapters | src/adapters | application (its ports), domain | business rules |
 | main | src/main.js | application, adapters, domain | business rules |
 
 - Declare ports as object shapes documented with JSDoc `@typedef` in the domain or application layer; adapter modules implement them.
-- Check by hand: read the imports of changed files; a domain module importing Express, a database driver, `fetch`, or `process.env` is a violation.
+- Check by hand: read the imports of changed files; a domain module importing an HTTP framework, a database driver, `fetch`, or `process.env` is a violation.
 <!-- Project-specific / JavaScript-Layer Dependencies -->

@@ -9,7 +9,7 @@ Project-specific rules supplement the template rules; put them below the `<!-- P
 | File | When to read |
 |------|--------------|
 | [.agents/attunic-protocol.md](.agents/attunic-protocol.md) | Before reading or writing `.attunic/` files: project memory files, read order, write rules |
-| [.agents/coding-conventions.md](.agents/coding-conventions.md) | Before writing or reviewing code: naming, formatting, comments, errors, concurrency, plus per-language and per-framework conventions |
+| [.agents/coding-conventions.md](.agents/coding-conventions.md) | Before writing or reviewing code: formatting, naming, packages, types, functions, comments, errors, concurrency, plus per-language and per-framework conventions |
 | [.agents/development-guideline.md](.agents/development-guideline.md) | Before any coding task: exploring, writing, security, fixing, refactoring and campaigns, testing, common mistakes, checklist, plus per-language and per-framework sections |
 {%- if license != 'None' and license_header != 'None' %}
 | [.agents/license-header.md](.agents/license-header.md) | Before creating a code file: license header to put at its top |
@@ -38,7 +38,7 @@ Important rules when working with the project; these must be strictly followed:
 - Never trust recall: verify every API, function, option, and config key against this codebase and installed dependency versions.
 - Respect template ownership: never edit content above a `Project-specific` marker, move or duplicate a marker, or edit `.copier-answers.yml`; `copier update` owns them.
 - Confirm irreversible actions: ask before deleting data or files outside the change, rewriting history, force-pushing, publishing, or migrating shared environments.
-- Commit only on request: never create a commit unless the user asks for one.
+- Commit and push only on request: never create a commit or push unless the user asks for it.
 - Report fully: say what ran and what didn't, what was skipped or assumed, and what was found along the way; never present unverified success or a stub or placeholder as finished; name anything that could not run with its remaining risk.
 <!-- Project-specific / Core Rules -->
 

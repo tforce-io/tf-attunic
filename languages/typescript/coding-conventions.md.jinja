@@ -1,5 +1,7 @@
 ## TypeScript
 
+TypeScript files also follow the JavaScript section; where the two conflict, the rules in this section win.
+
 ### Formats
 
 - Keep imports single-line-per-module and grouped in sections: runtime built-ins, then third-party, then local, then relative, separated by a blank line.
@@ -15,7 +17,7 @@
 ### Packages
 
 - Use `import type` (or `import { type ... }`) for type-only imports, so erased imports never turn into runtime dependencies; keep `verbatimModuleSyntax` enabled, and propose it where it is off instead of turning it on unasked.
-- Use `paths` aliases only where the project defines them, written relative to the tsconfig; TypeScript 6 deprecates `baseUrl` and TypeScript 7 removes it.
+- Use `paths` aliases only where the project defines them, written relative to the tsconfig; never introduce `baseUrl` for them.
 - Keep `.d.ts` files for ambient declarations; types for your own code live beside that code.
 <!-- Project-specific / TypeScript-Packages -->
 

@@ -15,7 +15,7 @@
 ### Packages
 
 - Ship a module as a `.psm1` plus a `.psd1` manifest that lists `FunctionsToExport`; never export with a wildcard.
-- Split `Public/` (one file per exported function) from `Private/` (internal helpers); export only the public folder.
+- Split exported functions (`Public/`) from internal helpers (`Private/`); export only the public folder.
 - Keep a function private unless another script or module is meant to call it.
 <!-- Project-specific / PowerShell-Packages -->
 

@@ -24,12 +24,12 @@
 
 ### Types
 
-- Describe cross-module data shapes with JSDoc `@typedef`, or move the module to TypeScript.
+- In a JavaScript file, describe cross-module data shapes with JSDoc `@typedef`, or move the module to TypeScript.
 <!-- Project-specific / JavaScript-Types -->
 
 ### Functions
 
-- Never mutate arguments; prefer `map`, `filter`, spread, `toSorted`, `toSpliced`, `with`.
+- Prefer non-mutating operations (`map`, `filter`, spread, `toSorted`, `toSpliced`, `with`) over mutating an argument.
 - Iterate with `for...of`; never `for...in` over arrays or objects (string indices, prototype chain).
 - Use `async`/`await`; do not mix callbacks and promises in the same code path.
 <!-- Project-specific / JavaScript-Functions -->

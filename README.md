@@ -9,16 +9,18 @@ This `README.md` is for the template itself; it won't be copied into downstream 
 Generate a new project:
 
 ```sh
-copier copy --trust gh:tforce-io/tf-attunic .
+copier copy gh:tforce-io/tf-attunic .
 ```
+
+Then fill in `.attunic/context.md`; the template is ready to use.
 
 Update an existing project that was generated from this template:
 
 ```sh
-copier update --trust
+copier update
 ```
 
-If an update re-asks a question you have never answered before (e.g. `languages` was introduced as a multi-select replacing the old single-choice `language`), answer it; the new answer is stored in `.copier-answers.yml` for future updates. Projects generated before the multi-select change carry a single-choice `language` answer; their first update re-asks `languages`, after which the old `language` key is dropped from the answers file.
+If an update asks a question you have never answered before, answer it; the new answer is stored in `.copier-answers.yml` for future updates.
 
 `copier update` resolves template versions from [PEP 440](https://peps.python.org/pep-0440/)-compliant Git tags on this repository (e.g. `v1.0.0`). A safe downstream update requires all of these:
 
@@ -42,8 +44,8 @@ To customize the generated files to follow your project, add your rules below th
 | `languages`         | Language(s) of the project; multi-select                  |
 | `frameworks`        | Framework(s) of the project; multi-select; shown only when a selected language has supported frameworks |
 | `license`           | Open source license (see [Appendix](#supported-licenses)) or `None` |
-| `copyright_holder`  | Copyright holder name                                     |
-| `copyright_year`    | Copyright year                                            |
+| `copyright_holder`  | Copyright holder name (skipped if `license` is `None`)    |
+| `copyright_year`    | Copyright year (skipped if `license` is `None`)           |
 | `license_header`    | License header style for code files: `Full`, `SPDX`, or `None` (skipped if `license` is `None`) |
 
 ## Template Layout
@@ -91,7 +93,7 @@ Generated projects carry a markdown-only project memory in `.attunic/`, adapted 
 
 Shared/general sections live in the root templates; each root template `{% include %}`s the language fragment of every language selected in the multi-select `languages` answer (in the question's choices order). These fragments are never emitted as project files.
 
-TypeScript inherits JavaScript's rules: when `typescript` is selected without `javascript`, the `.gitignore.jinja`, `coding-conventions.md.jinja`, and `development-guideline.md.jinja` fragments of `javascript` are included right before the TypeScript ones; the `typescript` fragments hold only what TypeScript adds.
+TypeScript inherits JavaScript's rules: when `typescript` is selected without `javascript`, the `.gitignore.jinja`, `coding-conventions.md.jinja`, and `development-guideline.md.jinja` fragments of `javascript` are included right before the TypeScript ones; the `typescript` fragments hold only what TypeScript adds or overrides, and state that their rules win where the two conflict.
 
 ### Framework Fragments (`frameworks/<framework>/`)
 
@@ -124,12 +126,12 @@ Each root template `{% include %}`s the framework fragment of every framework se
 
 ## Maintain the Template
 
-- Keep the marker convention from the [Customize](#customize) section above in every new template file, including the language fragments in `languages/<lang>/`.
+- Keep the marker convention from the [Customize](#customize) section above in every new Markdown template, including the fragments in `languages/<lang>/` and `frameworks/<framework>/`; files without sections, such as the license renderers, take none (see `AGENTS.md`'s Coding Conventions).
 - Keep the marker text byte-identical across versions; Copier matches on this line as diff context, so even a whitespace or punctuation change can break the anchor and produce spurious conflicts.
 - Only make changes to content above the `<!-- Project-specific -->`, `<!-- Project-specific / ... -->`, or `# Project-specific` marker in each section.
-- To add a new language, create `languages/<lang_code>/` with all the fragments listed above and add `<lang_code>` to the `languages` question's choices (an array multiselect) in `copier.yml`; declare its owner-defined indentation in its `.editorconfig.jinja` and list it under [Indentation](#indentation).
-- To add a new framework, create `frameworks/<framework_code>/` with all the fragments listed above and add `<framework_code>` under each supported language block in the `frameworks` question's dynamic choices in `copier.yml` (a framework supporting several languages is listed under each of them; see [Appendix](#supported-frameworks)).
-- To add a new license, update `copier.yml` (choices, `_exclude` branches), create the `licenses/<id>.jinja` and `licenses/<id>-notice.jinja` fragments, update the `LICENSE.jinja` / `COPYING.jinja` includes, and update the README tables (Questions, License File Mapping, Supported Licenses) in the same commit.
+- To add a new language, create `languages/<lang_code>/` with all the fragments listed above and add `<lang_code>` to the `languages` question's choices (an array multiselect) in `copier.yml`; declare its owner-defined indentation in its `.editorconfig.jinja` and list it under [Indentation](#indentation); add its line-comment token to `line_comment_tokens` in `.agents/license-header.md.jinja` if it has line comments; and add the code to [Supported Languages](#supported-languages) and to the language lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
+- To add a new framework, create `frameworks/<framework_code>/` with all the fragments listed above and add `<framework_code>` under each supported language block in the `frameworks` question's dynamic choices in `copier.yml` (a framework supporting several languages is listed under each of them; for a language without frameworks yet, also extend the question's `when` condition and its choices, which are an `if`/`elif` chain today); then add the code to [Supported Frameworks](#supported-frameworks) and to the framework lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
+- To add a new license, update `copier.yml` (choices, `_exclude` branches), create the `licenses/<id>.jinja` and `licenses/<id>-notice.jinja` fragments, update the `LICENSE.jinja` / `COPYING.jinja` includes, and update the README's License File Mapping table and Supported Licenses list, the license list in `AGENTS.md`'s Technical Specifications, and the license names in the `LICENSE.jinja` / `COPYING.jinja` Layout comments of both `AGENTS.md` and this README, in the same commit.
 - Never move or re-point a published tag (no force-push to tags); ship corrections as a new tag instead.
 
 ## Appendix

@@ -84,6 +84,34 @@ frameworks:
     {%- endif %}
   default: []
 
+charset:
+  type: str
+  help: "Which charset should .editorconfig declare for all files?"
+  choices:
+    - utf-8
+    - utf-8-bom
+    - latin1
+    - utf-16be
+    - utf-16le
+  default: utf-8
+
+indent_style:
+  type: str
+  help: "Which indent style should .editorconfig declare for files whose owner defines none?"
+  choices:
+    - tab
+    - space
+  default: tab
+
+indent_size:
+  type: int
+  help: "Which indent size should .editorconfig declare for files whose owner defines none?"
+  default: 2
+  validator: >-
+    {% if indent_size < 1 %}
+    Use a whole number of 1 or more.
+    {% endif %}
+
 license:
   type: str
   help: "Which open source license do you want to use?"

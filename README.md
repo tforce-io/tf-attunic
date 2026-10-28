@@ -43,6 +43,9 @@ To customize the generated files to follow your project, add your rules below th
 | `project_name`      | Name of the generated project                             |
 | `languages`         | Language(s) of the project; multi-select                  |
 | `frameworks`        | Framework(s) of the project; multi-select; shown only when a selected language has supported frameworks |
+| `charset`           | `.editorconfig` `[*]` charset: `utf-8` (default), `utf-8-bom`, `latin1`, `utf-16be`, or `utf-16le` |
+| `indent_style`      | `.editorconfig` `[*]` indent style for files whose owner defines none: `tab` (default) or `space` (see [Appendix](#indentation)) |
+| `indent_size`       | `.editorconfig` `[*]` indent size for files whose owner defines none: a whole number of 1 or more, `2` by default (see [Appendix](#indentation)) |
 | `license`           | Open source license (see [Appendix](#supported-licenses)) or `None` |
 | `copyright_holder`  | Copyright holder name (skipped if `license` is `None`)    |
 | `copyright_year`    | Copyright year (skipped if `license` is `None`)           |
@@ -170,7 +173,7 @@ Each root template `{% include %}`s the framework fragment of every framework se
 
 ### Indentation
 
-Reference for `.editorconfig`: every `indent_style` or `indent_size` a language or format owner defines is declared explicitly; Markdown is declared with spaces by this template's choice, matching the Markdown it generates; everything else falls back to the `[*]` default (`indent_style = tab`, `indent_size = 2`), a proposal of this template.
+Reference for `.editorconfig`: every `indent_style` or `indent_size` a language or format owner defines is declared explicitly; Markdown is declared with spaces by this template's choice, matching the Markdown it generates; everything else falls back to the `[*]` default set by the `indent_style` and `indent_size` answers; the values marked (default) below are their defaults (`tab`, `2`), a proposal of this template.
 
 | Files | `indent_style` | `indent_size` | Defined by |
 |-------|----------------|---------------|------------|

@@ -15,7 +15,7 @@ A brief overview of the ingredients used for developing this project. These are 
 - Build system: None.
 - Test runner: None.
 - Linter: None.
-- Supported languages: `go`, `javascript`, `powershell`, `python`, `rust`, `shell`, `typescript`, `text`.
+- Supported languages: `css`, `go`, `javascript`, `powershell`, `python`, `rust`, `shell`, `typescript`, `text`.
 - Supported frameworks: `angular`, `react`.
 - Supported licenses: `MIT`, `ISC`, `BSD-2-Clause`, `BSD-3-Clause`, `0BSD`, `Apache-2.0`, `MPL-2.0`, `GPL-3.0-only`, `GPL-3.0-or-later`, `LGPL-3.0-only`, `LGPL-3.0-or-later`, `AGPL-3.0-only`, `AGPL-3.0-or-later`, or `None`; license header style in code files: `Full`, `SPDX`, or `None` (skipped when `license` is `None`).
 - Verification: manual, by running `copier copy` / `copier update` into a scratch project and inspecting the generated files (see [Supporting Tools](#supporting-tools)).
@@ -157,7 +157,6 @@ Facts about the project which have been confirmed. They may look wrong or contra
 | Common Mistakes and Checklist (in [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja), plus Anti-Loopholes in [AGENTS.md.jinja](AGENTS.md.jinja), and this file) are for verification: some of their points restate rules from other sections on purpose; a restated point is emphasis, not duplication, so never flag or remove it as duplication. | The rule sections say what to do; these lists check that it was done: Anti-Loopholes while working, when a rationalization surfaces, Common Mistakes and Checklist before completion; restating a rule there marks it as important enough to check again. |
 | In downstream projects, exceptions and deferrals are logged as entries under `memory.md`'s Decisions for later review; it's the user's discretion to update `context.md`'s Confirmed Facts, agents never move them. | `memory.md` is a non-binding log, while Confirmed Facts are binding and `context.md` belongs to the user (see the Write Rules in [.agents/attunic-protocol.md.jinja](.agents/attunic-protocol.md.jinja)). |
 | The `Layout` sections of the language/framework project-structure fragments are reference layouts: they may name tool-specific files (e.g. `uv.lock`, `clippy.toml`, `deny.toml`, each package manager's lockfile); every other part of the language/framework guides stays tool-neutral. | A reference layout lists files a project may already have so agents recognize them; listing one doesn't pick the tool, which stays the downstream project's choice. |
-| The templates write the dependency concept as *architecture layer*; a bare *layer* is left to its display and styling meanings (e.g. CSS cascade layers); the `Layer Dependencies` headings, anchors, and markers keep their name. | A bare *layer* commonly reads as a display or graphics layer; renaming the headings and markers would break the marker contract on `copier update`. |
 
 ## Coding Conventions
 
@@ -186,7 +185,7 @@ Template authoring conventions for this repository:
 - Name markers uniquely after the section they close: `<!-- Project-specific / <Section> -->`.
 - Name a fragment's markers `<!-- Project-specific / <Name>-<Section> -->`, where `<Name>` is the language or framework name as in its heading (e.g. `Go-Errors`, `React-Hooks`); spell `<Section>` as its heading does, spaces included.
 - Name template files after the generated file with the `.jinja` suffix (e.g. `AGENTS.md.jinja` renders `AGENTS.md`).
-- Name language folders with the lowercase codes listed in the `languages` choices in `copier.yml`: `go`, `javascript`, `powershell`, `python`, `rust`, `shell`, `typescript`, `text`.
+- Name language folders with the lowercase codes listed in the `languages` choices in `copier.yml`: `css`, `go`, `javascript`, `powershell`, `python`, `rust`, `shell`, `typescript`, `text`.
 - Name framework folders with the lowercase codes listed in the `frameworks` choices in `copier.yml`: `angular`, `react`.
 - Name license fragments `<license-id>.jinja` and `<license-id>-notice.jinja` (e.g. `mit.jinja`, `mit-notice.jinja`).
 - Never number or version a name instead of replacing the original (`coding-conventions-v2.md.jinja`, `_new`, `_copy`).

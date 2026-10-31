@@ -4,16 +4,14 @@
 
 The principles below are for all languages. They use camelCase for demonstration purposes; adapt casing to the language's style.
 
-Language and framework sections refine them; on conflict, follow the priority order in [AGENTS.md's Core Rules](../AGENTS.md#core-rules).
-
-When a language's established idiom contradicts a principle below, follow the idiom even when its section doesn't name it (e.g. PowerShell's `-Force` switch parameter, Python's keyword-only `reverse=True` flag).
+When a language's established idiom contradicts a principle below, follow the idiom even when its section doesn't name it (e.g. PowerShell's `-Force` switch parameter).
 
 ### Formats
 
 - Let the project's formatter own the format: run the formatter declared in [context.md's Supporting Tools](../.attunic/context.md#supporting-tools), if any; its check mode must report no file to change.
 - Follow `.editorconfig` for indentation, line endings, charset, and final newline; it wins over editor and community defaults (e.g. {{ indent_style }} indentation where a language has no official rule).
 - Use ASCII punctuation and straight quotes by default in code, comments, and docs; use non-ASCII characters only where the content requires them (names, quoted text, symbols with no ASCII form, box-drawing in layout trees).
-- Order file content top-down: high-level intent first, details descending (newspaper metaphor).
+- Order file content top-down: high-level intent first, details descending.
 - Keep related things close: declarations near first use, callers near callees.
 {%- if license != 'None' and license_header != 'None' %}
 - Start every new code file, including test files, with the license header defined in [license-header.md](license-header.md).
@@ -29,12 +27,10 @@ When a language's established idiom contradicts a principle below, follow the id
 - Case acronyms consistently, following the language's convention; never mix forms in one codebase (`userId` beside `userID`).
 - Name booleans as predicates (`isReady`, `hasItems`, `canRetry`), never as negations (`isNotReady`).
 - Avoid magic numbers or strings; use a named constant for the meaning, or attach an inline *why* comment.
-- Avoid noise: names that differ only by noise words or loose abbreviations.
 - Never write a vague name (`data`, `info`, `obj`, `temp`, `result`) when a domain name exists; a loop index, a lambda or callback parameter, a caught error, or an established short form may stay short; nothing else may.
 - Never write a bare-verb function with no object (`handle`, `process`); a method's receiver counts as its object (`file.close()`).
 - Never number or version a name instead of replacing the original (`user2`, `dataV2`, `_new`, `_final`, `_copy`).
 - Never suffix a type with a noise word (`Manager`, `Helper`, `Util`) or name it after a verb (`ProcessOrder`).
-- Never encode a type or scope into a name (`strName`, `arrItems`, `iCount`).
 <!-- Project-specific / Names -->
 
 ### Packages
@@ -46,7 +42,7 @@ When a language's established idiom contradicts a principle below, follow the id
 ### Types
 
 - Avoid unnecessary abstraction: introduce an interface, trait, protocol, or abstract base only once two implementations exist; a test double counts as one.
-- Assign object fields in their declaration order where possible.
+- Assign object fields in their declaration order, unless evaluation order matters (a value depends on another, or a later entry overrides an earlier one).
 <!-- Project-specific / Types -->
 
 ### Functions
@@ -55,19 +51,19 @@ When a language's established idiom contradicts a principle below, follow the id
 - Prefer early exits for invalid or terminal cases over nested conditionals.
 - Keep positional parameters to three or fewer; past that, group related values into one parameter object.
 - Never switch behavior on a boolean parameter; write two functions or take a small enum.
-- Never mutate an input the caller does not expect to change; return a new value instead, and when mutation is the contract (an in-place sort, a buffer fill), make it visible in the name or signature.
+- Never mutate an input the caller does not expect to change; return a new value instead.
 <!-- Project-specific / Functions -->
 
 ### Comments
 
-- Document every exported identifier (constants, vars, types, methods, functions) with a doc comment stating its contract: what it is or does, and what a caller must know.
-- Write inline comments explaining *why*, not *what*; the code already shows what it does.
+- Document every exported identifier with a doc comment stating its contract: what it is or does, and what a caller must know.
+- Write inline comments explaining *why*, not *what*.
 - Cut filler and hedging from comments, and articles from inline comments; keep IDs, numbers, links, and warnings whole.
 - Keep inline comments short: one to three lines; longer explanations belong in a doc file the comment points to, or an extracted function.
 - Keep comments up to date with the code: a stale comment is worse than no comment.
 - Keep comments about: non-obvious constraints, legal requirements, algorithmic tradeoffs, external system quirks, warnings of consequences, and TODOs with context and ownership.
-- Never write comment noise: redundant restatements, change journals, attributions, banner or position markers, closing-brace labels, and commented-out code; in existing code, report noise instead of deleting it, unless the task is a cleanup.
-- Never delete or reword comments a tool reads (shebangs, encoding lines, license and SPDX headers, build and compiler directives, suppressions, doctests, generated-file headers). An unexplained suppression is a finding, not a comment to delete.
+- Never write comment noise: redundant restatements, change journals, attributions, banner or position markers, closing-brace labels, and commented-out code.
+- Never delete or reword comments a tool reads (shebangs, encoding lines, license and SPDX headers, build and compiler directives, suppressions, doctests, generated-file headers).
 <!-- Project-specific / Comments -->
 
 ### Errors
@@ -77,7 +73,6 @@ When a language's established idiom contradicts a principle below, follow the id
 - Model an expected outcome (not found, declined, empty) as a value, an optional, or a result type, never a sentinel value (`-1`, `""`); reserve the language's error mechanism for genuine failures.
 - Reserve crashes (panic, abort, process exit) for programmer errors the caller cannot act on; never crash library code on an expected failure.
 - Write user-facing error messages as actionable sentences; never expose internals (stack traces, queries, file paths) in them.
-- Make retry, fallback, timeout, and cancellation behavior explicit.
 - Never swallow errors or catch broadly without handling, wrapping, or propagating with context.
 <!-- Project-specific / Errors -->
 

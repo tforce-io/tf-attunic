@@ -24,7 +24,7 @@ A brief overview of the ingredients used for developing this project. These are 
 
 Important rules when working with the project; these must be strictly followed:
 
-- Follow instructions: anything explicitly requested, plus the instructions in [Exploring](#exploring), [Writing](#writing), [Security](#security), [Fixing](#fixing), [Refactoring](#refactoring), [Testing](#testing), [Common Mistakes](#common-mistakes), [Checklist](#checklist), [Pull Request Guideline](#pull-request-guideline), and [Pull Request Checklist](#pull-request-checklist).
+- Follow instructions: anything explicitly requested, plus the instructions in [Coding Conventions](#coding-conventions), [Naming Conventions](#naming-conventions), [Exploring](#exploring), [Writing](#writing), [Security](#security), [Fixing](#fixing), [Refactoring](#refactoring), [Testing](#testing), [Common Mistakes](#common-mistakes), [Checklist](#checklist), [Pull Request Guideline](#pull-request-guideline), and [Pull Request Checklist](#pull-request-checklist).
 - Resolve conflicts by priority: user requests, local idiomatic style (unless unsafe or broken), the rules in this file.
 - Read rule strength from its verb: a rule stated as a plain command (Keep, Use, Write, ...) is mandatory, and so are Always and Must; Never, Avoid, and Do not (don't) are mandatory prohibitions; Prefer is a default, deviate only with a stated reason.
 - Plan first: plan by default, unless the user explicitly says to skip it; when the change spans more than one file, share the plan and wait for the user's approval before the first edit.
@@ -32,9 +32,9 @@ Important rules when working with the project; these must be strictly followed:
 - Understand the problem: read the task and the code it touches, trace the real flow end to end.
 - Follow the simple design priorities: tests pass, no duplicated knowledge, intent expressed, fewest elements.
 - Avoid common loopholes: stop and reassess when you catch yourself thinking any of the rationalizations in [Anti-Loopholes](#anti-loopholes).
-- Write clean code: safe and maintainable, per [Coding Conventions](#coding-conventions) and [Naming Conventions](#naming-conventions).
 - Never trust recall: verify every API, function, option, and config key against this codebase and installed dependency versions.
 - Confirm irreversible actions: ask before deleting files outside the change, rewriting history, force-pushing, publishing, or moving a published tag.
+- Verify every change: every changed behavior is checked by something that runs; without a test harness, as in this repository, the smallest check that runs (a `copier copy` render into a scratch directory) stands in for each test a rule asks for.
 - Commit and push only on request: never create a commit or push unless the user asks for it.
 - Report fully: say what ran and what didn't, what was skipped or assumed, and what was found along the way; never present unverified success or a stub or placeholder as finished; name anything that could not run with its remaining risk.
 
@@ -150,7 +150,8 @@ Facts about the project which have been confirmed. They may look wrong or contra
 | Migration is skipped; downstream data loss is acceptable. | Project is in early development; skipping migration makes development faster. |
 | `.editorconfig`'s `[*]` default is set by the `charset`, `indent_style`, and `indent_size` answers, whose defaults (`utf-8`, `tab`, `2`) are this template's proposal; the indentation default applies to anything whose owner defines no indentation, so every `indent_style` or `indent_size` a language or format owner defines (official style guide, official formatter, or spec) must be declared explicitly in its own section, even when it equals the default. | Owner rules take priority, and declaring them explicitly prevents mistakes and keeps them intact when a downstream project changes the default. |
 | License text in [./licenses](./licenses) is safe to skip checking for most tasks. | It is canonical license text. |
-| In downstream projects, exceptions and deferrals, known-failing tests included, are logged as entries under `memory.md`'s Decisions for later review; it's the user's discretion to update `context.md`'s Confirmed Facts, agents never move them. | `memory.md` is a non-binding log, while Confirmed Facts are binding and `context.md` belongs to the user (see the Write Rules in [.agents/attunic-protocol.md.jinja](.agents/attunic-protocol.md.jinja)). |
+| Common Mistakes and Checklist (in [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja), plus Anti-Loopholes [AGENTS.md.jinja](AGENTS.md.jinja), and this file) are for verification: some of their points restate rules from other sections on purpose; a restated point is emphasis, not duplication, so never flag or remove it as duplication. | The rule sections say what to do; these lists check that it was done: Anti-Loopholes while working, when a rationalization surfaces, Common Mistakes and Checklist before completion; restating a rule there marks it as important enough to check again. |
+| In downstream projects, exceptions and deferrals are logged as entries under `memory.md`'s Decisions for later review; it's the user's discretion to update `context.md`'s Confirmed Facts, agents never move them. | `memory.md` is a non-binding log, while Confirmed Facts are binding and `context.md` belongs to the user (see the Write Rules in [.agents/attunic-protocol.md.jinja](.agents/attunic-protocol.md.jinja)). |
 | The `Layout` sections of the language/framework project-structure fragments are reference layouts: they may name tool-specific files (e.g. `uv.lock`, `clippy.toml`, `deny.toml`, each package manager's lockfile); every other part of the language/framework guides stays tool-neutral. | A reference layout lists files a project may already have so agents recognize them; listing one doesn't pick the tool, which stays the downstream project's choice. |
 
 ## Coding Conventions
@@ -186,7 +187,7 @@ Template authoring conventions for this repository:
 
 ## Exploring
 
-When exploring for a solution to the task, try to reuse existing code following this priority order and stop at the first one that is satisfied; this step is needed to make the project easy to maintain and understandable in the long run:
+Reuse before writing new code; go through these in order and stop at the first that applies:
 
 - Does it already exist in this codebase? Reuse the helper, util, or pattern that's already here; don't rewrite it.
 - Does a closely matching implementation that needs adaptation exist in this codebase? Report it and propose extending it before writing anything new.
@@ -194,7 +195,6 @@ When exploring for a solution to the task, try to reuse existing code following 
 - Does a native platform feature cover it? Use it.
 - Does an already-installed dependency solve it? Use it.
 - Would a well-maintained new dependency solve it? Propose it with its name, version, and license before adding it; its license must be compatible with the project's.
-- If none of the above applies, writing new code is fine.
 
 ## Writing
 
@@ -204,13 +204,11 @@ When writing code, follow these rules:
 - Make targeted edits, never whole-file regeneration; every changed line must trace to the request.
 - Keep one job per unit at every scale (function, type, module); if describing its job needs "and", split it. Parsing, domain rules, persistence, external calls, presentation, and wiring stay in separate homes.
 - Find every usage of a template variable, marker, section anchor, or file you change, by text search, including `README.md` and this file; make sure a rename or behavior change doesn't introduce a new bug or leave a bug half-fixed.
-- Report unrelated findings; never do drive-by renames, reformats, or dependency bumps.
-- Prefer surrounding code's local, idiomatic style over general rules unless it is unsafe or broken; see the priority order in [Core Rules](#core-rules).
+- Report unrelated findings instead of fixing them.
 - Remove what your change orphaned (unused fragments, variables, sections, files).
 - Update the docs that describe changed behavior (`README.md`, this file) in the same change.
 - Keep this file in sync with the templates it is an instance of (`AGENTS.md.jinja` and the `.agents/` and `.attunic/` templates): when a change alters a rule or section this file mirrors, apply the same change here in the same change, adapted to template development, or report why it doesn't apply.
 - Treat `copier.yml` question names, marker text and placement, and generated file paths as contracts with downstream projects; ask before breaking one, and call out every break, since migration is skipped (see [Confirmed Facts](#confirmed-facts)).
-- When moving files, use the source control move command; when the user asks for a commit, keep content edits out of the move's commit, since Git detects renames by content similarity.
 - Never hand-edit rendered output to verify a change; change the template and render again.
 
 ## Security
@@ -222,7 +220,7 @@ When writing code or verifying changes, follow these rules:
 - Perform input validation at trust boundaries. Boundaries are external APIs, databases, file systems, clocks, queues, UI events, network calls, subprocesses, generated code.
 - Prefer allowlists over denylists when validating input, permissions, and file types.
 - Grant least privilege: the narrowest permissions, token scopes, file modes, and network exposure that work.
-- Never hand-roll crypto or auth; for crypto, auth, parsing, and serialization, prefer the standard library or a well-maintained, established library.
+- Never hand-roll crypto or auth; use the standard library or a well-maintained, established library.
 - Never log secrets, tokens, and sensitive data in error messages and logs.
 - Never hardcode secrets or commit them to the repository; read them from the environment or a secret store.
 
@@ -231,7 +229,7 @@ When writing code or verifying changes, follow these rules:
 When fixing issues, follow these rules:
 
 - Fix the root cause, not just the symptom.
-- Write a test that reproduces the bug first, watch it fail, then make it pass; without a test harness, as in this repository, reproduce it with the smallest check that runs (a `copier copy` render into a scratch directory) and report that check.
+- Write a test that reproduces the bug first, watch it fail, then make it pass.
 - Search for the same defect elsewhere and report other occurrences; fix them only when the task covers them.
 
 ## Refactoring
@@ -247,14 +245,15 @@ When restructuring code without changing its behavior, follow these rules:
 When writing tests, follow these rules:
 
 - Write one concept per test; split a test whose name needs "and"; prefer behavior-focused names.
-- Write at least three deterministic expectations for each changed behavior, spread across tests as needed (e.g. the expected case, a boundary, a failure), and make sure at least one fails against the unchanged code.
+- Write at least three deterministic expectations for each changed behavior, spread across tests as needed, and make sure at least one fails against the unchanged code.
 - Cover boundaries and failure paths (empty, null, limits, invalid input, errors), not just the happy path.
-- Keep the three parts of a test visibly distinct: arrange, act, assert; this is about code structure, don't place comments to distinguish these parts.
-- Keep tests F.I.R.S.T.: fast, independent, repeatable, self-validating, timely.
+- Keep arrange, act, and assert visibly distinct through code structure, not comments.
 - Keep results deterministic: no sleeps or timing guesses; unit tests make no real network, filesystem, or clock call, and integration tests use only isolated, disposable resources (temp directories, local containers).
+- Keep tests independent: each test sets up its own state and passes alone or in any order; never rely on another test's leftovers or on shared mutable state.
+- Keep unit tests fast enough to run after every change; slow work belongs in integration tests.
 - Assert on outcomes, not implementation.
 - Treat a flaky test as a bug to fix; never rerun it until it passes.
-- Treat a test that already failed before your change as a known failure only once the user confirms it; then propose recording it in [Confirmed Facts](#confirmed-facts) with the reason.
+- Treat a test that already failed before your change as a known failure only once the user confirms it.
 - Never weaken, skip, or delete failing tests: restore the test, fix the code, or report the conflict and stop.
 
 ## Common Mistakes
@@ -302,15 +301,11 @@ Before considering any coding task complete, verify the following to ensure noth
 - [ ] The task's requirements are fulfilled; acceptance criteria (if any) are verified against real behavior, not assumed from passing tests.
 - [ ] Changed templates render with `copier copy` into a scratch directory, and the generated files are inspected (see [Supporting Tools](#supporting-tools)).
 - [ ] Changed code files follow project convention (see [Coding Conventions](#coding-conventions) and [Naming Conventions](#naming-conventions)).
-- [ ] Includes respect [Layer Dependencies](#layer-dependencies), except its [Deliberate Exceptions](#deliberate-exceptions).
-- [ ] Changes are scoped to the task, unrelated fixes are reported, not bundled in.
 - [ ] The complete final diff has been read line by line; every change is intentional and understood.
 - [ ] Changes are reviewed for security requirements (see [Security](#security)).
 - [ ] Changes are reviewed for common mistakes (see [Common Mistakes](#common-mistakes)).
 - [ ] Every usage of changed template variables, markers, section anchors, and files is checked; no rename or behavior change left half-applied (see [Writing](#writing)).
-- [ ] No secrets, tokens, or sensitive payloads in logs, error messages, or hardcoded values.
 - [ ] No unused code, debug prints, or commented-out blocks left behind.
-- [ ] Docs describing changed behavior are updated.
 - [ ] Template rules and sections this file mirrors are in sync with their changes, or the reason they don't apply is reported (see [Writing](#writing)).
 - [ ] New or moved top-level files and folders are reflected in [Layout](#layout) (prompt the user per its rule).
 - [ ] Lasting choices and confirmed facts are recorded in [Confirmed Facts](#confirmed-facts), each once the user explicitly confirms it (unconfirmed ones are named in the report).

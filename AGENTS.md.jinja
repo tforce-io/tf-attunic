@@ -1,8 +1,6 @@
 # AGENTS.md - {{ project_name }}
 
-This file is the entry point for AI coding assistants working on this repository. It is an index to detailed topic guides in the `.agents/` and `.attunic/` directories. Read the `.attunic/` files in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order) before work; from `.agents/`, read the file(s) relevant to the task at hand, you don't need to load all of them.
-
-Project-specific rules supplement the template rules; put them below the `<!-- Project-specific / X -->` marker of the corresponding section, or below the final `<!-- Project-specific -->` marker for general additions.
+This file is the entry point for AI coding assistants working on this repository. It is an index to detailed topic guides in the `.agents/` and `.attunic/` directories. From `.agents/`, read the file(s) relevant to the task at hand, you don't need to load all of them.
 
 ## Topics
 
@@ -25,7 +23,7 @@ Project-specific rules supplement the template rules; put them below the `<!-- P
 
 Important rules when working with the project; these must be strictly followed:
 
-- Follow instructions: anything explicitly requested, plus the instructions in [development-guideline.md](.agents/development-guideline.md).
+- Follow instructions: anything explicitly requested, plus the instructions in [development-guideline.md](.agents/development-guideline.md) and [coding-conventions.md](.agents/coding-conventions.md).
 - Resolve conflicts by priority: user requests, project-specific rules, local idiomatic style (unless unsafe or broken), framework sections, language sections, general rules.
 - Read rule strength from its verb: a rule stated as a plain command (Keep, Use, Write, ...) is mandatory, and so are Always and Must; Never, Avoid, and Do not (don't) are mandatory prohibitions; Prefer is a default, deviate only with a stated reason.
 - Load project memory first: read the `.attunic/` files in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order) before work; [context.md's Confirmed Facts](.attunic/context.md#confirmed-facts) are binding, and a change to [context.md](.attunic/context.md) or [memory.md](.attunic/memory.md) is written only after the user explicitly confirms that change (see [attunic-protocol.md's Write Rules](.agents/attunic-protocol.md#write-rules)).
@@ -34,10 +32,10 @@ Important rules when working with the project; these must be strictly followed:
 - Understand the problem: read the task and the code it touches, trace the real flow end to end.
 - Follow the simple design priorities: tests pass, no duplicated knowledge, intent expressed, fewest elements.
 - Avoid common loopholes: stop and reassess when you catch yourself thinking any of the rationalizations in [Anti-Loopholes](#anti-loopholes).
-- Write clean code: safe and maintainable, per [coding-conventions.md](.agents/coding-conventions.md).
 - Never trust recall: verify every API, function, option, and config key against this codebase and installed dependency versions.
 - Respect template ownership: never edit content above a `Project-specific` marker, move or duplicate a marker, or edit `.copier-answers.yml`; `copier update` owns them.
 - Confirm irreversible actions: ask before deleting data or files outside the change, rewriting history, force-pushing, publishing, or migrating shared environments.
+- Verify every change: every changed behavior is checked by something that runs; without a test harness, the smallest check that runs (a script or a command) stands in for each test a rule asks for.
 - Commit and push only on request: never create a commit or push unless the user asks for it.
 - Report fully: say what ran and what didn't, what was skipped or assumed, and what was found along the way; never present unverified success or a stub or placeholder as finished; name anything that could not run with its remaining risk.
 <!-- Project-specific / Core Rules -->

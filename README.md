@@ -84,6 +84,8 @@ Generated projects carry a markdown-only project memory in `.attunic/`, adapted 
 | `memory.md`     | Pre-seeded by this template; append-only log of exceptions and deferrals |
 | `workstream.md` | On demand, when an audit or cleanup workstream starts; gitignored        |
 
+Only `context.md` and `memory.md` are committed, every other `.md` file in `.attunic/` are ignored.
+
 ### Language Fragments (`languages/<lang>/`)
 
 | Fragment                         | Included by                              |

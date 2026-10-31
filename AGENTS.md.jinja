@@ -8,11 +8,11 @@ This file is the entry point for AI coding assistants working on this repository
 |------|--------------|
 | [.agents/attunic-protocol.md](.agents/attunic-protocol.md) | Before reading or writing `.attunic/` files: project memory files, read order, write rules |
 | [.agents/coding-conventions.md](.agents/coding-conventions.md) | Before writing or reviewing code: formatting, naming, packages, types, functions, comments, errors, concurrency, plus per-language and per-framework conventions |
-| [.agents/development-guideline.md](.agents/development-guideline.md) | Before any coding task: exploring, writing, security, fixing, refactoring and campaigns, testing, common mistakes, checklist, plus per-language and per-framework sections |
+| [.agents/development-guideline.md](.agents/development-guideline.md) | Before any coding task: exploring, writing, security, fixing, refactoring and workstreams, testing, common mistakes, checklist, plus per-language and per-framework sections |
 {%- if license != 'None' and license_header != 'None' %}
 | [.agents/license-header.md](.agents/license-header.md) | Before creating a code file: license header to put at its top |
 {%- endif %}
-| [.agents/memory-template.md](.agents/memory-template.md) | When an audit or cleanup campaign starts: skeleton for `wip.md` |
+| [.agents/memory-template.md](.agents/memory-template.md) | When an audit or cleanup workstream starts: skeleton for `workstream.md` |
 | [.agents/project-structure.md](.agents/project-structure.md) | When placing a file that [context.md's Layout](.attunic/context.md#layout) doesn't cover: standard project structures of languages and frameworks |
 | [.agents/pull-request-guideline.md](.agents/pull-request-guideline.md) | Before opening or updating a pull request: guideline and checklist |
 | [.attunic/context.md](.attunic/context.md) | Every session, first: technical specifications, file layout, layer dependencies, tool usage, confirmed facts |
@@ -52,7 +52,7 @@ Stop and reassess when you catch yourself thinking:
 | "The code is bad, so a rewrite is cleaner." | Rewrites need scope, tests, migration risk control. |
 | "There are no tests, so verification is impossible." | Use the best available check and report remaining risk. |
 | "I will put it here for now." | "For now" placements become permanent. Place it correctly once. |
-| "The user asked for cleanup, so everything is in scope." | Campaign mode has a protocol: baseline, batches, wip, verification; see [Refactoring](.agents/development-guideline.md#refactoring). |
+| "The user asked for cleanup, so everything is in scope." | Workstream mode has a protocol: baseline, batches, `workstream.md`, verification; see [Refactoring](.agents/development-guideline.md#refactoring). |
 | "Clean code means following this document over local style." | Local, idiomatic style wins unless unsafe or broken. |
 | "It is only one import; the layering still basically holds." | One outward import is the violation. Layering is a rule, not a tendency. |
 | "Splitting it into services will decouple it." | A process boundary is not a boundary; shared data still couples through it. |

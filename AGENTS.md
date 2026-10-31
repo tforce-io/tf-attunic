@@ -48,12 +48,12 @@ List of important folders, files and their roles in the project:
 │   ├── coding-conventions.md.jinja       # formatting, naming, package, type, function, comment, error, and concurrency conventions; plus per-language and per-framework sections
 │   ├── development-guideline.md.jinja    # exploring/writing/security/fixing/refactoring/testing rules, common mistakes, coding checklist; plus per-language and per-framework sections
 │   ├── license-header.md.jinja           # license header to put at the top of every new code file
-│   ├── memory-template.md.jinja          # skeleton for `wip.md`, copied when an audit or cleanup campaign starts
+│   ├── memory-template.md.jinja          # skeleton for `workstream.md`, copied when an audit or cleanup workstream starts
 │   ├── project-structure.md.jinja        # standard project structures of languages and frameworks, kept for reference
 │   └── pull-request-guideline.md.jinja   # guideline and checklist run before opening/updating a PR
 ├── .attunic/                             # project memory templates, pre-seeded into generated projects
 │   ├── context.md.jinja                  # renders `context.md`: abstract, specs, layout, layer dependencies with deliberate exceptions, tools, confirmed facts
-│   └── memory.md.jinja                   # renders `memory.md`: append-only log of exceptions, deferrals, and open questions; `wip.md` created on demand (gitignored)
+│   └── memory.md.jinja                   # renders `memory.md`: append-only log of exceptions, deferrals, and open questions; `workstream.md` created on demand (gitignored)
 ├── frameworks/<framework>/               # framework fragments included by root templates for every selected framework; included, never copied
 │   ├── coding-conventions.md.jinja       # framework-specific coding conventions
 │   ├── development-guideline.md.jinja    # framework-specific development guideline
@@ -148,7 +148,7 @@ Facts about the project which have been confirmed. They may look wrong or contra
 
 | Fact | Reason |
 |------|--------|
-| This file follows the templates without the attunic protocol: this repo keeps no project memory of its own (`context.md`'s sections are inline here; no `memory.md` or `wip.md`). | This project doesn't have a complex structure; a single amalgamated `AGENTS.md` is sufficient. |
+| This file follows the templates without the attunic protocol: this repo keeps no project memory of its own (`context.md`'s sections are inline here; no `memory.md` or `workstream.md`). | This project doesn't have a complex structure; a single amalgamated `AGENTS.md` is sufficient. |
 | `AGENTS.md` and other files without the `.jinja` extension serve template development; `AGENTS.md.jinja` and every `*.jinja` file serve downstream projects, so rules written inside them are content to maintain, not instructions to follow here. | Every plain file is excluded in `copier.yml` or shadowed by its `.jinja` sibling, so only rendered `*.jinja` files reach downstream projects. |
 | Marker ownership is mirrored between the two audiences: template development edits above a marker and leaves below it empty; downstream projects add below a marker and never edit above it. | Downstream projects own everything below a marker (see [README.md's Customize](README.md#customize)), and `copier update` replays their additions by matching the marker line as diff context. |
 | Migration is skipped; downstream data loss is acceptable. | Project is in early development; skipping migration makes development faster. |
@@ -239,7 +239,7 @@ When restructuring templates without changing their output, follow these rules:
 
 - Render the affected templates before and after with the same answers; the generated files must not change.
 - For deduplication, only merge true duplication (copies that must always change together, owned by the same actor); merging accidental lookalikes is harder to undo than leaving them apart.
-- Run cleanup or audit work spanning more than one batch as a campaign: record the baseline before the first change, keep one intent per batch, verify after each batch, and keep the batch list current in the plan shared with the user.
+- Run cleanup or audit work spanning more than one batch as a workstream: record the baseline before the first change, keep one intent per batch, verify after each batch, and keep the batch list current in the plan shared with the user.
 
 ## Testing
 
@@ -282,7 +282,7 @@ Stop and reassess when you catch yourself thinking:
 | "The code is bad, so a rewrite is cleaner." | Rewrites need scope, tests, migration risk control. |
 | "There are no tests, so verification is impossible." | Use the best available check and report remaining risk. |
 | "I will put it here for now." | "For now" placements become permanent. Place it correctly once. |
-| "The user asked for cleanup, so everything is in scope." | Campaign mode has a protocol: baseline, batches, verification; see [Refactoring](#refactoring). |
+| "The user asked for cleanup, so everything is in scope." | Workstream mode has a protocol: baseline, batches, verification; see [Refactoring](#refactoring). |
 | "Clean code means following this document over local style." | Local, idiomatic style wins unless unsafe or broken. |
 | "It is only one include; the include structure still basically holds." | One wrong-direction include is the violation. Structure is a rule, not a tendency. |
 | "Splitting it into services will decouple it." | A process boundary is not a boundary; shared data still couples through it. |

@@ -21,7 +21,7 @@
 
 ### Layer Dependencies
 
-Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 
 - Treat each script as a Humble Object: argument parsing, environment setup, and orchestration only; once it needs a real data structure, a retry policy, or a shared business rule, move that logic to the system's main language, called from the script, or to tested `lib/` functions in a shell-only project.
 - Past a couple hundred lines, or the first time an associative array models more than a lookup table, move that logic out; a shell script is glue, not an application.

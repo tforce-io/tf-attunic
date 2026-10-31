@@ -26,18 +26,18 @@
 
 ### Layer Dependencies
 
-Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 
-- For code built on React, this suggestion replaces the JavaScript or TypeScript one: the layer names are the same, with the delivery layer split out of `adapters` as `ui`.
+- For code built on React, this suggestion replaces the JavaScript or TypeScript one: the architecture layer names are the same, with the delivery layer split out of `adapters` as `ui`.
 - Components and hooks are the delivery layer: they render and adapt; they do not decide.
 - Business rules live in plain modules that import nothing from React.
 - API clients implement interfaces the application layer declares; components never call `fetch` directly.
-- Providers and the router compose everything, in the outermost layer.
+- Providers and the router compose everything, in the outermost architecture layer.
 - Check by hand: read the imports of changed files; an inner module importing an outer one is a violation.
-- Prefer passing dependencies in (constructor injection or a provider) over module-level singletons, so a layer boundary can be substituted in tests.
+- Prefer passing dependencies in (constructor injection or a provider) over module-level singletons, so an architecture layer boundary can be substituted in tests.
 
-| Layer | Typical path | Depends on | Must never contain |
-|-------|--------------|------------|--------------------|
+| Architecture layer | Typical path | Depends on | Must never contain |
+|--------------------|--------------|------------|--------------------|
 | domain | src/domain | itself | framework types, database, HTTP |
 | application | src/application | domain | HTTP handlers, framework types |
 | adapters | src/api, src/services; elsewhere, modules that call `fetch` or another external client, such as a feature's API calls | application (its ports), domain | business rules, JSX |

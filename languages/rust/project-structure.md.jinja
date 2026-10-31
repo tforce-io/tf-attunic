@@ -31,13 +31,13 @@
 
 ### Layer Dependencies
 
-Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 
-- `crates/cli` (or `src/main.rs` in a single-crate project) is the outermost layer and the composition root: the only place that names a concrete adapter type; it may depend on everything, and nothing depends on it.
-- Layers are workspace crates; one suggestion, innermost first:
+- `crates/cli` (or `src/main.rs` in a single-crate project) is the outermost architecture layer and the composition root: the only place that names a concrete adapter type; it may depend on everything, and nothing depends on it.
+- Architecture layers are workspace crates; one suggestion, innermost first:
 
-| Layer | Typical path | Depends on | Must never contain |
-|-------|--------------|------------|--------------------|
+| Architecture layer | Typical path | Depends on | Must never contain |
+|--------------------|--------------|------------|--------------------|
 | domain | crates/domain | itself | HTTP client, database driver, async runtime |
 | application | crates/application | domain | database access, HTTP handlers |
 | adapters | crates/adapters/\* | application (its ports), domain | business rules |

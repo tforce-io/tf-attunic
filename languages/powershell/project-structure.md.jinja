@@ -20,7 +20,7 @@
 
 ### Layer Dependencies
 
-Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 
 - Keep a public function a Humble Object: parameter binding, `ShouldProcess`, and formatting only; call into a `Classes/` type or a private function for any rule with branching.
 - Keep cmdlet-shaped types (`[PSCustomObject]`, a .NET type from a module you call) out of a domain class's public surface; convert at the boundary.

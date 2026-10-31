@@ -24,17 +24,17 @@
 
 ### Layer Dependencies
 
-Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 
-- For code built on Angular, this suggestion replaces the TypeScript one: the layer names are the same, with the delivery layer split out of `adapters` as `ui`.
+- For code built on Angular, this suggestion replaces the TypeScript one: the architecture layer names are the same, with the delivery layer split out of `adapters` as `ui`.
 - Components, directives, and pipes are the delivery layer: they render and adapt, they do not decide.
 - Business rules are plain TypeScript classes or functions with no `@angular/*` import; declare a repository interface there and implement it in a service that injects `HttpClient`.
 - Guards, interceptors, and resolvers depend on the application layer's interfaces, never the reverse.
 - Check by hand: read the imports of changed files; an inner module importing an outer one is a violation.
-- Prefer passing dependencies in (constructor or `inject()`) over module-level singletons, so a layer boundary can be substituted in tests.
+- Prefer passing dependencies in (constructor or `inject()`) over module-level singletons, so an architecture layer boundary can be substituted in tests.
 
-| Layer | Typical path | Depends on | Must never contain |
-|-------|--------------|------------|--------------------|
+| Architecture layer | Typical path | Depends on | Must never contain |
+|--------------------|--------------|------------|--------------------|
 | domain | src/app/domain | itself | framework types, database, HTTP |
 | application | src/app/application | domain | HTTP handlers, framework types |
 | adapters | src/app/adapters; elsewhere, services and interceptors that call `HttpClient` or another external client | application (its ports), domain | business rules |

@@ -85,14 +85,14 @@ List of important folders, files and their roles in the project:
 
 ## Layer Dependencies
 
-List of layers and their relationships:
+List of architecture layers and their relationships:
 
-- Declare the innermost layer first.
-- A layer may depend only on the layers in its `Depends on` column, all declared before it; a template depends on what it includes.
+- Declare the innermost architecture layer first.
+- An architecture layer may depend only on the architecture layers in its `Depends on` column, all declared before it; a template depends on what it includes.
 - The dependency graph below must be enforced.
 
-| Layer | Path | Depends on | Must never contain |
-|-------|------|------------|--------------------|
+| Architecture layer | Path | Depends on | Must never contain |
+|--------------------|------|------------|--------------------|
 | Fragments | `languages/`, `frameworks/`, `licenses/` | None | An include of any template or fragment |
 | Root templates | `*.jinja` at the root, `.agents/`, `.attunic/` | Fragments | Language, framework, or license content that belongs in a fragment |
 
@@ -157,6 +157,7 @@ Facts about the project which have been confirmed. They may look wrong or contra
 | Common Mistakes and Checklist (in [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja), plus Anti-Loopholes in [AGENTS.md.jinja](AGENTS.md.jinja), and this file) are for verification: some of their points restate rules from other sections on purpose; a restated point is emphasis, not duplication, so never flag or remove it as duplication. | The rule sections say what to do; these lists check that it was done: Anti-Loopholes while working, when a rationalization surfaces, Common Mistakes and Checklist before completion; restating a rule there marks it as important enough to check again. |
 | In downstream projects, exceptions and deferrals are logged as entries under `memory.md`'s Decisions for later review; it's the user's discretion to update `context.md`'s Confirmed Facts, agents never move them. | `memory.md` is a non-binding log, while Confirmed Facts are binding and `context.md` belongs to the user (see the Write Rules in [.agents/attunic-protocol.md.jinja](.agents/attunic-protocol.md.jinja)). |
 | The `Layout` sections of the language/framework project-structure fragments are reference layouts: they may name tool-specific files (e.g. `uv.lock`, `clippy.toml`, `deny.toml`, each package manager's lockfile); every other part of the language/framework guides stays tool-neutral. | A reference layout lists files a project may already have so agents recognize them; listing one doesn't pick the tool, which stays the downstream project's choice. |
+| The templates write the dependency concept as *architecture layer*; a bare *layer* is left to its display and styling meanings (e.g. CSS cascade layers); the `Layer Dependencies` headings, anchors, and markers keep their name. | A bare *layer* commonly reads as a display or graphics layer; renaming the headings and markers would break the marker contract on `copier update`. |
 
 ## Coding Conventions
 

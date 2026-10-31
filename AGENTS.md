@@ -32,7 +32,7 @@ Important rules when working with the project; these must be strictly followed:
 - Understand the problem: read the task and the code it touches, trace the real flow end to end.
 - Follow the simple design priorities: tests pass, no duplicated knowledge, intent expressed, fewest elements.
 - Avoid common loopholes: stop and reassess when you catch yourself thinking any of the rationalizations in [Anti-Loopholes](#anti-loopholes).
-- Never trust recall: verify every API, function, option, and config key against this codebase and installed dependency versions.
+- Never trust recall: verify every Copier setting and Jinja filter against the installed Copier version, every EditorConfig property against its spec, and every API or tool behavior a fragment names against its official docs.
 - Confirm irreversible actions: ask before deleting files outside the change, rewriting history, force-pushing, publishing, or moving a published tag.
 - Verify every change: every changed behavior is checked by something that runs; without a test harness, as in this repository, the smallest check that runs (a `copier copy` render into a scratch directory) stands in for each test a rule asks for.
 - Commit and push only on request: never create a commit or push unless the user asks for it.
@@ -129,9 +129,13 @@ Template engine; version floor `>= 9.0.0` (declared in `copier.yml`). Template v
   uv tool install copier
   ```
 
-- Generate a downstream project (also the manual verification path: copy into a scratch directory and inspect the generated files):
+- Generate a downstream project:
   ```sh
   copier copy gh:tforce-io/tf-attunic <target>
+  ```
+- Verify a change by rendering the working tree, uncommitted changes included, into a scratch directory (run at the repository root; see [Testing](#testing)):
+  ```sh
+  copier copy --vcs-ref=HEAD --defaults --data 'languages=[go]' . <scratch>
   ```
 - Update an existing downstream project (run inside the project):
   ```sh
@@ -150,7 +154,7 @@ Facts about the project which have been confirmed. They may look wrong or contra
 | Migration is skipped; downstream data loss is acceptable. | Project is in early development; skipping migration makes development faster. |
 | `.editorconfig`'s `[*]` default is set by the `charset`, `indent_style`, and `indent_size` answers, whose defaults (`utf-8`, `tab`, `2`) are this template's proposal; the indentation default applies to anything whose owner defines no indentation, so every `indent_style` or `indent_size` a language or format owner defines (official style guide, official formatter, or spec) must be declared explicitly in its own section, even when it equals the default. | Owner rules take priority, and declaring them explicitly prevents mistakes and keeps them intact when a downstream project changes the default. |
 | License text in [./licenses](./licenses) is safe to skip checking for most tasks. | It is canonical license text. |
-| Common Mistakes and Checklist (in [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja), plus Anti-Loopholes [AGENTS.md.jinja](AGENTS.md.jinja), and this file) are for verification: some of their points restate rules from other sections on purpose; a restated point is emphasis, not duplication, so never flag or remove it as duplication. | The rule sections say what to do; these lists check that it was done: Anti-Loopholes while working, when a rationalization surfaces, Common Mistakes and Checklist before completion; restating a rule there marks it as important enough to check again. |
+| Common Mistakes and Checklist (in [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja), plus Anti-Loopholes in [AGENTS.md.jinja](AGENTS.md.jinja), and this file) are for verification: some of their points restate rules from other sections on purpose; a restated point is emphasis, not duplication, so never flag or remove it as duplication. | The rule sections say what to do; these lists check that it was done: Anti-Loopholes while working, when a rationalization surfaces, Common Mistakes and Checklist before completion; restating a rule there marks it as important enough to check again. |
 | In downstream projects, exceptions and deferrals are logged as entries under `memory.md`'s Decisions for later review; it's the user's discretion to update `context.md`'s Confirmed Facts, agents never move them. | `memory.md` is a non-binding log, while Confirmed Facts are binding and `context.md` belongs to the user (see the Write Rules in [.agents/attunic-protocol.md.jinja](.agents/attunic-protocol.md.jinja)). |
 | The `Layout` sections of the language/framework project-structure fragments are reference layouts: they may name tool-specific files (e.g. `uv.lock`, `clippy.toml`, `deny.toml`, each package manager's lockfile); every other part of the language/framework guides stays tool-neutral. | A reference layout lists files a project may already have so agents recognize them; listing one doesn't pick the tool, which stays the downstream project's choice. |
 
@@ -187,22 +191,22 @@ Template authoring conventions for this repository:
 
 ## Exploring
 
-Reuse before writing new code; go through these in order and stop at the first that applies:
+Reuse before writing new content; go through these in order and stop at the first that applies:
 
-- Does it already exist in this codebase? Reuse the helper, util, or pattern that's already here; don't rewrite it.
-- Does a closely matching implementation that needs adaptation exist in this codebase? Report it and propose extending it before writing anything new.
-- Does the standard library already do this? Use it.
-- Does a native platform feature cover it? Use it.
-- Does an already-installed dependency solve it? Use it.
-- Would a well-maintained new dependency solve it? Propose it with its name, version, and license before adding it; its license must be compatible with the project's.
+- Does it already exist in this codebase? Reuse the fragment, include pattern, or wording that's already here; don't rewrite it.
+- Does a closely matching template or fragment that needs adaptation exist in this codebase? Report it and propose extending it before writing anything new.
+- Does a Jinja built-in filter, test, or tag already do this? Use it.
+- Does a Copier setting cover it (e.g. a question's `when`, `choices`, or `validator`, or `_exclude`)? Use it.
+- Does a filter bundled with Copier solve it (`jinja2_ansible_filters`, e.g. `regex_search`, `to_nice_yaml`)? Use it.
+- Would a well-maintained Jinja extension solve it? Propose it with its name, version, and license before adding it; its license must be compatible with the project's, and it is an unsafe feature (see [Security](#security)).
 
 ## Writing
 
-When writing code, follow these rules:
+When writing templates, follow these rules:
 
-- Write the minimum that satisfies the task; never cut safety: validation, error handling, security, accessibility; see [Security](#security).
+- Write the minimum that satisfies the task; never cut safety: answer validation and security; see [Security](#security).
 - Make targeted edits, never whole-file regeneration; every changed line must trace to the request.
-- Keep one job per unit at every scale (function, type, module); if describing its job needs "and", split it. Parsing, domain rules, persistence, external calls, presentation, and wiring stay in separate homes.
+- Keep one job per unit at every scale (bullet, section, template); if describing its job needs "and", split it.
 - Find every usage of a template variable, marker, section anchor, or file you change, by text search, including `README.md` and this file; make sure a rename or behavior change doesn't introduce a new bug or leave a bug half-fixed.
 - Report unrelated findings instead of fixing them.
 - Remove what your change orphaned (unused fragments, variables, sections, files).
@@ -213,28 +217,25 @@ When writing code, follow these rules:
 
 ## Security
 
-When writing code or verifying changes, follow these rules:
+When writing templates or verifying changes, follow these rules:
 
-- Never build queries, shell commands, markup, or code by concatenating untrusted input; use parameterized queries, argument lists, and context-aware escaping.
-- Keep authorization checks beside the operation they protect, or centralized in one enforced policy layer.
-- Perform input validation at trust boundaries. Boundaries are external APIs, databases, file systems, clocks, queues, UI events, network calls, subprocesses, generated code.
-- Prefer allowlists over denylists when validating input, permissions, and file types.
-- Grant least privilege: the narrowest permissions, token scopes, file modes, and network exposure that work.
-- Never hand-roll crypto or auth; use the standard library or a well-maintained, established library.
-- Never log secrets, tokens, and sensitive data in error messages and logs.
-- Never hardcode secrets or commit them to the repository; read them from the environment or a secret store.
+- Never render an answer into YAML or a file path as raw text; constrain it with `choices` or a `validator`, or emit it through an escaping filter such as `to_nice_yaml`.
+- Validate answers where they enter: give a question a `validator` when an empty, malformed, or out-of-range answer would break a generated file.
+- Prefer allowlists over denylists in validators (e.g. the `project_name` pattern).
+- Never add an unsafe Copier feature (`_jinja_extensions`, `_tasks`, `_migrations`) without the user's agreement: it runs code on the downstream user's machine, and Copier refuses it unless that user trusts the template (`--trust`).
+- Never hardcode secrets or commit them to the repository.
 
 ## Fixing
 
 When fixing issues, follow these rules:
 
 - Fix the root cause, not just the symptom.
-- Write a test that reproduces the bug first, watch it fail, then make it pass.
-- Search for the same defect elsewhere and report other occurrences; fix them only when the task covers them.
+- Reproduce the bug first with a render that shows the wrong output, then render the same answers again to confirm the fix.
+- Search for the same defect elsewhere, including sibling fragments, and report other occurrences; fix them only when the task covers them.
 
 ## Refactoring
 
-When restructuring code without changing its behavior, follow these rules:
+When restructuring templates without changing their output, follow these rules:
 
 - Render the affected templates before and after with the same answers; the generated files must not change.
 - For deduplication, only merge true duplication (copies that must always change together, owned by the same actor); merging accidental lookalikes is harder to undo than leaving them apart.
@@ -242,35 +243,29 @@ When restructuring code without changing its behavior, follow these rules:
 
 ## Testing
 
-When writing tests, follow these rules:
+When verifying a change with `copier copy` renders (see [Supporting Tools](#supporting-tools)), follow these rules:
 
-- Write one concept per test; split a test whose name needs "and"; prefer behavior-focused names.
-- Write at least three deterministic expectations for each changed behavior, spread across tests as needed, and make sure at least one fails against the unchanged code.
-- Cover boundaries and failure paths (empty, null, limits, invalid input, errors), not just the happy path.
-- Keep arrange, act, and assert visibly distinct through code structure, not comments.
-- Keep results deterministic: no sleeps or timing guesses; unit tests make no real network, filesystem, or clock call, and integration tests use only isolated, disposable resources (temp directories, local containers).
-- Keep tests independent: each test sets up its own state and passes alone or in any order; never rely on another test's leftovers or on shared mutable state.
-- Keep unit tests fast enough to run after every change; slow work belongs in integration tests.
-- Assert on outcomes, not implementation.
-- Treat a flaky test as a bug to fix; never rerun it until it passes.
-- Treat a test that already failed before your change as a known failure only once the user confirms it.
-- Never weaken, skip, or delete failing tests: restore the test, fix the code, or report the conflict and stop.
+- Render from the working tree with `--vcs-ref=HEAD`; without it, Copier renders the latest tag and the change is not in the output.
+- Check at least three expectations in the generated files for each changed behavior, spread across renders as needed, and make sure at least one does not hold in a render of the unchanged templates.
+- Cover answer boundaries, not just the defaults: `license` `None`, `license_header` `None`, no frameworks, `typescript` without `javascript`, several languages at once, and an invalid answer each changed validator must reject.
+- Keep renders reproducible: pass every answer with `--data` (or `--data-file`) and `--defaults`, into a fresh scratch directory.
+- Inspect the generated files, not just the template diff.
+- Never drop an answer set because its render fails or looks wrong: fix the template, or report the conflict and stop.
 
 ## Common Mistakes
 
 Check your diff against these failure patterns; each must be fixed before completion:
 
-- Hallucinated API: a function, method, option, or config key not in this codebase or the installed version => verify at the installed version, replace or remove.
-- Unverified dependency: a new package or import without checking its registry name, version, license, or whether an installed dependency does the job => confirm the exact name/version (an invented name may be attacker-registered) and that its license is compatible with the project's; prefer what is installed.
-- Context loss: a stale or partial read that contradicts existing code, restores deleted code, or drops error handling in a rewrite => re-read target files, callers, tests.
+- Hallucinated API: a Copier setting, Jinja filter, EditorConfig property, or fragment-named API that the installed version or its official docs don't have => verify it, replace or remove.
+- Unverified dependency: a new Jinja extension without checking its registry name, version, license, or whether a Jinja built-in or a filter bundled with Copier does the job => confirm the exact name/version (an invented name may be attacker-registered) and that its license is compatible with the project's; prefer what Copier bundles.
+- Context loss: a stale or partial read that contradicts existing content, restores deleted content, or drops a marker or validator in a rewrite => re-read the target files, the templates that include them, and `README.md`.
 - Scope creep: changed lines that trace to no request such as drive-by renames, reformatting, dependency bumps => revert them and report instead.
-- Duplicated implementation: a helper or sibling variant paralleling one that exists => search before writing, extend the original, merge only true duplication, never code owned by different actors.
-- Wrong-file gravity: logic added to whatever file was open, a god file growing, a new file at the repository root or current directory => place by role per [Layout](#layout).
-- Phantom success: "should work now" with nothing run; a stub, pass, placeholder, or demo value presented as done => run the check and quote the result, name what did not run, and state plainly what remains.
-- Test weakening: an assertion loosened; a test skipped, deleted, or rewritten to match the bug, a snapshot re-accepted unread => restore the test and fix the code, or report the conflict and stop.
+- Duplicated implementation: a rule, fragment, or include pattern paralleling one that exists => search before writing, extend the original, merge only true duplication, never content owned by different actors.
+- Wrong-file gravity: a rule added to whatever file was open, a god file growing, a new file at the repository root or current directory => place by role per [Layout](#layout).
+- Phantom success: "should work now" with nothing run; a stub, placeholder, or TODO presented as done => run the render and quote the result, name what did not run, and state plainly what remains.
 - Silent structure drift: a fragment including a root template or a sibling fragment, or fragment content hard-coded into a root template, unless listed in [Deliberate Exceptions](#deliberate-exceptions); a rule edited in its wrong home; template content below a marker; names off [Naming Conventions](#naming-conventions) => check every changed include against [Layer Dependencies](#layer-dependencies), keep includes as the only wiring, one home per rule, names per convention.
-- Missing validation: an input from a trust boundary accepted unchecked, including empty, null, or boundary values => validate at the boundary where the data enters.
-- Missing error handling: a failing path swallowed or ignored, such as an unchecked error or an empty catch => handle it, wrap it, or propagate it explicitly.
+- Missing validation: an answer accepted unchecked, including empty or out-of-range values, where it would break a generated file => add a `validator` to its question in `copier.yml`.
+- Missing error handling: an undefined variable rendering as empty text (Copier's default `jinja2.Undefined` doesn't fail), such as a misspelled answer name => check every name against `copier.yml` and inspect the render for gaps.
 - Edited generated file: a hand edit to rendered output => revert it, change the template, and render again.
 - Stale docs: `README.md` or this file still describing the old behavior => update them in the same change.
 - Unannounced breaking change: a `copier.yml` question name, marker text or placement, or generated file path changed without the user's agreement => restore compatibility or ask, then call out the break.
@@ -298,14 +293,14 @@ Stop and reassess when you catch yourself thinking:
 
 Before considering any coding task complete, verify the following to ensure nothing is missed during implementation:
 
-- [ ] The task's requirements are fulfilled; acceptance criteria (if any) are verified against real behavior, not assumed from passing tests.
-- [ ] Changed templates render with `copier copy` into a scratch directory, and the generated files are inspected (see [Supporting Tools](#supporting-tools)).
-- [ ] Changed code files follow project convention (see [Coding Conventions](#coding-conventions) and [Naming Conventions](#naming-conventions)).
+- [ ] The task's requirements are fulfilled; acceptance criteria (if any) are verified against the generated files, not assumed from the template diff.
+- [ ] Changed templates render from the working tree into a scratch directory with the answer sets they need, and the generated files are inspected (see [Testing](#testing)).
+- [ ] Changed files follow project convention (see [Coding Conventions](#coding-conventions) and [Naming Conventions](#naming-conventions)).
 - [ ] The complete final diff has been read line by line; every change is intentional and understood.
 - [ ] Changes are reviewed for security requirements (see [Security](#security)).
 - [ ] Changes are reviewed for common mistakes (see [Common Mistakes](#common-mistakes)).
 - [ ] Every usage of changed template variables, markers, section anchors, and files is checked; no rename or behavior change left half-applied (see [Writing](#writing)).
-- [ ] No unused code, debug prints, or commented-out blocks left behind.
+- [ ] No unused fragments or variables, debug output, or commented-out blocks left behind.
 - [ ] Template rules and sections this file mirrors are in sync with their changes, or the reason they don't apply is reported (see [Writing](#writing)).
 - [ ] New or moved top-level files and folders are reflected in [Layout](#layout) (prompt the user per its rule).
 - [ ] Lasting choices and confirmed facts are recorded in [Confirmed Facts](#confirmed-facts), each once the user explicitly confirms it (unconfirmed ones are named in the report).

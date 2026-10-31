@@ -32,13 +32,13 @@ When writing code, follow these rules:
 
 When writing code or verifying changes, follow these rules:
 
-- Never build queries, shell commands, markup, or code by concatenating untrusted input; use parameterized queries, argument lists, and context-aware escaping.
 - Keep authorization checks beside the operation they protect, or centralized in one enforced policy layer.
 - Perform input validation at trust boundaries. Boundaries are external APIs, databases, file systems, clocks, queues, UI events, network calls, subprocesses, generated code.
+- Grant least privilege: the narrowest permissions, token scopes, file modes, and network exposure that work.
 - Use the standard library or a well-maintained, established library for auth and crypto.
 - Prefer the standard library or a well-maintained, established library for parsing and serialization.
 - Prefer allowlists over denylists when validating input, permissions, and file types.
-- Grant least privilege: the narrowest permissions, token scopes, file modes, and network exposure that work.
+- Never build queries, shell commands, markup, or code by concatenating untrusted input; use parameterized queries, argument lists, and context-aware escaping.
 - Never log secrets, tokens, and sensitive data in error messages and logs.
 - Never hardcode secrets or commit them to the repository; read them from the environment or a secret store.
 <!-- Project-specific / Security -->

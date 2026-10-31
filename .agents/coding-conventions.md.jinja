@@ -26,11 +26,11 @@ When a language's established idiom contradicts a principle below, follow the id
 - Start the name of a function that performs an action with a verb that discloses its side effects (`save`, `delete`, `publish`, `mutate`); name a side-effect-free accessor for what it returns (`owner`, `totalPrice`).
 - Case acronyms consistently, following the language's convention; never mix forms in one codebase (`userId` beside `userID`).
 - Name booleans as predicates (`isReady`, `hasItems`, `canRetry`), never as negations (`isNotReady`).
-- Avoid magic numbers or strings; use a named constant for the meaning, or attach an inline *why* comment.
 - Never write a vague name (`data`, `info`, `obj`, `temp`, `result`) when a domain name exists; a loop index, a lambda or callback parameter, a caught error, or an established short form may stay short; nothing else may.
 - Never write a bare-verb function with no object (`handle`, `process`); a method's receiver counts as its object (`file.close()`).
 - Never number or version a name instead of replacing the original (`user2`, `dataV2`, `_new`, `_final`, `_copy`).
 - Never suffix a type with a noise word (`Manager`, `Helper`, `Util`) or name it after a verb (`ProcessOrder`).
+- Avoid magic numbers or strings; use a named constant for the meaning, or attach an inline *why* comment.
 <!-- Project-specific / Names -->
 
 ### Packages
@@ -41,15 +41,15 @@ When a language's established idiom contradicts a principle below, follow the id
 
 ### Types
 
-- Avoid unnecessary abstraction: introduce an interface, trait, protocol, or abstract base only once two implementations exist; a test double counts as one.
 - Assign object fields in their declaration order, unless evaluation order matters (a value depends on another, or a later entry overrides an earlier one).
+- Avoid unnecessary abstraction: introduce an interface, trait, protocol, or abstract base only once two implementations exist; a test double counts as one.
 <!-- Project-specific / Types -->
 
 ### Functions
 
 - Keep functions small, at one level of abstraction; extract a named function instead of nesting another branch or commenting a block.
-- Prefer early exits for invalid or terminal cases over nested conditionals.
 - Keep positional parameters to three or fewer; past that, group related values into one parameter object.
+- Prefer early exits for invalid or terminal cases over nested conditionals.
 - Never switch behavior on a boolean parameter; write two functions or take a small enum.
 - Never mutate an input the caller does not expect to change; return a new value instead.
 <!-- Project-specific / Functions -->
@@ -79,9 +79,9 @@ When a language's established idiom contradicts a principle below, follow the id
 ### Concurrency
 
 - Give every concurrent task an owner that can wait for it or cancel it; never start one that nothing can stop.
-- Never block an event loop or async runtime with blocking I/O or long computation; hand it to an async API, a worker, or a blocking-task pool.
 - Keep shared mutable state to a minimum; hold a lock as briefly as possible, and never across a suspension point.
 - Treat every suspension point as a place where shared state can change; re-check invariants after it.
+- Never block an event loop or async runtime with blocking I/O or long computation; hand it to an async API, a worker, or a blocking-task pool.
 <!-- Project-specific / Concurrency -->
 
 {% set blocks = [] -%}

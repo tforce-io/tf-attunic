@@ -26,13 +26,13 @@ Important rules when working with the project; these must be strictly followed:
 
 - Follow instructions: anything explicitly requested, plus the instructions in [Coding Conventions](#coding-conventions), [Naming Conventions](#naming-conventions), [Exploring](#exploring), [Writing](#writing), [Security](#security), [Fixing](#fixing), [Refactoring](#refactoring), [Testing](#testing), [Common Mistakes](#common-mistakes), [Checklist](#checklist), [Pull Request Guideline](#pull-request-guideline), and [Pull Request Checklist](#pull-request-checklist).
 - Resolve conflicts by priority: user requests, local idiomatic style (unless unsafe or broken), the rules in this file.
-- Read rule strength from its verb: a rule stated as a plain command (Keep, Use, Write, ...) is mandatory, and so are Always and Must; Never, Avoid, and Do not (don't) are mandatory prohibitions; Prefer is a default, deviate only with a stated reason.
+- Read rule strength from its verb: a rule stated as a plain command (Keep, Use, Write, ...) is mandatory, and so are Always and Must; Never and Do not (don't) are mandatory prohibitions; Prefer and Avoid are defaults, deviate only with a stated reason.
 - Plan first: plan by default, unless the user explicitly says to skip it; when the change spans more than one file, share the plan and wait for the user's approval before the first edit.
 - Ask when in doubt: if you are unsure about an instruction, need help, or have a better solution, ask: "Do you actually need X?", "Does Y cover it?", "Do you mean Z?", etc.
 - Understand the problem: read the task and the code it touches, trace the real flow end to end.
 - Follow the simple design priorities: tests pass, no duplicated knowledge, intent expressed, fewest elements.
-- Avoid common loopholes: stop and reassess when you catch yourself thinking any of the rationalizations in [Anti-Loopholes](#anti-loopholes).
-- Never trust recall: verify every Copier setting and Jinja filter against the installed Copier version, every EditorConfig property against its spec, and every API or tool behavior a fragment names against its official docs.
+- Guard against common loopholes: stop and reassess when you catch yourself thinking any of the rationalizations in [Anti-Loopholes](#anti-loopholes).
+- Distrust recall: verify every Copier setting and Jinja filter against the installed Copier version, every EditorConfig property against its spec, and every API or tool behavior a fragment names against its official docs.
 - Confirm irreversible actions: ask before deleting files outside the change, rewriting history, force-pushing, publishing, or moving a published tag.
 - Verify every change: every changed behavior is checked by something that runs; without a test harness, as in this repository, the smallest check that runs (a `copier copy` render into a scratch directory) stands in for each test a rule asks for.
 - Commit and push only on request: never create a commit or push unless the user asks for it.
@@ -165,29 +165,30 @@ Template authoring conventions for this repository:
 - End each section of every Markdown template (`*.md.jinja`, fragments included) with a `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker; content above the marker is template-owned, content below is project-owned.
 - Use a single plain `# Project-specific` comment as the last line of `.editorconfig.jinja` and `.gitignore.jinja`, below the included fragments; their language fragments carry no marker.
 - In a section that ends with a fenced block, place the marker inside the fence, before its closing line, when the block is a layout tree, so project additions extend the tree; otherwise place it below the closing fence.
-- Never add a marker to a file without sections: `CLAUDE.md.jinja`, `.copier-answers.yml.jinja`, the license renderers, and the `licenses/` fragments; there it would be rendered into the generated file as content.
 - Keep marker text byte-identical across template versions: Copier matches the marker line as diff context, so a whitespace or punctuation change can break the anchor and produce spurious conflicts on `copier update`.
-- Never move or duplicate a marker: Copier anchors downstream additions to the marker line, so either change can misplace them or produce conflicts on `copier update`; treat it as a contract break (see [Writing](#writing)).
 - Write template content only above a marker; leave everything below it empty for downstream projects, which add their project-specific rules there (see [README.md's Customize](README.md#customize)).
 - Keep [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) and [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja) to generic principles: language/framework agnostic and tool-neutral; put language and framework specifics only in the `languages/` and `frameworks/` fragments.
 - Keep the language/framework guides tool-neutral; it's up to the downstream project to pick the tools and declare them in the context.
 - Keep the language/framework guides version-neutral: state rules that hold across the language's or framework's maintained versions, with no "since vN" claims; where versions differ, defer to what the project already uses.
 - Include all sections declared in [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) in the language/framework Coding Conventions, all sections but Checklist declared in [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja) in the language/framework Development Guidelines, and the Guideline, Layout, and Layer Dependencies sections, in that order, in the language/framework Project Structures, even when empty; add new sections after the shared ones.
+- Order the rules in each section by strength: mandatory, default, mandatory prohibitions, default prohibitions; keep the existing order within each group.
 - Use ASCII punctuation and straight quotes by default; use non-ASCII characters only where the content requires them (names, quoted text, symbols with no ASCII form, box-drawing in layout trees); keep encoding UTF-8 without a BOM.
 - End every file with a single final newline; strip trailing blank lines.
 - Separate headings from body text with exactly one blank line; never indent paragraphs or headings except intentional block quotes.
+- Never add a marker to a file without sections: `CLAUDE.md.jinja`, `.copier-answers.yml.jinja`, the license renderers, and the `licenses/` fragments; there it would be rendered into the generated file as content.
+- Never move or duplicate a marker: Copier anchors downstream additions to the marker line, so either change can misplace them or produce conflicts on `copier update`; treat it as a contract break (see [Writing](#writing)).
 - Never delete or reword comments a tool reads downstream, such as the `SPDX-License-Identifier` line emitted by [licenses/spdx-notice.jinja](licenses/spdx-notice.jinja); markers follow the rules above.
 
 ## Naming Conventions
 
 - Use one word per concept across templates and docs; never one word for two concepts (e.g. *fragment* always means an included, never-copied file under `languages/`, `frameworks/`, or `licenses/`).
-- Never number or version a name instead of replacing the original (`coding-conventions-v2.md.jinja`, `_new`, `_copy`).
 - Name markers uniquely after the section they close: `<!-- Project-specific / <Section> -->`.
 - Name a fragment's markers `<!-- Project-specific / <Name>-<Section> -->`, where `<Name>` is the language or framework name as in its heading (e.g. `Go-Errors`, `React-Hooks`); spell `<Section>` as its heading does, spaces included.
 - Name template files after the generated file with the `.jinja` suffix (e.g. `AGENTS.md.jinja` renders `AGENTS.md`).
 - Name language folders with the lowercase codes listed in the `languages` choices in `copier.yml`: `go`, `javascript`, `powershell`, `python`, `rust`, `shell`, `typescript`, `text`.
 - Name framework folders with the lowercase codes listed in the `frameworks` choices in `copier.yml`: `angular`, `react`.
 - Name license fragments `<license-id>.jinja` and `<license-id>-notice.jinja` (e.g. `mit.jinja`, `mit-notice.jinja`).
+- Never number or version a name instead of replacing the original (`coding-conventions-v2.md.jinja`, `_new`, `_copy`).
 
 ## Exploring
 
@@ -219,9 +220,9 @@ When writing templates, follow these rules:
 
 When writing templates or verifying changes, follow these rules:
 
-- Never render an answer into YAML or a file path as raw text; constrain it with `choices` or a `validator`, or emit it through an escaping filter such as `to_nice_yaml`.
 - Validate answers where they enter: give a question a `validator` when an empty, malformed, or out-of-range answer would break a generated file.
 - Prefer allowlists over denylists in validators (e.g. the `project_name` pattern).
+- Never render an answer into YAML or a file path as raw text; constrain it with `choices` or a `validator`, or emit it through an escaping filter such as `to_nice_yaml`.
 - Never add an unsafe Copier feature (`_jinja_extensions`, `_tasks`, `_migrations`) without the user's agreement: it runs code on the downstream user's machine, and Copier refuses it unless that user trusts the template (`--trust`).
 - Never hardcode secrets or commit them to the repository.
 

@@ -44,10 +44,10 @@
 ### State
 
 - Keep state as close as possible to its use; lift it only when two components need it.
-- Never store derived data in state; compute it during render.
 - Use effects only to synchronize with systems outside React: subscriptions, the DOM, timers. Respond to events in event handlers, not effects.
 - Fetch data through the framework's loaders, server components, or a data-fetching library that handles caching, races, and cancellation; when an effect must fetch, cancel the request in its cleanup.
 - Key list items by stable data identity, never the array index when order can change.
+- Never store derived data in state; compute it during render.
 <!-- Project-specific / React-State -->
 
 ### Hooks

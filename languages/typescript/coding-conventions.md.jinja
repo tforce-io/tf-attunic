@@ -29,12 +29,12 @@ TypeScript files also follow the JavaScript section; where the two conflict, the
 - Mark fields `readonly`, and type inputs as `readonly T[]`, wherever nothing mutates them; freeze literal collections with `as const`.
 - Use `type` for unions and intersections; use `interface` for `extends`/`implements` contracts.
 - Model alternatives as discriminated unions, and end every `switch` over one with a `never` exhaustiveness check.
-- Prefer literal unions or `as const` objects to `enum`; under `erasableSyntaxOnly` or a runtime's type stripping, write no `enum`, `namespace`, or parameter properties.
 - Use `satisfies` to check a literal against a type without widening it.
 - Brand identifiers that must not mix: `type OrderId = string & { readonly __brand: "OrderId" }`.
-- Avoid `as` assertions; when one is unavoidable, assert once, at the boundary, after validation.
+- Prefer literal unions or `as const` objects to `enum`; under `erasableSyntaxOnly` or a runtime's type stripping, write no `enum`, `namespace`, or parameter properties.
 - Never use `any`; take `unknown` and narrow it before use, and confine an unavoidable `any` to one adapter, with the reason beside it.
 - Never suppress the type checker with `@ts-ignore` or `@ts-nocheck`; fix the types, or use a narrowly scoped `@ts-expect-error` with a *why* comment.
+- Avoid `as` assertions; when one is unavoidable, assert once, at the boundary, after validation.
 <!-- Project-specific / TypeScript-Types -->
 
 ### Functions

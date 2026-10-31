@@ -16,8 +16,8 @@
 
 - Give a module one job and a name for it; a package's `__init__.py` re-exports the public surface and does nothing else.
 - Prefix a name with `_` for anything outside a module's public surface; declare `__all__` where its star-import surface must be explicit.
-- Never use a wildcard import (`from x import *`) outside a `__init__.py` re-export.
 - Break a circular import by moving the shared symbol to the module both sides already depend on; never paper over it with a function-local import.
+- Never use a wildcard import (`from x import *`) outside a `__init__.py` re-export.
 <!-- Project-specific / Python-Packages -->
 
 ### Types

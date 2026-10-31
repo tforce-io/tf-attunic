@@ -39,14 +39,14 @@
 - Return `Result<T, E>` for a recoverable failure and propagate it with `?`; reserve `panic!` for a broken invariant the type system should prevent.
 - Define a library's errors as an enum, one variant per distinguishable cause, implementing `std::error::Error`.
 - In a binary, collect errors into one dynamic error type (such as `Box<dyn std::error::Error>`) with added context; do not invent a parallel enum the binary never matches on.
-- Never call `.unwrap()` or `.expect()` on a path reachable from library code; return the `Result`/`Option` to the caller instead.
 - Preserve the source error through `std::error::Error::source`; never format it away into a plain `String`.
 - Write `Display` error messages lowercase, without trailing punctuation; they are composed into larger messages.
+- Never call `.unwrap()` or `.expect()` on a path reachable from library code; return the `Result`/`Option` to the caller instead.
 <!-- Project-specific / Rust-Errors -->
 
 ### Concurrency
 
-- Prefer message passing (`std::sync::mpsc`, or the async runtime's channels) over a shared `Mutex<T>` when ownership can move instead.
 - Push blocking or CPU-heavy work onto the async runtime's blocking-task pool; never call blocking I/O from an async task on the runtime's worker threads.
 - Treat an `Rc<RefCell<T>>` or `Arc<Mutex<T>>` reachable from many owners as a design smell to resolve, not a default to reach for.
+- Prefer message passing (`std::sync::mpsc`, or the async runtime's channels) over a shared `Mutex<T>` when ownership can move instead.
 <!-- Project-specific / Rust-Concurrency -->

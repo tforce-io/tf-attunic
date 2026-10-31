@@ -33,8 +33,8 @@ Notes for declaring layers in the `Layer Dependencies` section of `.attunic/cont
 - Business rules live in plain modules that import nothing from React.
 - API clients implement interfaces the application layer declares; components never call `fetch` directly.
 - Providers and the router compose everything, in the outermost layer.
-- Prefer passing dependencies in (constructor injection or a provider) over module-level singletons, so a layer boundary can be substituted in tests.
 - Check by hand: read the imports of changed files; an inner module importing an outer one is a violation.
+- Prefer passing dependencies in (constructor injection or a provider) over module-level singletons, so a layer boundary can be substituted in tests.
 
 | Layer | Typical path | Depends on | Must never contain |
 |-------|--------------|------------|--------------------|

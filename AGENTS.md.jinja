@@ -25,14 +25,14 @@ Important rules when working with the project; these must be strictly followed:
 
 - Follow instructions: anything explicitly requested, plus the instructions in [development-guideline.md](.agents/development-guideline.md) and [coding-conventions.md](.agents/coding-conventions.md).
 - Resolve conflicts by priority: user requests, project-specific rules, local idiomatic style (unless unsafe or broken), framework sections, language sections, general rules.
-- Read rule strength from its verb: a rule stated as a plain command (Keep, Use, Write, ...) is mandatory, and so are Always and Must; Never, Avoid, and Do not (don't) are mandatory prohibitions; Prefer is a default, deviate only with a stated reason.
+- Read rule strength from its verb: a rule stated as a plain command (Keep, Use, Write, ...) is mandatory, and so are Always and Must; Never and Do not (don't) are mandatory prohibitions; Prefer and Avoid are defaults, deviate only with a stated reason.
 - Load project memory first: read the `.attunic/` files in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order) before work; [context.md's Confirmed Facts](.attunic/context.md#confirmed-facts) are binding, and a change to [context.md](.attunic/context.md) or [memory.md](.attunic/memory.md) is written only after the user explicitly confirms that change (see [attunic-protocol.md's Write Rules](.agents/attunic-protocol.md#write-rules)).
 - Plan first: plan by default, unless the user explicitly says to skip it; when the change spans more than one file, share the plan and wait for the user's approval before the first edit.
 - Ask when in doubt: if you are unsure about an instruction, need help, or have a better solution, ask: "Do you actually need X?", "Does Y cover it?", "Do you mean Z?", etc.
 - Understand the problem: read the task and the code it touches, trace the real flow end to end.
 - Follow the simple design priorities: tests pass, no duplicated knowledge, intent expressed, fewest elements.
-- Avoid common loopholes: stop and reassess when you catch yourself thinking any of the rationalizations in [Anti-Loopholes](#anti-loopholes).
-- Never trust recall: verify every API, function, option, and config key against this codebase and installed dependency versions.
+- Guard against common loopholes: stop and reassess when you catch yourself thinking any of the rationalizations in [Anti-Loopholes](#anti-loopholes).
+- Distrust recall: verify every API, function, option, and config key against this codebase and installed dependency versions.
 - Respect template ownership: never edit content above a `Project-specific` marker, move or duplicate a marker, or edit `.copier-answers.yml`; `copier update` owns them.
 - Confirm irreversible actions: ask before deleting data or files outside the change, rewriting history, force-pushing, publishing, or migrating shared environments.
 - Verify every change: every changed behavior is checked by something that runs; without a test harness, the smallest check that runs (a script or a command) stands in for each test a rule asks for.

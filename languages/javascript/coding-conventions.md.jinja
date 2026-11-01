@@ -16,10 +16,10 @@
 ### Packages
 
 - Write ES modules (`import`/`export`); in a package still on CommonJS, follow its module system and propose the migration instead of mixing `require` with `import` or changing `"type"` unasked.
-- Prefer named exports; use a default export only where a framework demands one.
 - Export only what another module uses; everything else stays module-private.
-- Avoid barrel files re-exporting whole folders: they hide cycles and load unwanted code; import from the owning module.
+- Prefer named exports; use a default export only where a framework demands one.
 - Never keep mutable state at module level; pass collaborators in.
+- Avoid barrel files re-exporting whole folders: they hide cycles and load unwanted code; import from the owning module.
 <!-- Project-specific / JavaScript-Packages -->
 
 ### Types
@@ -29,9 +29,9 @@
 
 ### Functions
 
-- Prefer non-mutating operations (`map`, `filter`, spread, `toSorted`, `toSpliced`, `with`) over mutating an argument.
 - Iterate with `for...of`; never `for...in` over arrays or objects (string indices, prototype chain).
 - Use `async`/`await`; do not mix callbacks and promises in the same code path.
+- Prefer non-mutating operations (`map`, `filter`, spread, `toSorted`, `toSpliced`, `with`) over mutating an argument.
 <!-- Project-specific / JavaScript-Functions -->
 
 ### Comments
@@ -41,8 +41,8 @@
 ### Errors
 
 - Throw `Error` subclasses, never strings or plain objects; chain the cause: `throw new PaymentError("charge failed", { cause: error })`.
-- Never leave a promise floating: await it, return it, or hand it to a handler; never write an empty `catch`.
 - Cancel with `AbortController` and pass its `signal` through every call that can wait.
+- Never leave a promise floating: await it, return it, or hand it to a handler; never write an empty `catch`.
 <!-- Project-specific / JavaScript-Errors -->
 
 ### Concurrency

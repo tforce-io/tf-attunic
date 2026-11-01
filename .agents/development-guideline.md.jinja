@@ -100,8 +100,10 @@ Check your diff against these failure patterns; each must be fixed before comple
 <!-- Project-specific / Common Mistakes -->
 
 {% set blocks = [] -%}
+{% set base_languages = {'typescript': 'javascript', 'sass': 'css'} -%}
 {% for language in languages -%}
-{%- set included_languages = ['javascript', language] if language == 'typescript' and 'javascript' not in languages else [language] -%}
+{%- set base_language = base_languages.get(language) -%}
+{%- set included_languages = [base_language, language] if base_language and base_language not in languages else [language] -%}
 {%- for included_language in included_languages -%}
 {%- set snippet %}{% include 'languages/' ~ included_language ~ '/development-guideline.md.jinja' %}{% endset -%}
 {% if snippet | trim %}{% set _ = blocks.append(snippet | trim) %}{% endif -%}

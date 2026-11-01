@@ -1,0 +1,39 @@
+## Sass
+
+Sass files, in either syntax (`.scss` or the indented `.sass`), also follow the CSS section; where the two conflict, the rules in this section win.
+
+### Exploring
+
+<!-- Project-specific / Sass-Exploring -->
+
+### Writing
+
+<!-- Project-specific / Sass-Writing -->
+
+### Security
+
+<!-- Project-specific / Sass-Security -->
+
+### Fixing
+
+<!-- Project-specific / Sass-Fixing -->
+
+### Refactoring
+
+<!-- Project-specific / Sass-Refactoring -->
+
+### Testing
+
+- Cover a nontrivial function or mixin (a responsive-map generator, a color-contrast helper) with the project's Sass unit tests, or a snapshot of its compiled CSS.
+- Treat a Sass deprecation warning as a failing test once the project has migrated off that deprecation: make it fatal in the compiler (`--fatal-deprecation=<id>`, or the build's equivalent option) so it cannot creep back in.
+<!-- Project-specific / Sass-Testing -->
+
+### Common Mistakes
+
+- Legacy import: a partial loaded with `@import` => load it with `@use`, or re-export it with `@forward`.
+- Duplicated token: the same variable or map declared in two partials that must always agree => declare it once and `@use` it where it is needed.
+- Deep nesting: selectors nested several levels deep, compiling to a long selector chain nobody intended => flatten the nesting and select on one class.
+- Cross-component extend: `@extend` reaching into an unrelated component for a shared look, coupling their compiled output => `@include` a shared mixin instead.
+- Single-use mixin: a mixin with one call site, adding indirection with no reuse to justify it => inline its declarations.
+- Slash division: a plain `/` dividing outside `calc()` => use `math.div()`.
+<!-- Project-specific / Sass-Common Mistakes -->

@@ -1,0 +1,50 @@
+## Sass
+
+Sass files, in either syntax (`.scss` or the indented `.sass`), also follow the CSS section; where the two conflict, the rules in this section win.
+
+### Formats
+
+<!-- Project-specific / Sass-Formats -->
+
+### Names
+
+- Name a variable, mixin, or function for the role it plays, never for its current value or its type: `$color-brand`, not `$blue-1` or `$map-spacing`.
+- Name a mixin for the declarations it emits (`button-reset`), never for the bug it patches (`fix-button`).
+- Name every Sass identifier (variable, mixin, function, placeholder selector) in kebab-case, like CSS; never in camelCase or snake_case: Sass treats `-` and `_` as the same character, so `$font_size` silently aliases `$font-size`.
+<!-- Project-specific / Sass-Names -->
+
+### Packages
+
+- Load every partial and built-in module with `@use`, never `@import`: `@import` is deprecated and puts every member in one global namespace.
+- Mark a member private by starting its name with `-` (`$-ratio`); no `@use` or `@forward` exposes it.
+- Re-export a partial's public members with `@forward`, narrowed with `show`, `hide`, or a prefix (`as card-*`); never forward internals a consumer should not reach.
+- Load a module under its namespace; reserve `as *` for one project-wide tokens module of your own, never a third-party one, whose new members can collide with yours.
+<!-- Project-specific / Sass-Packages -->
+
+### Types
+
+- Give a value used more than once one Sass variable or one custom property: a custom property when it must change at runtime (a theme, a component override), a Sass variable where `var()` cannot go (a media query, a selector); otherwise follow what the project already does.
+- Model a related set of values as one map, read with `map.get()`, not a spray of separate variables: `$spacing: (sm: 0.5rem, md: 1rem, lg: 2rem)`.
+<!-- Project-specific / Sass-Types -->
+
+### Functions
+
+- Write a `@function` to compute a value and a `@mixin` to emit declarations; never a mixin that hands back a result through a `!global` variable.
+- Call a built-in function through its module (`@use "sass:math"`, then `math.clamp()`), never its deprecated global form (`map-get()` for `map.get()`).
+- Divide with `math.div()` or inside `calc()`, never with a plain `/`: its use as division is deprecated.
+<!-- Project-specific / Sass-Functions -->
+
+### Comments
+
+- Write doc comments as `///` silent comments directly above the member they document; a `/* */` comment can end up in the compiled CSS.
+<!-- Project-specific / Sass-Comments -->
+
+### Errors
+
+- Validate an argument's type or a map's keys at the top of a mixin or function, and stop with an `@error` naming the bad value and the shape expected: a build that stops is easier to fix than a wrong value deep in the compiled CSS.
+- Never mark an `@extend` `!optional` to silence a missing target; a missing target is a defect.
+<!-- Project-specific / Sass-Errors -->
+
+### Concurrency
+
+<!-- Project-specific / Sass-Concurrency -->

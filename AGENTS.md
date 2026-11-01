@@ -15,7 +15,7 @@ A brief overview of the ingredients used for developing this project. These are 
 - Build system: None.
 - Test runner: None.
 - Linter: None.
-- Supported languages: `css`, `go`, `javascript`, `powershell`, `python`, `rust`, `shell`, `typescript`, `text`.
+- Supported languages: `css`, `go`, `javascript`, `powershell`, `python`, `rust`, `sass`, `shell`, `typescript`, `text`.
 - Supported frameworks: `angular`, `react`.
 - Supported licenses: `MIT`, `ISC`, `BSD-2-Clause`, `BSD-3-Clause`, `0BSD`, `Apache-2.0`, `MPL-2.0`, `GPL-3.0-only`, `GPL-3.0-or-later`, `LGPL-3.0-only`, `LGPL-3.0-or-later`, `AGPL-3.0-only`, `AGPL-3.0-or-later`, or `None`; license header style in code files: `Full`, `SPDX`, or `None` (skipped when `license` is `None`).
 - Verification: manual, by running `copier copy` / `copier update` into a scratch project and inspecting the generated files (see [Supporting Tools](#supporting-tools)).
@@ -58,7 +58,7 @@ List of important folders, files and their roles in the project:
 │   ├── coding-conventions.md.jinja       # framework-specific coding conventions
 │   ├── development-guideline.md.jinja    # framework-specific development guideline
 │   └── project-structure.md.jinja        # framework-specific standard project structure
-├── languages/<language>/                 # language fragments included by root templates for every selected language (`typescript` also pulls in `javascript`'s rules); included, never copied
+├── languages/<language>/                 # language fragments included by root templates for every selected language (`typescript` also pulls in `javascript`'s rules, `sass` `css`'s); included, never copied
 │   ├── .editorconfig.jinja               # language-specific editor formatting rules
 │   ├── .gitignore.jinja                  # language-specific ignore patterns
 │   ├── coding-conventions.md.jinja       # language-specific coding conventions
@@ -185,7 +185,7 @@ Template authoring conventions for this repository:
 - Name markers uniquely after the section they close: `<!-- Project-specific / <Section> -->`.
 - Name a fragment's markers `<!-- Project-specific / <Name>-<Section> -->`, where `<Name>` is the language or framework name as in its heading (e.g. `Go-Errors`, `React-Hooks`); spell `<Section>` as its heading does, spaces included.
 - Name template files after the generated file with the `.jinja` suffix (e.g. `AGENTS.md.jinja` renders `AGENTS.md`).
-- Name language folders with the lowercase codes listed in the `languages` choices in `copier.yml`: `css`, `go`, `javascript`, `powershell`, `python`, `rust`, `shell`, `typescript`, `text`.
+- Name language folders with the lowercase codes listed in the `languages` choices in `copier.yml`: `css`, `go`, `javascript`, `powershell`, `python`, `rust`, `sass`, `shell`, `typescript`, `text`.
 - Name framework folders with the lowercase codes listed in the `frameworks` choices in `copier.yml`: `angular`, `react`.
 - Name license fragments `<license-id>.jinja` and `<license-id>-notice.jinja` (e.g. `mit.jinja`, `mit-notice.jinja`).
 - Never number or version a name instead of replacing the original (`coding-conventions-v2.md.jinja`, `_new`, `_copy`).
@@ -248,7 +248,7 @@ When verifying a change with `copier copy` renders (see [Supporting Tools](#supp
 
 - Render from the working tree with `--vcs-ref=HEAD`; without it, Copier renders the latest tag and the change is not in the output.
 - Check at least three expectations in the generated files for each changed behavior, spread across renders as needed, and make sure at least one does not hold in a render of the unchanged templates.
-- Cover answer boundaries, not just the defaults: `license` `None`, `license_header` `None`, no frameworks, `typescript` without `javascript`, several languages at once, and an invalid answer each changed validator must reject.
+- Cover answer boundaries, not just the defaults: `license` `None`, `license_header` `None`, no frameworks, `typescript` without `javascript`, `sass` without `css`, several languages at once, and an invalid answer each changed validator must reject.
 - Keep renders reproducible: pass every answer with `--data` (or `--data-file`) and `--defaults`, into a fresh scratch directory.
 - Inspect the generated files, not just the template diff.
 - Never drop an answer set because its render fails or looks wrong: fix the template, or report the conflict and stop.

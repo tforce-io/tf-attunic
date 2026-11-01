@@ -1,0 +1,30 @@
+## Sass structure
+
+### Guideline
+
+- Keep one partial (`_card.scss`) per concept: one component, one set of tokens, one set of mixins; never a `_helpers.scss` collecting unrelated mixins.
+- Keep partials under the project's style root, mirroring how components are organized; keep a component's partial beside the component when the project co-locates styles.
+- Keep an entry point (`main.scss`, `app.scss`) to `@use` and `@forward` rules and the `@layer` order; it declares the build and holds no style rules.
+<!-- Project-specific / Sass-Guideline -->
+
+### Layout
+
+```
+├── assets/           # repository assets (images, logos, etc)
+├── docs/             # design and user documents
+├── examples/         # demo pages showing the compiled stylesheets in use
+├── src/              # source partials and entry points (style root: tokens, mixins, layer order)
+├── test/             # Sass unit tests, fixtures, and compiled-CSS snapshots
+├── .stylelintrc.json # Stylelint config
+├── package.json      # package manifest, when Sass is compiled, linted, or published through a package manager
+<!-- Project-specific / Sass-Layout -->
+```
+
+### Layer Dependencies
+
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- Sass compiles to CSS and holds the same outermost-UI-detail position as any stylesheet: a mixin, function, or map decides appearance, never a business rule (a price break, a permission) an inner architecture layer should own.
+- Token maps are the interface a stylesheet exposes inward: name their entries for the design system's terms, so an inner architecture layer can request a token by name without knowing the Sass that produces it.
+- Check by hand: a mixin, function, or map that encodes a business decision, instead of styling a class or token a component applied, is a violation.
+<!-- Project-specific / Sass-Layer Dependencies -->

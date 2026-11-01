@@ -55,6 +55,7 @@ languages:
   multiselect: true
   help: "Which languages is this project written in? (select all that apply)"
   choices:
+    - css
     - go
     - javascript
     - powershell

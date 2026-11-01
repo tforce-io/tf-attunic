@@ -13,12 +13,20 @@
     'python': '#',
     'shell': '#',
 } %}
+{%- set block_comment_tokens = {
+    'css': ['/*', '*/'],
+} %}
 {%- set comment_languages = languages | select('in', line_comment_tokens) | list %}
+{%- set block_comment_languages = languages | select('in', block_comment_tokens) | list %}
 - The header text below is plaintext; when writing it into a code file, prefix every line with the file language's line-comment token{{ ':' if comment_languages else '.' }}
 {%- for language in comment_languages %}
   - `{{ language }}`: `{{ line_comment_tokens[language] }}`
 {%- endfor %}
-- Formats without line comments (e.g. Markdown, JSON) don't carry the header, and neither do data formats that have them (e.g. YAML, TOML).
+- In a code file whose language has no line comments, wrap the header text in one block comment instead, with its opening and closing delimiters on lines of their own{{ ':' if block_comment_languages else '.' }}
+{%- for language in block_comment_languages %}
+  - `{{ language }}`: `{{ block_comment_tokens[language][0] }}` and `{{ block_comment_tokens[language][1] }}`
+{%- endfor %}
+- Documentation and data formats (e.g. Markdown, JSON, YAML, TOML) don't carry the header, even where they allow comments.
 <!-- Project-specific / Guideline -->
 
 {%- if license_header == 'Full' %}

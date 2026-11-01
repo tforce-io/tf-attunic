@@ -134,7 +134,7 @@ Each root template `{% include %}`s the framework fragment of every framework se
 - Keep the marker convention from the [Customize](#customize) section above in every new Markdown template, including the fragments in `languages/<lang>/` and `frameworks/<framework>/`; files without sections, such as the license renderers, take none (see `AGENTS.md`'s Coding Conventions).
 - Keep the marker text byte-identical across versions; Copier matches on this line as diff context, so even a whitespace or punctuation change can break the anchor and produce spurious conflicts.
 - Only make changes to content above the `<!-- Project-specific -->`, `<!-- Project-specific / ... -->`, or `# Project-specific` marker in each section.
-- To add a new language, create `languages/<lang_code>/` with all the fragments listed above and add `<lang_code>` to the `languages` question's choices (an array multiselect) in `copier.yml`; declare its owner-defined indentation in its `.editorconfig.jinja` and list it under [Indentation](#indentation); add its line-comment token to `line_comment_tokens` in `.agents/license-header.md.jinja` if it has line comments; and add the code to [Supported Languages](#supported-languages) and to the language lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
+- To add a new language, create `languages/<lang_code>/` with all the fragments listed above and add `<lang_code>` to the `languages` question's choices (an array multiselect) in `copier.yml`; declare its owner-defined indentation in its `.editorconfig.jinja` and list it under [Indentation](#indentation); add its line-comment token to `line_comment_tokens` in `.agents/license-header.md.jinja` if it has line comments, otherwise its block-comment delimiters to `block_comment_tokens`; and add the code to [Supported Languages](#supported-languages) and to the language lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
 - To add a new framework, create `frameworks/<framework_code>/` with all the fragments listed above and add `<framework_code>` under each supported language block in the `frameworks` question's dynamic choices in `copier.yml` (a framework supporting several languages is listed under each of them; for a language without frameworks yet, also extend the question's `when` condition and its choices, which are an `if`/`elif` chain today); then add the code to [Supported Frameworks](#supported-frameworks) and to the framework lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
 - To add a new license, update `copier.yml` (choices, `_exclude` branches), create the `licenses/<id>.jinja` and `licenses/<id>-notice.jinja` fragments, update the `LICENSE.jinja` / `COPYING.jinja` includes, and update the README's License File Mapping table and Supported Licenses list, the license list in `AGENTS.md`'s Technical Specifications, and the license names in the `LICENSE.jinja` / `COPYING.jinja` Layout comments of both `AGENTS.md` and this README, in the same commit.
 - Never move or re-point a published tag (no force-push to tags); ship corrections as a new tag instead.
@@ -143,6 +143,7 @@ Each root template `{% include %}`s the framework fragment of every framework se
 
 ### Supported Languages
 
+- CSS: `css`
 - Go: `go`
 - JavaScript: `javascript`
 - PowerShell: `powershell`
@@ -186,7 +187,7 @@ Reference for `.editorconfig`: every `indent_style` or `indent_size` a language 
 | Python: `*.py`, `*.pyi` | `space` | `4` | [PEP 8](https://peps.python.org/pep-0008/#indentation) |
 | Rust: `*.rs` | `space` | `4` | [Rust Style Guide](https://doc.rust-lang.org/style-guide/#indentation-and-line-width) |
 | YAML: `*.yaml`, `*.yml` | `space` | `2` (default) | [YAML 1.2.2, 6.1 Indentation Spaces](https://yaml.org/spec/1.2.2/#61-indentation-spaces) |
-| Everything else, e.g. JavaScript, TypeScript, Shell, Text, JSON, TOML | `tab` (default) | `2` (default) | No owner rule |
+| Everything else, e.g. CSS, JavaScript, TypeScript, Shell, Text, JSON, TOML | `tab` (default) | `2` (default) | No owner rule |
 
 ## Attributions
 

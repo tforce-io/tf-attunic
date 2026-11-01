@@ -1,0 +1,52 @@
+## CSS
+
+Some rules below name features not every browser supports (e.g. `@layer`, `@scope`, `@property`); use one only where the project's browser targets support it, and otherwise follow what the project already does. A *layer* below is a cascade layer, declared with `@layer`.
+
+### Formats
+
+<!-- Project-specific / CSS-Formats -->
+
+### Names
+
+- Name a class for what it is or does, never for how it looks: `.alert`, not `.red-text`; `.is-collapsed`, not `.hidden-block`.
+- Name classes and custom properties in kebab-case, following the project's naming system (e.g. BEM: `.card__title--compact`) where it has one; never mix two conventions in one stylesheet.
+- Name a custom property for its role, like any other identifier: `--color-brand-500`, never `--c1` or `--tmp`.
+- Never stack noise words onto a class: `.header-wrapper-inner-box` says nothing `.header` doesn't.
+- Never select on an ID for styling: its specificity (1,0,0) outranks any number of classes; use a class instead.
+<!-- Project-specific / CSS-Names -->
+
+### Packages
+
+- Declare the layer order once, in one file loaded before every other stylesheet (`@layer reset, tokens, base, components, utilities;`); put every other rule in a named layer, since an unlayered rule beats every layer.
+- Scope a component's selectors so they cannot leak onto unrelated markup: `@scope`, CSS Modules, or one component-root class prefix, whichever the project uses; never isolate a component with deep descendant selectors.
+- Let layer order decide overrides: a later layer beats an earlier one whatever the selectors' specificity, so selectors stay low-specificity and a utility needs no `!important`.
+- Declare project-wide design tokens in one file; a component stylesheet reads them, but never redeclares one under a different value.
+- Never win an override with a deeper selector chain or `!important`: it hides which rule was meant to apply, and `!important` reverses layer order (an important reset beats an important utility).
+<!-- Project-specific / CSS-Packages -->
+
+### Types
+
+- Give every value used more than once (a color, a spacing step, a duration) one custom property; a hex code or a `14px` repeated twice is undeclared knowledge.
+- Register a custom property with `@property` (`syntax`, `inherits`, `initial-value`) when it is animated or its type must be checked; the browser treats an unregistered one as accepting any value, and cannot animate it.
+- Scope a custom property to the narrowest rule that needs it: one that only one component reads is declared on that component's root, not on `:root`.
+<!-- Project-specific / CSS-Types -->
+
+### Functions
+
+- Compute a related value instead of hand-picking a second one: `color-mix(in oklab, var(--color-brand) 80%, white)` for a tint, `clamp(1rem, 2vw + 0.5rem, 1.5rem)` for fluid sizing; the tint then follows the brand color.
+<!-- Project-specific / CSS-Functions -->
+
+### Comments
+
+<!-- Project-specific / CSS-Comments -->
+
+### Errors
+
+- Check every changed declaration with the project's linter or in the rendered page: the browser silently drops an invalid declaration, and nothing reports it.
+- Give a `var()` a fallback wherever its custom property may be undefined (`color: var(--surface, #fff)`); without one, the property is treated as `unset`, discarding any earlier declaration.
+- Guard a feature some of the project's browser targets lack with `@supports`, and keep a working declaration outside the guard so every target renders.
+<!-- Project-specific / CSS-Errors -->
+
+### Concurrency
+
+<!-- Project-specific / CSS-Concurrency -->

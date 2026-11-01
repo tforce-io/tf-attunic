@@ -1,0 +1,38 @@
+## CSS
+
+### Exploring
+
+<!-- Project-specific / CSS-Exploring -->
+
+### Writing
+
+<!-- Project-specific / CSS-Writing -->
+
+### Security
+
+<!-- Project-specific / CSS-Security -->
+
+### Fixing
+
+<!-- Project-specific / CSS-Fixing -->
+
+### Refactoring
+
+<!-- Project-specific / CSS-Refactoring -->
+
+### Testing
+
+- Run the project's stylesheet linter as a test step; a warning is a failing test.
+- Cover a component whose layout or theme correctness matters with the project's visual-regression tests; a rendered snapshot catches what a linter cannot.
+- Test a dark-mode, media-query, or container-query variant by asserting the rendered state under that condition, never by reading the source rule back.
+<!-- Project-specific / CSS-Testing -->
+
+### Common Mistakes
+
+- Repeated literal: a hex code, pixel value, or duration repeated across selectors => name it once as a custom property.
+- Duplicated theme: a dark theme or breakpoint built by duplicating every rule => override the custom properties instead.
+- Specificity fight: an ID selector, or a selector chain reaching several levels into a component's markup, used to win an override => select on one class, and let layer order decide.
+- Important override: `!important` used to win an override => move the rule to a later layer.
+- Catch-all stylesheet: a `misc.css` or `global.css` that keeps absorbing unrelated rules => move each rule to the stylesheet of the component or concept it belongs to.
+- Fallback-less `var()`: a `var()` with no fallback where its custom property may be undefined => add a fallback, or declare the property where every reader inherits it.
+<!-- Project-specific / CSS-Common Mistakes -->

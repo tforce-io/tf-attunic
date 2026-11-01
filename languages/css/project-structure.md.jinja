@@ -1,0 +1,33 @@
+## CSS structure
+
+### Guideline
+
+- Keep a component's stylesheet beside the component it styles; keep cross-cutting stylesheets (reset, design tokens, layer order, page grid) at the project's style root.
+- Name a stylesheet for the concept its rules belong to; never add a rule to a catch-all `misc.css` or `extra.css`.
+<!-- Project-specific / CSS-Guideline -->
+
+### Layout
+
+```
+├── assets/           # repository assets (images, logos, etc)
+├── docs/             # design and user documents
+├── examples/         # demo pages showing the stylesheets in use
+├── src/              # source stylesheets (style root: reset, design tokens, layer order)
+├── test/             # visual-regression tests, fixtures, and baseline snapshots
+├── .browserslistrc   # browser targets shared by the CSS and JavaScript tooling
+├── .stylelintrc.json # Stylelint config
+├── package.json      # package manifest, when stylesheets are linted, built, or published through a package manager
+├── postcss.config.js # PostCSS plugin config
+<!-- Project-specific / CSS-Layout -->
+```
+
+### Layer Dependencies
+
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- Stylesheets are the outermost UI detail: they decide appearance, never business rules; a discount, a permission, or a status is never expressed as a CSS class an inner architecture layer cannot name.
+- A component chooses which class or custom property to apply from data an inner architecture layer computed; the stylesheet makes no decision.
+- Design tokens are the one interface a stylesheet exposes inward: name them for the design system's terms, not their values, so an inner architecture layer can reference a token without knowing its value.
+- The layer order (`@layer`) only ranks rules in the cascade; it declares no architecture layer.
+- Check by hand: a selector that encodes a business decision, instead of styling a class or custom property a component applied, is a violation.
+<!-- Project-specific / CSS-Layer Dependencies -->

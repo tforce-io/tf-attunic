@@ -89,9 +89,9 @@ charset:
   choices:
     - utf-8
     - utf-8-bom
-    - latin1
     - utf-16be
     - utf-16le
+    - latin1
   default: utf-8
 
 indent_style:

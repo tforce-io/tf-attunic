@@ -210,6 +210,7 @@ When writing templates, follow these rules:
 - Make targeted edits, never whole-file regeneration; every changed line must trace to the request.
 - Keep one job per unit at every scale (bullet, section, template); if describing its job needs "and", split it.
 - Find every usage of a template variable, marker, section anchor, or file you change, by text search, including `README.md` and this file; make sure a rename or behavior change doesn't introduce a new bug or leave a bug half-fixed.
+- Scan the lower-level rules for conflicts and duplication when you change a higher-level rule: Core Rules and Anti-Loopholes reach the `.agents/` templates (and, in this file, its other sections), each general section of the `.agents/` templates reaches the matching section of every `languages/` and `frameworks/` fragment, and a base fragment reaches the fragments built on it (`javascript` reaches `typescript`; `css` reaches `sass` and `tailwind`); since a lower-level rule wins a conflict and a restatement drifts, list what the change creates in the plan and resolve it in the same change, keep an override a language's or framework's idiom requires, and report what already existed.
 - Report unrelated findings instead of fixing them.
 - Remove what your change orphaned (unused fragments, variables, sections, files).
 - Update the docs that describe changed behavior (`README.md`, this file) in the same change.
@@ -302,6 +303,7 @@ Before considering any coding task complete, verify the following to ensure noth
 - [ ] Changes are reviewed for security requirements (see [Security](#security)).
 - [ ] Changes are reviewed for common mistakes (see [Common Mistakes](#common-mistakes)).
 - [ ] Every usage of changed template variables, markers, section anchors, and files is checked; no rename or behavior change left half-applied (see [Writing](#writing)).
+- [ ] Lower-level rules under every changed higher-level rule are scanned for conflicts and duplication; those the change creates are resolved (see [Writing](#writing)).
 - [ ] No unused fragments or variables, debug output, or commented-out blocks left behind.
 - [ ] Template rules and sections this file mirrors are in sync with their changes, or the reason they don't apply is reported (see [Writing](#writing)).
 - [ ] New or moved top-level files and folders are reflected in [Layout](#layout) (prompt the user per its rule).

@@ -135,7 +135,7 @@ Each root template `{% include %}`s the framework fragment of every framework se
 - Keep the marker text byte-identical across versions; Copier matches on this line as diff context, so even a whitespace or punctuation change can break the anchor and produce spurious conflicts.
 - Only make changes to content above the `<!-- Project-specific -->`, `<!-- Project-specific / ... -->`, or `# Project-specific` marker in each section.
 - To add a new language, create `languages/<lang_code>/` with all the fragments listed above and add `<lang_code>` to the `languages` question's choices (an array multiselect) in `copier.yml`; declare its owner-defined indentation in its `.editorconfig.jinja` and list it under [Indentation](#indentation); add its line-comment token to `line_comment_tokens` in `.agents/license-header.md.jinja` if it has line comments, otherwise its block-comment delimiters to `block_comment_tokens`; if it inherits another language's rules, map it to that language in `base_languages` in `.gitignore.jinja`, `.agents/coding-conventions.md.jinja`, and `.agents/development-guideline.md.jinja`; and add the code to [Supported Languages](#supported-languages) and to the language lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
-- To add a new framework, create `frameworks/<framework_code>/` with all the fragments listed above and add `<framework_code>` under each supported language block in the `frameworks` question's dynamic choices in `copier.yml` (a framework supporting several languages is listed under each of them; for a language without frameworks yet, also extend the question's `when` condition and its choices, which are an `if`/`elif` chain today); then add the code to [Supported Frameworks](#supported-frameworks) and to the framework lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
+- To add a new framework, create `frameworks/<framework_code>/` with all the fragments listed above and append `<framework_code>` to the `frameworks` question's dynamic choices in `copier.yml`, under a condition naming every language it supports (for a language without frameworks yet, also add it to the question's `when` condition); then add the code to [Supported Frameworks](#supported-frameworks) and to the framework lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
 - To add a new license, update `copier.yml` (choices, `_exclude` branches), create the `licenses/<id>.jinja` and `licenses/<id>-notice.jinja` fragments, update the `LICENSE.jinja` / `COPYING.jinja` includes, and update the README's License File Mapping table and Supported Licenses list, the license list in `AGENTS.md`'s Technical Specifications, and the license names in the `LICENSE.jinja` / `COPYING.jinja` Layout comments of both `AGENTS.md` and this README, in the same commit.
 - Never move or re-point a published tag (no force-push to tags); ship corrections as a new tag instead.
 
@@ -158,6 +158,7 @@ Each root template `{% include %}`s the framework fragment of every framework se
 
 - Angular: `angular`
 - React: `react`
+- Tailwind CSS: `tailwind`
 
 ### Supported Licenses
 

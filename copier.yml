@@ -74,16 +74,13 @@ frameworks:
   type: str
   multiselect: true
   help: "Which frameworks does this project use? (select all that apply)"
-  when: "{{ 'typescript' in languages or 'javascript' in languages }}"
+  when: "{{ 'typescript' in languages or 'javascript' in languages or 'css' in languages }}"
   choices: |
-    {%- if 'typescript' in languages %}
-    - angular
-    - react
-    {%- elif 'javascript' in languages %}
-    - react
-    {%- else %}
-    []
-    {%- endif %}
+    {%- set choices = [] %}
+    {%- if 'typescript' in languages %}{% set _ = choices.append('angular') %}{% endif %}
+    {%- if 'typescript' in languages or 'javascript' in languages %}{% set _ = choices.append('react') %}{% endif %}
+    {%- if 'css' in languages %}{% set _ = choices.append('tailwind') %}{% endif %}
+    {{- choices | tojson }}
   default: []
 
 charset:

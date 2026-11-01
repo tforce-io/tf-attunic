@@ -1,0 +1,29 @@
+## Tailwind structure
+
+### Guideline
+
+- Keep one CSS entry point (e.g. `src/styles/app.css`, or the project's existing one): it loads Tailwind first (`@import "tailwindcss";`, or the `@tailwind` directives), then any CSS configuration (`@theme`, `@source`, `@custom-variant`), then hand-written base styles.
+- Keep the Tailwind configuration where the project's Tailwind version reads it: the CSS entry point, or `tailwind.config.js`.
+- Move the theme into its own stylesheet (`theme.css`), imported by the CSS entry point, when several entry points share it or it outgrows the entry.
+- Keep a component that wraps a repeated class list with the project's other components, where its UI framework's structure puts them.
+<!-- Project-specific / Tailwind-Guideline -->
+
+### Layout
+
+```
+├── src/
+│   └── styles/
+│       ├── app.css    # CSS entry point: loads Tailwind, then its CSS configuration and hand-written base styles
+│       └── theme.css  # theme tokens, when split out of the entry point
+├── tailwind.config.js # Tailwind config, where the project's Tailwind version reads one
+<!-- Project-specific / Tailwind-Layout -->
+```
+
+### Layer Dependencies
+
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- Tailwind adds no architecture layer: the CSS notes apply to class lists in markup as they do to stylesheets.
+- Keep business rules out of class conditionals: a conditional only selects an already-decided variant; a discount threshold or a permission check belongs to the architecture layer that owns it, and reaches the component as a plain prop.
+- Check by hand: a class conditional that computes a business decision, instead of selecting a variant from a prop, is a violation.
+<!-- Project-specific / Tailwind-Layer Dependencies -->

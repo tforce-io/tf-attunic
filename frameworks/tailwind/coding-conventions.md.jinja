@@ -1,0 +1,55 @@
+## Tailwind
+
+These rules add to the CSS ones and win where the two conflict; the CSS naming rules apply to the classes the project writes, not to Tailwind's utilities. Where Tailwind versions differ (CSS-first configuration with `@theme`, `@source`, and `@custom-variant`, or a `tailwind.config.js`), follow what the project uses.
+
+### Formats
+
+- Let the project's class-sorting formatter or lint rule order class lists where it has one; never hand-reorder a list it sorts.
+<!-- Project-specific / Tailwind-Formats -->
+
+### Names
+
+<!-- Project-specific / Tailwind-Names -->
+
+### Packages
+
+- Use Tailwind's layers instead of declaring a layer order of your own: put hand-written element defaults in its `base` layer and component classes in its `components` layer (`@layer components { ... }`), so utilities still override them.
+<!-- Project-specific / Tailwind-Packages -->
+
+### Types
+
+<!-- Project-specific / Tailwind-Types -->
+
+### Functions
+
+<!-- Project-specific / Tailwind-Functions -->
+
+### Comments
+
+<!-- Project-specific / Tailwind-Comments -->
+
+### Errors
+
+- Keep every file that holds class names inside Tailwind's source scan: the config's `content` globs, or automatic detection plus an `@source` for each path it skips (a gitignored path or `node_modules`, such as a UI library built with Tailwind), whichever the project's version uses; a class in an unscanned file is never generated.
+- Never build a class name by interpolation or concatenation (`` `bg-${color}-600` ``): Tailwind scans source files as plain text, so a class assembled at runtime is never generated, and nothing reports it.
+<!-- Project-specific / Tailwind-Errors -->
+
+### Concurrency
+
+<!-- Project-specific / Tailwind-Concurrency -->
+
+### Utilities
+
+- Map each variant to its complete class list with an object or `switch` (`{ sm: "px-2 py-1 text-xs", lg: "px-4 py-2 text-base" }`); only the lookup is dynamic, never the class string.
+- Apply at most one utility per CSS property and variant to an element, choosing it with a conditional (`gridLayout ? "grid" : "flex"`): when two conflict, the one later in the generated stylesheet wins, whatever their order in the class list.
+- Expose a component's styling variations as props that select a variant; where the component must also accept classes from its caller, merge them with the project's conflict-aware class-merging utility, so the caller's utility replaces the conflicting one deliberately.
+- Prefer the project's class-joining utility over hand-concatenated strings for a conditional class list.
+- Prefer extracting a class list repeated across files into a component or template partial over an `@apply` class; keep `@apply` for small, highly reusable elements (a button, a form control) in a project without components, since `@apply` everywhere is writing CSS again.
+<!-- Project-specific / Tailwind-Utilities -->
+
+### Theme
+
+- Declare every design token (color, spacing, radius, font) in the project's Tailwind theme (`@theme`, or `theme` in the config file), so it generates its utilities.
+- Use an arbitrary value (`top-[117px]`) only for a one-off outside the theme; a value repeated across elements is a theme token.
+- Toggle dark mode by a class or attribute by overriding the `dark` variant where the project's Tailwind version configures it (`@custom-variant dark (&:where(.dark, .dark *));` in the CSS entry point, or `darkMode` in the config file); without an override, `dark:` utilities follow `prefers-color-scheme`.
+<!-- Project-specific / Tailwind-Theme -->

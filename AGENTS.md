@@ -25,7 +25,7 @@ A brief overview of the ingredients used for developing this project. These are 
 Important rules when working with the project; these must be strictly followed:
 
 - Follow instructions: anything explicitly requested, plus the instructions in [Coding Conventions](#coding-conventions), [Naming Conventions](#naming-conventions), [Exploring](#exploring), [Writing](#writing), [Security](#security), [Fixing](#fixing), [Refactoring](#refactoring), [Testing](#testing), [Common Mistakes](#common-mistakes), [Checklist](#checklist), [Pull Request Guideline](#pull-request-guideline), and [Pull Request Checklist](#pull-request-checklist).
-- Resolve conflicts by priority: user requests, local idiomatic style (unless unsafe or broken), the rules in this file.
+- Resolve conflicts by priority: user requests, local idiomatic style in the templates (unless unsafe or broken), the rules in this file.
 - Read rule strength from its verb: a rule stated as a plain command (Keep, Use, Write, ...) is mandatory, and so are Always and Must; Never and Do not (don't) are mandatory prohibitions; Prefer and Avoid are defaults, deviate only with a stated reason.
 - Plan first: plan by default, unless the user explicitly says to skip it; when the change spans more than one file, share the plan and wait for the user's approval before the first edit.
 - Ask when in doubt: if you are unsure about an instruction, need help, or have a better solution, ask: "Do you actually need X?", "Does Y cover it?", "Do you mean Z?", etc.
@@ -71,7 +71,7 @@ List of important folders, files and their roles in the project:
 ├── AGENTS.md                             # agents' entry point of this repo itself; maintained manually, not copied
 ├── AGENTS.md.jinja                       # renders `AGENTS.md`, the agents' entry point; this flat `AGENTS.md` is maintained manually in parallel
 ├── CLAUDE.md                             # this repo's pointer to `AGENTS.md`; not copied
-├── CLAUDE.md.jinja                       # renders `CLAUDE.md`, which points to `AGENTS.md`
+├── CLAUDE.md.jinja                       # renders `CLAUDE.md`, which imports `AGENTS.md` and points Claude Code to its markers
 ├── COPYING.jinja                         # renders `COPYING` for GPL-3.0-only/or-later, the GPL part of LGPL-3.0-only/or-later, AGPL-3.0-only/or-later
 ├── COPYING.LESSER.jinja                  # renders `COPYING.LESSER` with the LGPL text, additionally for LGPL-3.0-only/or-later
 ├── LICENSE                               # MIT license text of this template; not copied
@@ -150,7 +150,7 @@ Facts about the project which have been confirmed. They may look wrong or contra
 |------|--------|
 | This file follows the templates without the attunic protocol: this repo keeps no project memory of its own (`context.md`'s sections are inline here; no `memory.md` or `workstream.md`). | This project doesn't have a complex structure; a single amalgamated `AGENTS.md` is sufficient. |
 | `AGENTS.md` and other files without the `.jinja` extension serve template development; `AGENTS.md.jinja` and every `*.jinja` file serve downstream projects, so rules written inside them are content to maintain, not instructions to follow here. | Every plain file is excluded in `copier.yml` or shadowed by its `.jinja` sibling, so only rendered `*.jinja` files reach downstream projects. |
-| Marker ownership is mirrored between the two audiences: template development edits above a marker and leaves below it empty; downstream projects add below a marker and never edit above it. | Downstream projects own everything below a marker (see [README.md's Customize](README.md#customize)), and `copier update` replays their additions by matching the marker line as diff context. |
+| Marker ownership is mirrored between the two audiences: template development edits template-owned content and leaves project-owned content empty; downstream projects add project-owned content and never edit template-owned content. | Downstream projects own everything from a marker down to the next heading (see [README.md's Customize](README.md#customize)), and `copier update` replays their additions by matching the marker line as diff context. |
 | Migration is skipped; downstream data loss is acceptable. | Project is in early development; skipping migration makes development faster. |
 | `.editorconfig`'s `[*]` default is set by the `charset`, `indent_style`, and `indent_size` answers, whose defaults (`utf-8`, `tab`, `2`) are this template's proposal; the indentation default applies to anything whose owner defines no indentation, so every `indent_style` or `indent_size` a language or format owner defines (official style guide, official formatter, or spec) must be declared explicitly in its own section, even when it equals the default. | Owner rules take priority, and declaring them explicitly prevents mistakes and keeps them intact when a downstream project changes the default. |
 | License text in [./licenses](./licenses) is safe to skip checking for most tasks. | It is canonical license text. |
@@ -163,11 +163,11 @@ Facts about the project which have been confirmed. They may look wrong or contra
 
 Template authoring conventions for this repository:
 
-- End each section of every Markdown template (`*.md.jinja`, fragments included) with a `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker; content above the marker is template-owned, content below is project-owned.
+- End each section of every Markdown template (`*.md.jinja`, fragments included) with a `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker; content from a heading down to the next marker is template-owned, content from a marker down to the next heading is project-owned.
 - Use a single plain `# Project-specific` comment as the last line of `.editorconfig.jinja` and `.gitignore.jinja`, below the included fragments; their language fragments carry no marker.
 - In a section that ends with a fenced block, place the marker inside the fence, before its closing line, when the block is a layout tree, so project additions extend the tree; otherwise place it below the closing fence.
 - Keep marker text byte-identical across template versions: Copier matches the marker line as diff context, so a whitespace or punctuation change can break the anchor and produce spurious conflicts on `copier update`.
-- Write template content only above a marker; leave everything below it empty for downstream projects, which add their project-specific rules there (see [README.md's Customize](README.md#customize)).
+- Write template content only where it is template-owned; leave project-owned content empty for downstream projects, which add their project-specific rules there (see [README.md's Customize](README.md#customize)).
 - Keep [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) and [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja) to generic principles: language/framework agnostic and tool-neutral; put language and framework specifics only in the `languages/` and `frameworks/` fragments.
 - Keep the language/framework guides tool-neutral; it's up to the downstream project to pick the tools and declare them in the context.
 - Keep the language/framework guides version-neutral: state rules that hold across the language's or framework's maintained versions, with no "since vN" claims; where versions differ, defer to what the project already uses.
@@ -266,7 +266,7 @@ Check your diff against these failure patterns; each must be fixed before comple
 - Duplicated implementation: a rule, fragment, or include pattern paralleling one that exists => search before writing, extend the original, merge only true duplication, never content owned by different actors.
 - Wrong-file gravity: a rule added to whatever file was open, a god file growing, a new file at the repository root or current directory => place by role per [Layout](#layout).
 - Phantom success: "should work now" with nothing run; a stub, placeholder, or TODO presented as done => run the render and quote the result, name what did not run, and state plainly what remains.
-- Silent structure drift: a fragment including a root template or a sibling fragment, or fragment content hard-coded into a root template, unless listed in [Deliberate Exceptions](#deliberate-exceptions); a rule edited in its wrong home; template content below a marker; names off [Naming Conventions](#naming-conventions) => check every changed include against [Layer Dependencies](#layer-dependencies), keep includes as the only wiring, one home per rule, names per convention.
+- Silent structure drift: a fragment including a root template or a sibling fragment, or fragment content hard-coded into a root template, unless listed in [Deliberate Exceptions](#deliberate-exceptions); a rule edited in its wrong home; template content between a marker and the next heading; names off [Naming Conventions](#naming-conventions) => check every changed include against [Layer Dependencies](#layer-dependencies), keep includes as the only wiring, one home per rule, names per convention.
 - Missing validation: an answer accepted unchecked, including empty or out-of-range values, where it would break a generated file => add a `validator` to its question in `copier.yml`.
 - Missing error handling: an undefined variable rendering as empty text (Copier's default `jinja2.Undefined` doesn't fail), such as a misspelled answer name => check every name against `copier.yml` and inspect the render for gaps.
 - Edited generated file: a hand edit to rendered output => revert it, change the template, and render again.
@@ -288,7 +288,7 @@ Stop and reassess when you catch yourself thinking:
 | "The user asked for cleanup, so everything is in scope." | Workstream mode has a protocol: baseline, batches, verification; see [Refactoring](#refactoring). |
 | "Clean code means following this document over local style." | Local, idiomatic style wins unless unsafe or broken. |
 | "It is only one include; the include structure still basically holds." | One wrong-direction include is the violation. Structure is a rule, not a tendency. |
-| "Splitting it into services will decouple it." | A process boundary is not a boundary; shared data still couples through it. |
+| "Splitting it into services will decouple it." | A process boundary is not a decoupling boundary; shared data still couples through it. |
 | "These two blocks are identical, so I will extract a helper." | Only if they must always change together. Check who owns each one. |
 | "We will clean it up after the deadline." | The pressure that created the shortcut never abates. |
 

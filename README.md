@@ -32,8 +32,8 @@ If an update asks a question you have never answered before, answer it; the new 
 
 To customize the generated files to follow your project, add your rules below the `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker of the section you are overriding. Project-specific rules supplement the template rules; when they conflict, the project-specific rules take precedence.
 
-- Each section in a template-owned file ends with one `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker, uniquely named after the section. In `.editorconfig` / `.gitignore` it is a plain `# Project-specific` comment. Everything above a marker is template-owned; everything below it is project-owned. For general additions, use the final `Project-specific` section's marker.
-- **DO NOT** add, edit, or delete anything above a marker, and never move or duplicate a marker.
+- Each section in a template-owned file ends with one `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker, uniquely named after the section. In `.editorconfig` / `.gitignore` it is a plain `# Project-specific` comment. Template-owned content runs from a heading, or the start of the file, down to the next marker; project-owned content runs from a marker down to the next heading, or the end of the file. For general additions, use the final `Project-specific` section's marker.
+- **DO NOT** add, edit, or delete template-owned content, and never move or duplicate a marker.
 - **DO NOT** edit `.copier-answers.yml`; Copier maintains it and relies on it to replay your previous answers on `copier update`.
 
 ## Questions
@@ -65,7 +65,7 @@ To customize the generated files to follow your project, add your rules below th
 ├── AGENTS.md                  # agents' entry point of this repo itself; maintained manually, not copied
 ├── AGENTS.md.jinja            # entry point for AI agents in generated projects
 ├── CLAUDE.md                  # this repo's pointer to AGENTS.md; not copied
-├── CLAUDE.md.jinja            # renders CLAUDE.md, which points to AGENTS.md
+├── CLAUDE.md.jinja            # renders CLAUDE.md, which imports AGENTS.md and points Claude Code to its markers
 ├── COPYING.jinja              # renders COPYING for GPL-3.0-only, GPL-3.0-or-later, the GPL part of LGPL-3.0-only / LGPL-3.0-or-later, AGPL-3.0-only, AGPL-3.0-or-later
 ├── COPYING.LESSER.jinja       # renders COPYING.LESSER with the LGPL text (LGPL-3.0-only and LGPL-3.0-or-later)
 ├── LICENSE                    # MIT License Text for this template (not copied)

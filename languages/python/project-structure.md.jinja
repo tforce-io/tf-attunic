@@ -27,13 +27,13 @@
 
 ### Layer Dependencies
 
-Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 
-- The entry point (`__main__.py` or `main.py`) is the outermost layer and the composition root: it may import everything, nothing imports it, and nothing else constructs a repository or client and hands it to policy.
-- Layers live under the package; one suggestion, innermost first:
+- The entry point (`__main__.py` or `main.py`) is the outermost architecture layer and the composition root: it may import everything, nothing imports it, and nothing else constructs a repository or client and hands it to policy.
+- Architecture layers live under the package; one suggestion, innermost first:
 
-| Layer | Typical path | Depends on | Must never contain |
-|-------|--------------|------------|--------------------|
+| Architecture layer | Typical path | Depends on | Must never contain |
+|--------------------|--------------|------------|--------------------|
 | domain | src/\<package\>/domain | itself | ORM models, HTTP framework or client, file I/O |
 | application | src/\<package\>/application | domain | database access, HTTP handlers |
 | adapters | src/\<package\>/adapters | application (its ports), domain | business rules |

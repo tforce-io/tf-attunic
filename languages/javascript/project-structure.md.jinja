@@ -39,13 +39,13 @@
 
 ### Layer Dependencies
 
-Notes for declaring layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 
-- `src/main.js` (or the framework entrypoint) is the outermost layer and the composition root: it builds the object graph and passes it down; it may import everything, and nothing imports it.
-- Layers live under `src/`; one suggestion, innermost first:
+- `src/main.js` (or the framework entrypoint) is the outermost architecture layer and the composition root: it builds the object graph and passes it down; it may import everything, and nothing imports it.
+- Architecture layers live under `src/`; one suggestion, innermost first:
 
-| Layer | Typical path | Depends on | Must never contain |
-|-------|--------------|------------|--------------------|
+| Architecture layer | Typical path | Depends on | Must never contain |
+|--------------------|--------------|------------|--------------------|
 | domain | src/domain | itself | HTTP frameworks, database drivers, `fetch`, `process.env` |
 | application | src/application | domain | database access, HTTP handlers |
 | adapters | src/adapters | application (its ports), domain | business rules |

@@ -299,7 +299,7 @@ Stop and reassess when you catch yourself thinking:
 | "There are no tests, so verification is impossible." | Use the best available check and report remaining risk. |
 | "I will put it here for now." | "For now" placements become permanent. Place it correctly once. |
 | "The user asked for cleanup, so everything is in scope." | Workstream mode has a protocol: baseline, batches, verification; see [Refactoring](#refactoring). |
-| "Clean code means following this document over local style." | Local, idiomatic style wins over the rules ranked below it unless unsafe or broken. |
+| "Clean code means following this document over local style." | Local idiomatic style outranks the other rules in this file; see the conflict order in [Core Rules](#core-rules). |
 | "It is only one include; the include structure still basically holds." | One wrong-direction include is the violation. Structure is a rule, not a tendency. |
 | "Splitting it into services will decouple it." | A process boundary is not a decoupling boundary; shared data still couples through it. |
 | "These two blocks are identical, so I will extract a helper." | Only if they must always change together. Check who owns each one. |

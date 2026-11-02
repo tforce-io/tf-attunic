@@ -172,7 +172,7 @@ They may look wrong or contradict your knowledge or understanding; follow them i
 
 Template authoring conventions for this repository:
 
-- End each section of every Markdown template (`*.md.jinja`, fragments included) with a `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker; content from a marker down to the end of the file or the next heading that has as many or fewer `#` than the marker's section heading or has a marker of its own is project-owned, everything else is template-owned.
+- End each section of every Markdown template (`*.md.jinja`, fragments included) with a `<!-- Project-specific / <Section> -->` marker; content from a marker down to the end of the file or the next heading that has as many or fewer `#` than the marker's section heading or has a marker of its own is project-owned, everything else is template-owned.
 - Give a section its own marker before its next heading, its first subsection's included, when its heading has more `#` than the section heading of the marker above it; otherwise the section falls into that marker's project-owned content.
 - Use a single plain `# Project-specific` comment as the last line of `.editorconfig.jinja` and `.gitignore.jinja`, below the included fragments; their language fragments carry no marker.
 - In a section that ends with a fenced block, place the marker inside the fence, before its closing line, when the block is a layout tree, so project additions extend the tree; otherwise place it below the closing fence.
@@ -195,7 +195,7 @@ Template authoring conventions for this repository:
 ## Naming Conventions
 
 - Use one word per concept across templates and docs; never one word for two concepts (e.g. *fragment* always means an included, never-copied file under `languages/`, `frameworks/`, or `licenses/`).
-- Name markers uniquely after the section they close: `<!-- Project-specific / <Section> -->`.
+- Name markers uniquely within their file after the section they close: `<!-- Project-specific / <Section> -->`.
 - Name a fragment's section headings and markers `<Name>-<Section>`, where `<Name>` is the language or framework name as in the fragment's top heading (e.g. `Go-Errors`, `Angular-Hooks`); the heading text and the marker text are identical, spaces included.
 - Name template files after the generated file with the `.jinja` suffix (e.g. `AGENTS.md.jinja` renders `AGENTS.md`).
 - Name language folders with the lowercase codes listed in the `languages` choices in `copier.yml`: `css`, `go`, `javascript`, `powershell`, `python`, `rust`, `sass`, `shell`, `typescript`, `text`.

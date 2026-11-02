@@ -4,12 +4,12 @@ This file is the entry point for AI coding assistants working on this repository
 
 The files that come from this project's template are the files with `Project-specific` markers, plus `CLAUDE.md`{{ ', the license files at the repository root,' if license != 'None' else '' }} and `.copier-answers.yml`, which have no marker and are template-owned in full.
 
-A marker shows where its file can be customized. It ends a section and is uniquely named after it:
+A marker shows where its file can be customized. It ends the template-owned content of its section and is named after that section, uniquely within its file:
 
-- In Markdown, it is an HTML comment on a line of its own: `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->`.
+- In Markdown, it is an HTML comment on a line of its own: `<!-- Project-specific / <Section> -->`.
 - In a table that ends a section, it is a row of its own, with the comment in its first cell.
-- In a fenced block that ends a section, it is an additional item of the block, on a line of its own before its closing fence; ignore that item when reading the block: it is not part of the block's content.
-- In `.editorconfig` and `.gitignore`, it is the `# Project-specific` comment line.
+- In a fenced layout tree that ends a section, it is an additional item of the tree, on a line of its own before its closing fence; ignore that item when reading the tree: it is not part of the tree's content.
+- In `.editorconfig` and `.gitignore`, it is the `# Project-specific` comment line; these files have no sections, so it ends the template-owned content of the whole file.
 
 A file with markers holds two kinds of content:
 
@@ -17,7 +17,7 @@ A file with markers holds two kinds of content:
   - It runs down to the end of the file or the next Markdown heading that has as many or fewer `#` than the marker's section heading or has a marker of its own; in `.editorconfig` and `.gitignore`, it runs to the end of the file.
   - Give any heading you add there more `#` than the marker's section heading; a heading with as many or fewer `#` ends the project-owned content.
   - Add table rows below the table's marker row, in the same table.
-  - Add block items below the block's marker line, in the same fenced block.
+  - Add tree items below the tree's marker line, in the same layout tree.
 - Template-owned content: everything else in the file; `copier update` maintains it.
 
 ## Topics
@@ -93,4 +93,4 @@ Stop and reassess when you catch yourself thinking:
 
 ## Project-specific
 
-<!-- Project-specific -->
+<!-- Project-specific / Project-specific -->

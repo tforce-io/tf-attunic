@@ -30,20 +30,20 @@ If an update asks a question you have never answered before, answer it; the new 
 
 ## Customize
 
-To customize the generated files to follow your project, add your rules below the `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker of the section you are overriding. Project-owned content supplements template-owned content and takes precedence over it inside its section, and a file's final `Project-specific` section takes precedence over the file's other sections; other conflicts follow the order in the generated `AGENTS.md`'s Core Rules, which ranks the project-owned content of the `.agents/` guides other than `attunic-protocol.md` above local code style and above the template-owned content of those guides.
+To customize the generated files to follow your project, add your rules below the `<!-- Project-specific / <Section> -->` marker of the section you are overriding. Project-owned content supplements template-owned content and takes precedence over it inside its section, and a file's final `Project-specific` section takes precedence over the file's other sections; other conflicts follow the order in the generated `AGENTS.md`'s Core Rules, which ranks the project-owned content of the `.agents/` guides other than `attunic-protocol.md` above local code style and above the template-owned content of those guides.
 
 - The files that come from the template are the files with `Project-specific` markers, plus `CLAUDE.md`, the license files, and `.copier-answers.yml`, which have no marker and are template-owned in full.
-- A marker shows where its file can be customized. It ends a section and is uniquely named after it:
-  - In Markdown, it is an HTML comment on a line of its own: `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->`.
+- A marker shows where its file can be customized. It ends the template-owned content of its section and is named after that section, uniquely within its file:
+  - In Markdown, it is an HTML comment on a line of its own: `<!-- Project-specific / <Section> -->`.
   - In a table that ends a section, it is a row of its own, with the comment in its first cell.
-  - In a fenced block that ends a section, it is an additional item of the block, on a line of its own before its closing fence; ignore that item when reading the block: it is not part of the block's content.
-  - In `.editorconfig` / `.gitignore`, it is a plain `# Project-specific` comment.
+  - In a fenced layout tree that ends a section, it is an additional item of the tree, on a line of its own before its closing fence; ignore that item when reading the tree: it is not part of the tree's content.
+  - In `.editorconfig` / `.gitignore`, it is a plain `# Project-specific` comment; these files have no sections, so it ends the template-owned content of the whole file.
 - A file with markers holds two kinds of content:
   - Project-owned: the content below a marker, where you add your customizations:
     - It runs down to the end of the file or the next Markdown heading that has as many or fewer `#` than the marker's section heading or has a marker of its own; in `.editorconfig` / `.gitignore`, it runs to the end of the file.
     - Give any heading you add more `#` than the marker's section heading; a heading with as many or fewer `#` ends the project-owned content.
     - Add table rows below the table's marker row, in the same table.
-    - Add block items below the block's marker line, in the same fenced block.
+    - Add tree items below the tree's marker line, in the same layout tree.
   - Template-owned: everything else in the file; `copier update` maintains it.
 - For general additions, use the final `Project-specific` section's marker.
 - **DO NOT** add, edit, or delete template-owned content, and never add, move, or duplicate a marker.
@@ -147,7 +147,7 @@ Each root template `{% include %}`s the framework fragment of every framework se
 
 - Keep the marker convention from the [Customize](#customize) section above in every new Markdown template, including the fragments in `languages/<lang>/` and `frameworks/<framework>/`; files without sections, such as the license renderers, take none (see `AGENTS.md`'s Coding Conventions).
 - Keep the marker text byte-identical across versions; Copier matches on this line as diff context, so even a whitespace or punctuation change can break the anchor and produce spurious conflicts.
-- Only make changes to content above the `<!-- Project-specific -->`, `<!-- Project-specific / ... -->`, or `# Project-specific` marker in each section.
+- Only make changes to content above the `<!-- Project-specific / ... -->` or `# Project-specific` marker in each section.
 - To add a new language, create `languages/<lang_code>/` with all the fragments listed above and add `<lang_code>` to the `languages` question's choices (an array multiselect) in `copier.yml`; declare its owner-defined indentation in its `.editorconfig.jinja` and list it under [Indentation](#indentation); add its line-comment token to `line_comment_tokens` in `.agents/license-header.md.jinja` if it has line comments, otherwise its block-comment delimiters to `block_comment_tokens`; if it inherits another language's rules, map it to that language in `base_languages` in `.gitignore.jinja`, `.agents/coding-conventions.md.jinja`, and `.agents/development-guideline.md.jinja`; and add the code to [Supported Languages](#supported-languages) and to the language lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
 - To add a new framework, create `frameworks/<framework_code>/` with all the fragments listed above and append `<framework_code>` to the `frameworks` question's dynamic choices in `copier.yml`, under a condition naming every language it supports (for a language without frameworks yet, also add it to the question's `when` condition); then add the code to [Supported Frameworks](#supported-frameworks) and to the framework lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
 - To add a new license, update `copier.yml` (choices, `_exclude` branches), create the `licenses/<id>.jinja` and `licenses/<id>-notice.jinja` fragments, update the `LICENSE.jinja` / `COPYING.jinja` includes, and update the README's License File Mapping table and Supported Licenses list, the license list in `AGENTS.md`'s Technical Specifications, and the license names in the `LICENSE.jinja` / `COPYING.jinja` Layout comments of both `AGENTS.md` and this README, in the same commit.

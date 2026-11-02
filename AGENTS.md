@@ -25,7 +25,13 @@ A brief overview of the ingredients developers of this project should know.
 Important rules when working with the project; follow them strictly unless a source ranked above them in the conflict order below overrides one:
 
 - Follow instructions: anything explicitly requested, plus the instructions in [Coding Conventions](#coding-conventions), [Naming Conventions](#naming-conventions), [Exploring](#exploring), [Writing](#writing), [Security](#security), [Fixing](#fixing), [Refactoring](#refactoring), [Testing](#testing), [Common Mistakes](#common-mistakes), [Checklist](#checklist), [Pull Request Guideline](#pull-request-guideline), and [Pull Request Checklist](#pull-request-checklist).
-- Resolve conflicts by priority: user requests, [Confirmed Facts](#confirmed-facts), these Core Rules and [Anti-Loopholes](#anti-loopholes), local idiomatic style in the templates (unless unsafe or broken), the other rules in this file.
+- Resolve conflicts by priority, highest first:
+  1. User requests.
+  2. These Core Rules.
+  3. [Anti-Loopholes](#anti-loopholes).
+  4. [Confirmed Facts](#confirmed-facts).
+  5. Local idiomatic style in the templates, unless unsafe or broken.
+  6. The other rules in this file.
 - Read rule strength from its verb: a rule stated as a plain command (Keep, Use, Write, ...) is mandatory, and so are Always and Must; Never and Do not (don't) are mandatory prohibitions; Prefer and Avoid are defaults, deviate only with a stated reason.
 - Plan first: plan by default, unless the user explicitly says to skip it; when the change spans more than one file, share the plan and wait for the user's approval before the first edit.
 - Ask when in doubt: if you are unsure about an instruction, need help, or have a better solution, ask: "Do you actually need X?", "Does Y cover it?", "Do you mean Z?", etc.
@@ -99,10 +105,10 @@ List of architecture layers and their relationships:
 
 ### Deliberate Exceptions
 
-List of documented exceptions that cannot follow the architecture rules above:
+List of documented exceptions that cannot follow the architecture layers above:
 
 - Any place the rules above are knowingly broken, with the reason and the condition for fixing it.
-- Only exceptions to the rules above belong here; an exception to any other rule belongs in [Confirmed Facts](#confirmed-facts).
+- Only exceptions to the architecture layers above belong here.
 - An undocumented exception is a defect; a documented one is allowed, and revisited once its `Revisit-if` condition holds.
 
 | What | Why | Revisit-if |
@@ -216,7 +222,7 @@ When writing templates, follow these rules:
 - Make targeted edits, never whole-file regeneration; every changed line must trace to the request.
 - Keep one job per unit at every scale (bullet, section, template); if describing its job needs "and", split it.
 - Find every usage of a template variable, marker, section anchor, or file you change, by text search, including `README.md` and this file; make sure a rename or behavior change doesn't introduce a new bug or leave a bug half-fixed.
-- Scan the lower-level rules for conflicts and duplication when you change a higher-level rule: Core Rules and Anti-Loopholes reach the `.agents/` templates (and, in this file, its other sections), each general section of the `.agents/` templates reaches the matching section of every `languages/` and `frameworks/` fragment, and a base fragment reaches the fragments built on it (`javascript` reaches `typescript`; `css` reaches `sass` and `tailwind`); since a lower-level rule wins a conflict, except against the Core Rules and Anti-Loopholes, and a restatement drifts, list what the change creates in the plan and resolve it in the same change, keep an override a language's or framework's idiom requires, and report what already existed.
+- Scan the lower-level rules for conflicts and duplication when you change a higher-level rule: Core Rules, Anti-Loopholes, [.agents/attunic-protocol.md.jinja](.agents/attunic-protocol.md.jinja), and the `.attunic/` templates reach each other and the other `.agents/` templates (and, in this file, its other sections), each general section of the `.agents/` templates reaches the matching section of every `languages/` and `frameworks/` fragment, and a base fragment reaches the fragments built on it (`javascript` reaches `typescript`; `css` reaches `sass` and `tailwind`); since a lower-level rule wins a conflict, except against the Core Rules, Anti-Loopholes, attunic protocol, and `.attunic/` templates, and a restatement drifts, list what the change creates in the plan and resolve it in the same change, keep an override a language's or framework's idiom requires, and report what already existed.
 - Report unrelated findings instead of fixing them.
 - Remove what your change orphaned (unused fragments, variables, sections, files).
 - Update the docs that describe changed behavior (`README.md`, this file) in the same change.
@@ -293,7 +299,7 @@ Stop and reassess when you catch yourself thinking:
 | "There are no tests, so verification is impossible." | Use the best available check and report remaining risk. |
 | "I will put it here for now." | "For now" placements become permanent. Place it correctly once. |
 | "The user asked for cleanup, so everything is in scope." | Workstream mode has a protocol: baseline, batches, verification; see [Refactoring](#refactoring). |
-| "Clean code means following this document over local style." | Local, idiomatic style wins unless unsafe or broken. |
+| "Clean code means following this document over local style." | Local, idiomatic style wins over the rules ranked below it unless unsafe or broken. |
 | "It is only one include; the include structure still basically holds." | One wrong-direction include is the violation. Structure is a rule, not a tendency. |
 | "Splitting it into services will decouple it." | A process boundary is not a decoupling boundary; shared data still couples through it. |
 | "These two blocks are identical, so I will extract a helper." | Only if they must always change together. Check who owns each one. |

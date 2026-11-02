@@ -30,18 +30,20 @@ If an update asks a question you have never answered before, answer it; the new 
 
 ## Customize
 
-To customize the generated files to follow your project, add your rules below the `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker of the section you are overriding. Project-owned content supplements template-owned content; when they conflict, project-owned content takes precedence.
+To customize the generated files to follow your project, add your rules below the `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker of the section you are overriding. Project-owned content supplements template-owned content and takes precedence over it inside its section, and a file's final `Project-specific` section takes precedence over the file's other sections; other conflicts follow the order in the generated `AGENTS.md`'s Core Rules, which ranks the project-owned content of the `.agents/` guides other than `attunic-protocol.md` above local code style and above the template-owned content of those guides.
 
 - The files that come from the template are the files with `Project-specific` markers, plus `CLAUDE.md`, the license files, and `.copier-answers.yml`, which have no marker and are template-owned in full.
 - A marker shows where its file can be customized. It ends a section and is uniquely named after it:
   - In Markdown, it is an HTML comment on a line of its own: `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->`.
   - In a table that ends a section, it is a row of its own, with the comment in its first cell.
+  - In a fenced block that ends a section, it is an additional item of the block, on a line of its own before its closing fence; ignore that item when reading the block: it is not part of the block's content.
   - In `.editorconfig` / `.gitignore`, it is a plain `# Project-specific` comment.
 - A file with markers holds two kinds of content:
   - Project-owned: the content below a marker, where you add your customizations:
     - It runs down to the end of the file or the next Markdown heading that has as many or fewer `#` than the marker's section heading or has a marker of its own; in `.editorconfig` / `.gitignore`, it runs to the end of the file.
     - Give any heading you add more `#` than the marker's section heading; a heading with as many or fewer `#` ends the project-owned content.
     - Add table rows below the table's marker row, in the same table.
+    - Add block items below the block's marker line, in the same fenced block.
   - Template-owned: everything else in the file; `copier update` maintains it.
 - For general additions, use the final `Project-specific` section's marker.
 - **DO NOT** add, edit, or delete template-owned content, and never add, move, or duplicate a marker.

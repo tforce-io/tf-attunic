@@ -8,6 +8,7 @@ A marker shows where its file can be customized. It ends a section and is unique
 
 - In Markdown, it is an HTML comment on a line of its own: `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->`.
 - In a table that ends a section, it is a row of its own, with the comment in its first cell.
+- In a fenced block that ends a section, it is an additional item of the block, on a line of its own before its closing fence; ignore that item when reading the block: it is not part of the block's content.
 - In `.editorconfig` and `.gitignore`, it is the `# Project-specific` comment line.
 
 A file with markers holds two kinds of content:
@@ -16,6 +17,7 @@ A file with markers holds two kinds of content:
   - It runs down to the end of the file or the next Markdown heading that has as many or fewer `#` than the marker's section heading or has a marker of its own; in `.editorconfig` and `.gitignore`, it runs to the end of the file.
   - Give any heading you add there more `#` than the marker's section heading; a heading with as many or fewer `#` ends the project-owned content.
   - Add table rows below the table's marker row, in the same table.
+  - Add block items below the block's marker line, in the same fenced block.
 - Template-owned content: everything else in the file; `copier update` maintains it.
 
 ## Topics
@@ -39,10 +41,21 @@ A file with markers holds two kinds of content:
 
 ## Core Rules
 
-Important rules when working with the project; follow them strictly unless a source ranked above them in the conflict order below overrides one:
+Important rules when working with the project; follow them strictly unless the conflict rules below let another source override one:
 
 - Follow instructions: anything explicitly requested, plus the instructions in the files in [Topics](#topics), each when its `When to read` entry applies.
-- Resolve conflicts by priority: user requests, [memory.md's Confirmed Facts](.attunic/memory.md#confirmed-facts), project-owned content ([context.md](.attunic/context.md)'s entries included), this file's template-owned content (and that of [attunic-protocol.md](.agents/attunic-protocol.md) and the `.attunic/` files), local idiomatic style in code (unless unsafe or broken), framework sections, language sections, the general sections of the other `.agents/` guides.
+- Resolve conflicts by priority, highest first; [question.md](.attunic/question.md) and `workstream.md` hold open questions and work state, not rules, and take no part in it:
+  1. User requests.
+  2. This file.
+  3. [memory.md](.attunic/memory.md).
+  4. [context.md](.attunic/context.md).
+  5. [attunic-protocol.md](.agents/attunic-protocol.md).
+  6. Project-owned content of the other `.agents/` guides: their `## Project-specific` sections first, then framework, language, and general sections.
+  7. Local idiomatic style in code, unless unsafe or broken.
+  8. Template-owned content of the framework sections of the other `.agents/` guides.
+  9. Template-owned content of the language sections of the other `.agents/` guides.
+  10. Template-owned content of the general sections of the other `.agents/` guides.
+- Resolve conflicts inside a file or section: inside a file, its `## Project-specific` section wins over its other sections; inside a section, its project-owned content wins over its template-owned content.
 - Read rule strength from its verb: a rule stated as a plain command (Keep, Use, Write, ...) is mandatory, and so are Always and Must; Never and Do not (don't) are mandatory prohibitions; Prefer and Avoid are defaults, deviate only with a stated reason.
 - Load project memory first: read the `.attunic/` files in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order) before work; [memory.md's Confirmed Facts](.attunic/memory.md#confirmed-facts) are binding, and a change to [context.md](.attunic/context.md), [memory.md](.attunic/memory.md), or [question.md](.attunic/question.md) is written only after the user explicitly confirms that change (see [attunic-protocol.md's Write Rules](.agents/attunic-protocol.md#write-rules)).
 - Plan first: plan by default, unless the user explicitly says to skip it; when the change spans more than one file, share the plan and wait for the user's approval before the first edit.
@@ -71,7 +84,7 @@ Stop and reassess when you catch yourself thinking:
 | "There are no tests, so verification is impossible." | Use the best available check and report remaining risk. |
 | "I will put it here for now." | "For now" placements become permanent. Place it correctly once. |
 | "The user asked for cleanup, so everything is in scope." | Workstream mode has a protocol: baseline, batches, `workstream.md`, verification; see [Refactoring](.agents/development-guideline.md#refactoring). |
-| "Clean code means following these guides over local style." | Local, idiomatic style wins unless unsafe or broken. |
+| "Clean code means following these guides over local style." | Local, idiomatic style wins over the template-owned rules ranked below it unless unsafe or broken. |
 | "It is only one import; the architecture layering still basically holds." | One outward import is the violation. Architecture layering is a rule, not a tendency. |
 | "Splitting it into services will decouple it." | A process boundary is not a decoupling boundary; shared data still couples through it. |
 | "These two blocks are identical, so I will extract a helper." | Only if they must always change together. Check who owns each one. |

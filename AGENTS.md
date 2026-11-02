@@ -4,11 +4,11 @@ This file is the entry point for AI coding assistants developing this template; 
 
 ## Abstract
 
-TFattunic attunes software projects for AI coding assistants. From a project name, its languages and frameworks, and a license choice, it generates the instructions and project memory an agent needs to work on the repository: shared development guidelines, coding conventions, pull-request guidance, and a record of context and confirmed facts, a log of exceptions and deferrals, and work in progress, so that any session can start informed and hand its findings to the next.
+TFattunic attunes software projects for AI coding assistants. From a project name, its languages and frameworks, and a license choice, it generates the instructions and project memory an agent needs to work on the repository: shared development guidelines, coding conventions, pull-request guidance, and the project's context, confirmed facts, open questions, and work in progress, so that any session can start informed and hand its findings to the next.
 
 ## Technical Specifications
 
-A brief overview of the ingredients used for developing this project. These are things developers should know when developing the project.
+A brief overview of the ingredients developers of this project should know.
 
 - Languages: Jinja2 Template, Markdown.
 - Framework: [Copier](https://copier.readthedocs.io/).
@@ -22,10 +22,10 @@ A brief overview of the ingredients used for developing this project. These are 
 
 ## Core Rules
 
-Important rules when working with the project; these must be strictly followed:
+Important rules when working with the project; follow them strictly unless a source ranked above them in the conflict order below overrides one:
 
 - Follow instructions: anything explicitly requested, plus the instructions in [Coding Conventions](#coding-conventions), [Naming Conventions](#naming-conventions), [Exploring](#exploring), [Writing](#writing), [Security](#security), [Fixing](#fixing), [Refactoring](#refactoring), [Testing](#testing), [Common Mistakes](#common-mistakes), [Checklist](#checklist), [Pull Request Guideline](#pull-request-guideline), and [Pull Request Checklist](#pull-request-checklist).
-- Resolve conflicts by priority: user requests, local idiomatic style in the templates (unless unsafe or broken), the rules in this file.
+- Resolve conflicts by priority: user requests, [Confirmed Facts](#confirmed-facts), these Core Rules and [Anti-Loopholes](#anti-loopholes), local idiomatic style in the templates (unless unsafe or broken), the other rules in this file.
 - Read rule strength from its verb: a rule stated as a plain command (Keep, Use, Write, ...) is mandatory, and so are Always and Must; Never and Do not (don't) are mandatory prohibitions; Prefer and Avoid are defaults, deviate only with a stated reason.
 - Plan first: plan by default, unless the user explicitly says to skip it; when the change spans more than one file, share the plan and wait for the user's approval before the first edit.
 - Ask when in doubt: if you are unsure about an instruction, need help, or have a better solution, ask: "Do you actually need X?", "Does Y cover it?", "Do you mean Z?", etc.
@@ -51,9 +51,10 @@ List of important folders, files and their roles in the project:
 │   ├── memory-template.md.jinja          # skeleton for `workstream.md`, copied when an audit or cleanup workstream starts
 │   ├── project-structure.md.jinja        # standard project structures of languages and frameworks, kept for reference
 │   └── pull-request-guideline.md.jinja   # guideline and checklist run before opening/updating a PR
-├── .attunic/                             # project memory templates, pre-seeded into generated projects
-│   ├── context.md.jinja                  # renders `context.md`: abstract, specs, layout, layer dependencies with deliberate exceptions, tools, confirmed facts
-│   └── memory.md.jinja                   # renders `memory.md`: append-only log of exceptions, deferrals, and open questions; `workstream.md` created on demand (gitignored)
+├── .attunic/                             # project memory templates, pre-seeded into generated projects; `workstream.md` created on demand (gitignored)
+│   ├── context.md.jinja                  # renders `context.md`: abstract, specs, layout, layer dependencies with deliberate exceptions, tools
+│   ├── memory.md.jinja                   # renders `memory.md`: confirmed facts, filled in by the user
+│   └── question.md.jinja                 # renders `question.md`: open questions, each removed once answered
 ├── frameworks/<framework>/               # framework fragments included by root templates for every selected framework; included, never copied
 │   ├── coding-conventions.md.jinja       # framework-specific coding conventions
 │   ├── development-guideline.md.jinja    # framework-specific development guideline
@@ -101,7 +102,8 @@ List of architecture layers and their relationships:
 List of documented exceptions that cannot follow the architecture rules above:
 
 - Any place the rules above are knowingly broken, with the reason and the condition for fixing it.
-- An undocumented exception is a defect; a documented one is a decision.
+- Only exceptions to the rules above belong here; an exception to any other rule belongs in [Confirmed Facts](#confirmed-facts).
+- An undocumented exception is a defect; a documented one is allowed, and revisited once its `Revisit-if` condition holds.
 
 | What | Why | Revisit-if |
 |------|-----|------------|
@@ -144,18 +146,19 @@ Template engine; version floor `>= 9.0.0` (declared in `copier.yml`). Template v
 
 ## Confirmed Facts
 
-Facts about the project which have been confirmed. They may look wrong or contradict your knowledge or understanding; follow them instead of guessing or asking the user again. These facts outrank anything derived or guessed.
+Facts about the project which have been confirmed, written as additional instructions for the next agent working on it. Each states something unique to this project: a business rule, a rule that goes against common sense, or a shortcut to what would take a lot of time and effort to work out.
+
+They may look wrong or contradict your knowledge or understanding; follow them instead of guessing or asking the user again. These facts outrank anything derived or guessed. Each reason says why its fact holds, so an agent can apply the fact to cases it doesn't name; it is not the history of how the fact was decided. Edit a fact in place when it changes, and remove it once it no longer holds.
 
 | Fact | Reason |
 |------|--------|
-| This file follows the templates without the attunic protocol: this repo keeps no project memory of its own (`context.md`'s sections are inline here; no `memory.md` or `workstream.md`). | This project doesn't have a complex structure; a single amalgamated `AGENTS.md` is sufficient. |
+| This file follows the templates without the attunic protocol: this repo keeps no project memory of its own (`context.md`'s and `memory.md`'s sections are inline here; no `question.md` or `workstream.md`). | This project doesn't have a complex structure; a single amalgamated `AGENTS.md` is sufficient. |
 | `AGENTS.md` and other files without the `.jinja` extension serve template development; `AGENTS.md.jinja` and every `*.jinja` file serve downstream projects, so rules written inside them are content to maintain, not instructions to follow here. | Every plain file is excluded in `copier.yml` or shadowed by its `.jinja` sibling, so only rendered `*.jinja` files reach downstream projects. |
-| Marker ownership is mirrored between the two audiences: template development edits template-owned content and leaves project-owned content empty; downstream projects add project-owned content and never edit template-owned content. | Downstream projects own everything from a marker down to the next heading (see [README.md's Customize](README.md#customize)), and `copier update` replays their additions by matching the marker line as diff context. |
+| Marker ownership is mirrored between the two audiences: template development edits template-owned content and leaves project-owned content empty; downstream projects add project-owned content and never edit template-owned content. | Downstream projects own the content below each marker, up to the heading that ends it (see [README.md's Customize](README.md#customize)), and `copier update` replays their additions by matching the marker line as diff context. |
 | Migration is skipped; downstream data loss is acceptable. | Project is in early development; skipping migration makes development faster. |
 | `.editorconfig`'s `[*]` default is set by the `charset`, `indent_style`, and `indent_size` answers, whose defaults (`utf-8`, `tab`, `2`) are this template's proposal; the indentation default applies to anything whose owner defines no indentation, so every `indent_style` or `indent_size` a language or format owner defines (official style guide, official formatter, or spec) must be declared explicitly in its own section, even when it equals the default. | Owner rules take priority, and declaring them explicitly prevents mistakes and keeps them intact when a downstream project changes the default. |
 | License text in [./licenses](./licenses) is safe to skip checking for most tasks. | It is canonical license text. |
 | Common Mistakes and Checklist (in [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja), plus Anti-Loopholes in [AGENTS.md.jinja](AGENTS.md.jinja), and this file) are for verification: some of their points restate rules from other sections on purpose; a restated point is emphasis, not duplication, so never flag or remove it as duplication. | The rule sections say what to do; these lists check that it was done: Anti-Loopholes while working, when a rationalization surfaces, Common Mistakes and Checklist before completion; restating a rule there marks it as important enough to check again. |
-| In downstream projects, exceptions and deferrals are logged as entries under `memory.md`'s Decisions for later review; it's the user's discretion to update `context.md`'s Confirmed Facts, agents never move them. | `memory.md` is a non-binding log, while Confirmed Facts are binding and `context.md` belongs to the user (see the Write Rules in [.agents/attunic-protocol.md.jinja](.agents/attunic-protocol.md.jinja)). |
 | The `Layout` sections of the language/framework project-structure fragments are reference layouts: they may name tool-specific files (e.g. `uv.lock`, `clippy.toml`, `deny.toml`, each package manager's lockfile); every other part of the language/framework guides stays tool-neutral. | A reference layout lists files a project may already have so agents recognize them; listing one doesn't pick the tool, which stays the downstream project's choice. |
 | The `tailwind` framework is offered only when `css` is selected, never for `sass`, `javascript`, or `typescript` alone. | Tailwind's entry point and configuration are CSS, its fragments build on the `css` ones, and Tailwind v4 is not designed for preprocessors like Sass. |
 
@@ -163,11 +166,12 @@ Facts about the project which have been confirmed. They may look wrong or contra
 
 Template authoring conventions for this repository:
 
-- End each section of every Markdown template (`*.md.jinja`, fragments included) with a `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker; content from a heading down to the next marker is template-owned, content from a marker down to the next heading is project-owned.
+- End each section of every Markdown template (`*.md.jinja`, fragments included) with a `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker; content from a marker down to the end of the file or the next heading that has as many or fewer `#` than the marker's section heading or has a marker of its own is project-owned, everything else is template-owned.
+- Give a section its own marker before its next heading, its first subsection's included, when its heading has more `#` than the section heading of the marker above it; otherwise the section falls into that marker's project-owned content.
 - Use a single plain `# Project-specific` comment as the last line of `.editorconfig.jinja` and `.gitignore.jinja`, below the included fragments; their language fragments carry no marker.
 - In a section that ends with a fenced block, place the marker inside the fence, before its closing line, when the block is a layout tree, so project additions extend the tree; otherwise place it below the closing fence.
 - Keep marker text byte-identical across template versions: Copier matches the marker line as diff context, so a whitespace or punctuation change can break the anchor and produce spurious conflicts on `copier update`.
-- Write template content only where it is template-owned; leave project-owned content empty for downstream projects, which add their project-specific rules there (see [README.md's Customize](README.md#customize)).
+- Write template content only where it is template-owned; leave project-owned content empty for downstream projects, which add their own rules there (see [README.md's Customize](README.md#customize)).
 - Keep [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) and [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja) to generic principles: language/framework agnostic and tool-neutral; put language and framework specifics only in the `languages/` and `frameworks/` fragments.
 - Keep the language/framework guides tool-neutral; it's up to the downstream project to pick the tools and declare them in the context.
 - Keep the language/framework guides version-neutral: state rules that hold across the language's or framework's maintained versions, with no "since vN" claims; where versions differ, defer to what the project already uses.
@@ -179,6 +183,7 @@ Template authoring conventions for this repository:
 - Never add a marker to a file without sections: `CLAUDE.md.jinja`, `.copier-answers.yml.jinja`, the license renderers, and the `licenses/` fragments; there it would be rendered into the generated file as content.
 - Never move or duplicate a marker: Copier anchors downstream additions to the marker line, so either change can misplace them or produce conflicts on `copier update`; treat it as a contract break (see [Writing](#writing)).
 - Never delete or reword comments a tool reads downstream, such as the `SPDX-License-Identifier` line emitted by [licenses/spdx-notice.jinja](licenses/spdx-notice.jinja); markers follow the rules above.
+- Never pad prose outside quoted text with filler (e.g. `simply`, `really`, `in order to`), meaningless words, or a sentence restating the one before it.
 
 ## Naming Conventions
 
@@ -210,7 +215,7 @@ When writing templates, follow these rules:
 - Make targeted edits, never whole-file regeneration; every changed line must trace to the request.
 - Keep one job per unit at every scale (bullet, section, template); if describing its job needs "and", split it.
 - Find every usage of a template variable, marker, section anchor, or file you change, by text search, including `README.md` and this file; make sure a rename or behavior change doesn't introduce a new bug or leave a bug half-fixed.
-- Scan the lower-level rules for conflicts and duplication when you change a higher-level rule: Core Rules and Anti-Loopholes reach the `.agents/` templates (and, in this file, its other sections), each general section of the `.agents/` templates reaches the matching section of every `languages/` and `frameworks/` fragment, and a base fragment reaches the fragments built on it (`javascript` reaches `typescript`; `css` reaches `sass` and `tailwind`); since a lower-level rule wins a conflict and a restatement drifts, list what the change creates in the plan and resolve it in the same change, keep an override a language's or framework's idiom requires, and report what already existed.
+- Scan the lower-level rules for conflicts and duplication when you change a higher-level rule: Core Rules and Anti-Loopholes reach the `.agents/` templates (and, in this file, its other sections), each general section of the `.agents/` templates reaches the matching section of every `languages/` and `frameworks/` fragment, and a base fragment reaches the fragments built on it (`javascript` reaches `typescript`; `css` reaches `sass` and `tailwind`); since a lower-level rule wins a conflict, except against the Core Rules and Anti-Loopholes, and a restatement drifts, list what the change creates in the plan and resolve it in the same change, keep an override a language's or framework's idiom requires, and report what already existed.
 - Report unrelated findings instead of fixing them.
 - Remove what your change orphaned (unused fragments, variables, sections, files).
 - Update the docs that describe changed behavior (`README.md`, this file) in the same change.
@@ -242,7 +247,7 @@ When restructuring templates without changing their output, follow these rules:
 
 - Render the affected templates before and after with the same answers; the generated files must not change.
 - For deduplication, only merge true duplication (copies that must always change together, owned by the same actor); merging accidental lookalikes is harder to undo than leaving them apart.
-- Run cleanup or audit work spanning more than one batch as a workstream: record the baseline before the first change, keep one intent per batch, verify after each batch, and keep the batch list current in the plan shared with the user.
+- Run audit or cleanup work spanning more than one batch as a workstream: record the baseline before the first change, keep one intent per batch, verify after each batch, and keep the batch list current in the plan shared with the user.
 
 ## Testing
 
@@ -266,11 +271,12 @@ Check your diff against these failure patterns; each must be fixed before comple
 - Duplicated implementation: a rule, fragment, or include pattern paralleling one that exists => search before writing, extend the original, merge only true duplication, never content owned by different actors.
 - Wrong-file gravity: a rule added to whatever file was open, a god file growing, a new file at the repository root or current directory => place by role per [Layout](#layout).
 - Phantom success: "should work now" with nothing run; a stub, placeholder, or TODO presented as done => run the render and quote the result, name what did not run, and state plainly what remains.
-- Silent structure drift: a fragment including a root template or a sibling fragment, or fragment content hard-coded into a root template, unless listed in [Deliberate Exceptions](#deliberate-exceptions); a rule edited in its wrong home; template content between a marker and the next heading; names off [Naming Conventions](#naming-conventions) => check every changed include against [Layer Dependencies](#layer-dependencies), keep includes as the only wiring, one home per rule, names per convention.
+- Silent structure drift: a fragment including a root template or a sibling fragment, or fragment content hard-coded into a root template, unless listed in [Deliberate Exceptions](#deliberate-exceptions); a rule edited in its wrong home; template content inside project-owned content; names off [Naming Conventions](#naming-conventions) => check every changed include against [Layer Dependencies](#layer-dependencies), keep includes as the only wiring, one home per rule, names per convention.
 - Missing validation: an answer accepted unchecked, including empty or out-of-range values, where it would break a generated file => add a `validator` to its question in `copier.yml`.
 - Missing error handling: an undefined variable rendering as empty text (Copier's default `jinja2.Undefined` doesn't fail), such as a misspelled answer name => check every name against `copier.yml` and inspect the render for gaps.
 - Edited generated file: a hand edit to rendered output => revert it, change the template, and render again.
 - Stale docs: `README.md` or this file still describing the old behavior => update them in the same change.
+- Padded prose: filler or meaningless words, or a sentence restating the one before it => cut them.
 - Unannounced breaking change: a `copier.yml` question name, marker text or placement, or generated file path changed without the user's agreement => restore compatibility or ask, then call out the break.
 
 ## Anti-Loopholes
@@ -307,7 +313,8 @@ Before considering any coding task complete, verify the following to ensure noth
 - [ ] No unused fragments or variables, debug output, or commented-out blocks left behind.
 - [ ] Template rules and sections this file mirrors are in sync with their changes, or the reason they don't apply is reported (see [Writing](#writing)).
 - [ ] New or moved top-level files and folders are reflected in [Layout](#layout) (prompt the user per its rule).
-- [ ] Lasting choices and confirmed facts are recorded in [Confirmed Facts](#confirmed-facts), each once the user explicitly confirms it (unconfirmed ones are named in the report).
+- [ ] Knowledge the user gave during the task that a later agent couldn't derive and would otherwise have to guess or ask about, lasting choices and exceptions included, is named in the report, for the user to record in this file.
+- [ ] Confirmed Facts the task made stale, or found contradicted by the repository, are named in the report, for the user to update or remove.
 - [ ] Every applicable item above was verified by actually running the check; anything not run is explicitly reported, not claimed.
 
 ## Pull Request Guideline

@@ -30,10 +30,10 @@ If an update asks a question you have never answered before, answer it; the new 
 
 ## Customize
 
-To customize the generated files to follow your project, add your rules below the `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker of the section you are overriding. Project-specific rules supplement the template rules; when they conflict, the project-specific rules take precedence.
+To customize the generated files to follow your project, add your rules below the `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker of the section you are overriding. Project-owned content supplements template-owned content; when they conflict, project-owned content takes precedence.
 
-- Each section in a template-owned file ends with one `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker, uniquely named after the section. In `.editorconfig` / `.gitignore` it is a plain `# Project-specific` comment. Template-owned content runs from a heading, or the start of the file, down to the next marker; project-owned content runs from a marker down to the next heading, or the end of the file. For general additions, use the final `Project-specific` section's marker.
-- **DO NOT** add, edit, or delete template-owned content, and never move or duplicate a marker.
+- Each section in a template-owned file ends with one `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->` marker, uniquely named after the section. In `.editorconfig` / `.gitignore` it is a plain `# Project-specific` comment. Project-owned content runs from a marker down to the end of the file or the next Markdown heading that has as many or fewer `#` than the marker's section heading or has a marker of its own; give any heading in it more `#` than the marker's section heading. Everything else is template-owned. For general additions, use the final `Project-specific` section's marker.
+- **DO NOT** add, edit, or delete template-owned content, and never add, move, or duplicate a marker.
 - **DO NOT** edit `.copier-answers.yml`; Copier maintains it and relies on it to replay your previous answers on `copier update`.
 
 ## Questions
@@ -76,15 +76,16 @@ To customize the generated files to follow your project, add your rules below th
 
 ### Project Memory (`.attunic/`)
 
-Generated projects carry a markdown-only project memory in `.attunic/`, adapted from [clean-code-skills](https://github.com/btseee/clean-code-skills)' memory protocol. It lets a new agent session resume instead of guessing, with no scripts and no runtime tooling:
+Generated projects carry a markdown-only project memory in `.attunic/`, adapted from [clean-code-skills](https://github.com/btseee/clean-code-skills)' memory protocol. It gives every agent session the project knowledge it can't derive on its own, so it doesn't guess, ask, or re-confirm, with no scripts and no runtime tooling:
 
 | File            | Created by                                                               |
 |-----------------|--------------------------------------------------------------------------|
 | `context.md`    | Pre-seeded by this template                                              |
-| `memory.md`     | Pre-seeded by this template; append-only log of exceptions and deferrals |
+| `memory.md`     | Pre-seeded by this template; confirmed facts, filled in by the user      |
+| `question.md`   | Pre-seeded by this template; open questions, each removed once answered  |
 | `workstream.md` | On demand, when an audit or cleanup workstream starts; gitignored        |
 
-Only `context.md` and `memory.md` are committed, every other `.md` file in `.attunic/` are ignored.
+Only `context.md`, `memory.md`, and `question.md` are committed; every other `.md` file in `.attunic/` is ignored.
 
 ### Language Fragments (`languages/<lang>/`)
 

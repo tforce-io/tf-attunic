@@ -58,7 +58,7 @@ When restructuring code without changing its behavior, follow these rules:
 
 - Run the relevant tests before and after; behavior must not change.
 - For deduplication, only merge true duplication (copies that must always change together, owned by the same actor); merging accidental lookalikes is harder to undo than leaving them apart.
-- Run cleanup or audit work spanning more than one batch as a workstream: once the user consents to it, create [workstream.md](../.attunic/workstream.md) from [memory-template.md](memory-template.md), record the baseline before the first change, keep one intent per batch, verify after each batch, and keep `workstream.md` current.
+- Run audit or cleanup work spanning more than one batch as a workstream: once the user consents to it, create [workstream.md](../.attunic/workstream.md) from [memory-template.md](memory-template.md), record the baseline before the first change, keep one intent per batch, verify after each batch, and keep `workstream.md` current.
 <!-- Project-specific / Refactoring -->
 
 ## Testing
@@ -96,6 +96,7 @@ Check your diff against these failure patterns; each must be fixed before comple
 - Silenced diagnostic: a lint, type-check, or compiler suppression or a disabled rule added to get a clean run => fix the cause, or scope the suppression narrowly with a *why* comment.
 - Edited generated file: a hand edit to generated output or a lockfile => revert it, change the source, and regenerate.
 - Stale docs: docs, examples, or comments still describing the old behavior => update them in the same change.
+- Padded prose: filler or meaningless words in comments or docs, or a sentence restating the one before it => cut them.
 - Unannounced breaking change: a public API, config key, CLI flag, or persisted data format changed without the user's agreement => restore compatibility or ask, then call out the break.
 <!-- Project-specific / Common Mistakes -->
 
@@ -134,7 +135,9 @@ Before considering any coding task complete, verify the following to ensure noth
 - [ ] Relevant tests are passing, except known failures the user confirmed (see [Testing](#testing)).
 - [ ] No unused code, debug prints, or commented-out blocks left behind.
 - [ ] New or moved top-level files and folders are reflected in [context.md's Layout](../.attunic/context.md#layout) (prompt the user per its rule).
-- [ ] Exceptions, deferrals, and open questions are recorded in [memory.md](../.attunic/memory.md) per [attunic-protocol.md's Write Rules](attunic-protocol.md#write-rules), each once the user explicitly confirms it (unconfirmed ones are named in the report).
+- [ ] Project knowledge the user gave during the task that a later agent couldn't derive and would otherwise have to guess or ask about, exceptions included, is named in the report, for the user to record in the project memory (see [attunic-protocol.md's Write Rules](attunic-protocol.md#write-rules)).
+- [ ] [context.md](../.attunic/context.md) entries and [memory.md](../.attunic/memory.md) facts the task made stale, or found contradicted by the project, are named in the report, for the user to update or remove (see [attunic-protocol.md's Write Rules](attunic-protocol.md#write-rules)).
+- [ ] Open questions are recorded in [question.md](../.attunic/question.md) per [attunic-protocol.md's Write Rules](attunic-protocol.md#write-rules), each once the user explicitly confirms it (unconfirmed ones are named in the report).
 - [ ] Every applicable item above was verified by actually running the check; anything not run is explicitly reported, not claimed.
 <!-- Project-specific / Checklist -->
 

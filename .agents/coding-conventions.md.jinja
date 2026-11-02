@@ -16,6 +16,7 @@ When a language's established idiom contradicts a principle below, follow the id
 {%- if license != 'None' and license_header != 'None' %}
 - Start every new code file, including test files, with the license header defined in [license-header.md](license-header.md).
 {%- endif %}
+- Never pad comments or docs outside quoted text with filler (e.g. `simply`, `really`, `in order to`), meaningless words, or a sentence restating the one before it.
 <!-- Project-specific / Formats -->
 
 ### Names
@@ -57,7 +58,7 @@ When a language's established idiom contradicts a principle below, follow the id
 
 - Document every exported identifier with a doc comment stating its contract: what it is or does, and what a caller must know.
 - Write inline comments explaining *why*, not *what*.
-- Cut filler and hedging from comments, and articles from inline comments; keep IDs, numbers, links, and warnings whole.
+- Cut hedging from comments, and articles from inline comments; keep IDs, numbers, links, and warnings whole.
 - Keep inline comments short: one to three lines; longer explanations belong in a doc file the comment points to, or an extracted function.
 - Keep comments up to date with the code: a stale comment is worse than no comment.
 - Keep comments about: non-obvious constraints, legal requirements, algorithmic tradeoffs, external system quirks, warnings of consequences, and TODOs with context and ownership.

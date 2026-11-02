@@ -1,11 +1,22 @@
 # AGENTS.md - {{ project_name }}
 
-This file is the entry point for AI coding assistants working on this repository. It is an index to detailed topic guides in the `.agents/` and `.attunic/` directories. Read each file in [Topics](#topics) when its `When to read` entry applies; you don't need to load all of them.
+This file is the entry point for AI coding assistants working on this repository. It is an index to the detailed topic guides in the `.agents/` directory and the project memory in the `.attunic/` directory. Read each file in [Topics](#topics) when its `When to read` entry applies; you don't need to load all of them.
 
-A file with `Project-specific` markers holds two kinds of content:
+The files that come from this project's template are the files with `Project-specific` markers, plus `CLAUDE.md`{{ ', the license files at the repository root,' if license != 'None' else '' }} and `.copier-answers.yml`, which have no marker and are template-owned in full.
 
-- Project-owned content: the content below a `Project-specific` marker, until the end of file or the next Markdown heading that has as many or fewer `#` than the marker's section heading or has a `Project-specific` marker of its own.
-- Template-owned content: everything else in the file.
+A marker shows where its file can be customized. It ends a section and is uniquely named after it:
+
+- In Markdown, it is an HTML comment on a line of its own: `<!-- Project-specific -->` or `<!-- Project-specific / <Section> -->`.
+- In a table that ends a section, it is a row of its own, with the comment in its first cell.
+- In `.editorconfig` and `.gitignore`, it is the `# Project-specific` comment line.
+
+A file with markers holds two kinds of content:
+
+- Project-owned content: the content below a marker, where the project adds its customizations.
+  - It runs down to the end of the file or the next Markdown heading that has as many or fewer `#` than the marker's section heading or has a marker of its own; in `.editorconfig` and `.gitignore`, it runs to the end of the file.
+  - Give any heading you add there more `#` than the marker's section heading; a heading with as many or fewer `#` ends the project-owned content.
+  - Add table rows below the table's marker row, in the same table.
+- Template-owned content: everything else in the file; `copier update` maintains it.
 
 ## Topics
 
@@ -30,8 +41,8 @@ A file with `Project-specific` markers holds two kinds of content:
 
 Important rules when working with the project; follow them strictly unless a source ranked above them in the conflict order below overrides one:
 
-- Follow instructions: anything explicitly requested, plus the instructions in the `.agents/` files in [Topics](#topics), each when its `When to read` entry applies.
-- Resolve conflicts by priority: user requests, [memory.md's Confirmed Facts](.attunic/memory.md#confirmed-facts), project-owned content ([context.md](.attunic/context.md)'s entries included), this file's template-owned content, local idiomatic style in code (unless unsafe or broken), framework sections, language sections, the general sections of the `.agents/` guides.
+- Follow instructions: anything explicitly requested, plus the instructions in the files in [Topics](#topics), each when its `When to read` entry applies.
+- Resolve conflicts by priority: user requests, [memory.md's Confirmed Facts](.attunic/memory.md#confirmed-facts), project-owned content ([context.md](.attunic/context.md)'s entries included), this file's template-owned content (and that of [attunic-protocol.md](.agents/attunic-protocol.md) and the `.attunic/` files), local idiomatic style in code (unless unsafe or broken), framework sections, language sections, the general sections of the other `.agents/` guides.
 - Read rule strength from its verb: a rule stated as a plain command (Keep, Use, Write, ...) is mandatory, and so are Always and Must; Never and Do not (don't) are mandatory prohibitions; Prefer and Avoid are defaults, deviate only with a stated reason.
 - Load project memory first: read the `.attunic/` files in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order) before work; [memory.md's Confirmed Facts](.attunic/memory.md#confirmed-facts) are binding, and a change to [context.md](.attunic/context.md), [memory.md](.attunic/memory.md), or [question.md](.attunic/question.md) is written only after the user explicitly confirms that change (see [attunic-protocol.md's Write Rules](.agents/attunic-protocol.md#write-rules)).
 - Plan first: plan by default, unless the user explicitly says to skip it; when the change spans more than one file, share the plan and wait for the user's approval before the first edit.

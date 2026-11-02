@@ -22,9 +22,9 @@ A file with `Project-specific` markers holds two kinds of content:
 | [.agents/pull-request-guideline.md](.agents/pull-request-guideline.md) | Before opening or updating a pull request: guideline and checklist |
 | [.attunic/context.md](.attunic/context.md) | Every session, in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order): abstract, technical specifications, layout, layer dependencies with their deliberate exceptions, supporting tools |
 | [.attunic/memory.md](.attunic/memory.md) | Every session, in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order): confirmed facts, binding instructions unique to this project |
-| [.attunic/question.md](.attunic/question.md) | Before adding a question, to check it isn't already there: open questions, each removed once answered |
-| [.attunic/workstream.md](.attunic/workstream.md) | Every session, if it exists, in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order): baseline, batches, found but not fixed, deferred of the current audit or cleanup workstream |
-<!-- Project-specific / Topics -->
+| [.attunic/question.md](.attunic/question.md) | Every session, in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order): open questions, each removed once answered |
+| `.attunic/workstream.md` | Every session, if it exists, in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order): baseline, batches, found but not fixed, deferred of the current audit or cleanup workstream |
+| <!-- Project-specific / Topics --> | |
 
 ## Core Rules
 
@@ -65,7 +65,7 @@ Stop and reassess when you catch yourself thinking:
 | "Splitting it into services will decouple it." | A process boundary is not a decoupling boundary; shared data still couples through it. |
 | "These two blocks are identical, so I will extract a helper." | Only if they must always change together. Check who owns each one. |
 | "We will clean it up after the deadline." | The pressure that created the shortcut never abates. |
-<!-- Project-specific / Anti-Loopholes -->
+| <!-- Project-specific / Anti-Loopholes --> | |
 
 ## Project-specific
 

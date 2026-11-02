@@ -1,10 +1,10 @@
 ## PowerShell
 
-### Formats
+### PowerShell-Formats
 
 <!-- Project-specific / PowerShell-Formats -->
 
-### Names
+### PowerShell-Names
 
 - Name every function `Verb-Noun` with an approved verb (`Get-Verb` lists them) and a singular noun (`Get-User`, never `Get-Users` or `List-Users`).
 - Add a vendor or module prefix to the noun to avoid colliding with a built-in or another module's command (`Get-MyAppUser`).
@@ -12,18 +12,18 @@
 - Never hide a verb in a cmdlet's noun (`Get-ProcessOrder`); the verb names the action.
 <!-- Project-specific / PowerShell-Names -->
 
-### Packages
+### PowerShell-Packages
 
 - Ship a module as a `.psm1` plus a `.psd1` manifest that lists `FunctionsToExport`; never export with a wildcard.
 - Split exported functions (`Public/`) from internal helpers (`Private/`); export only the public folder.
 - Keep a function private unless another script or module is meant to call it.
 <!-- Project-specific / PowerShell-Packages -->
 
-### Types
+### PowerShell-Types
 
 <!-- Project-specific / PowerShell-Types -->
 
-### Functions
+### PowerShell-Functions
 
 - Start every function with `[CmdletBinding()]` (add `SupportsShouldProcess` when it changes state) so common parameters, `-Verbose`, and `-WhatIf` come for free.
 - Type every parameter and validate it declaratively (`[ValidateNotNullOrEmpty()]`, `[ValidateRange()]`, `[ValidateSet()]`) instead of an early `if` that throws.
@@ -34,11 +34,11 @@
 - Never rely on a `$global:` variable to pass state between functions; pass parameters and return values instead.
 <!-- Project-specific / PowerShell-Functions -->
 
-### Comments
+### PowerShell-Comments
 
 <!-- Project-specific / PowerShell-Comments -->
 
-### Errors
+### PowerShell-Errors
 
 - Set `$ErrorActionPreference = 'Stop'` at script scope so a cmdlet's non-terminating error becomes catchable; pass `-ErrorAction Stop` to calls inside a shared module.
 - Catch specific exception types (`catch [System.IO.IOException]`) before a general `catch`; never catch everything to swallow it.
@@ -46,6 +46,6 @@
 - Return an expected alternate outcome (not found, already exists) as a value or a `-PassThru` result, not a thrown error.
 <!-- Project-specific / PowerShell-Errors -->
 
-### Concurrency
+### PowerShell-Concurrency
 
 <!-- Project-specific / PowerShell-Concurrency -->

@@ -1,6 +1,6 @@
-## Rust structure
+## Rust
 
-### Guideline
+### Rust-Guideline
 
 - Keep `src/main.rs` or `src/bin/*.rs` thin: parse arguments, build the dependency graph, run.
 - Give each concept its own module under `src/`, re-exported from `lib.rs`.
@@ -8,7 +8,7 @@
 - Keep unit tests beside their code in `#[cfg(test)] mod tests`; keep integration tests of the public API under `tests/`.
 <!-- Project-specific / Rust-Guideline -->
 
-### Layout
+### Rust-Layout
 
 ```
 ├── assets/             # repository assets (images, logos, etc)
@@ -29,7 +29,7 @@
 <!-- Project-specific / Rust-Layout -->
 ```
 
-### Layer Dependencies
+### Rust-Layer Dependencies
 
 Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 

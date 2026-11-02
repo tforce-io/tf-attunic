@@ -2,26 +2,26 @@
 
 TypeScript files also follow the JavaScript section; where the two conflict, the rules in this section win.
 
-### Formats
+### TypeScript-Formats
 
 - Keep imports single-line-per-module and grouped in sections: runtime built-ins, then third-party, then local, then relative, separated by a blank line.
 <!-- Project-specific / TypeScript-Formats -->
 
-### Names
+### TypeScript-Names
 
 - Use `PascalCase` for types, classes, enums, and enum members, named for what they are (`Order`, `PaymentGateway`); never with an `I` prefix or `Type` suffix.
 - Name type parameters for their role when there are several (`TItem`, `TKey`); a lone `T` is fine.
 - Use one discriminant field name (`kind` or `type`) across the codebase.
 <!-- Project-specific / TypeScript-Names -->
 
-### Packages
+### TypeScript-Packages
 
 - Use `import type` (or `import { type ... }`) for type-only imports, so erased imports never turn into runtime dependencies; keep `verbatimModuleSyntax` enabled, and propose it where it is off instead of turning it on unasked.
 - Use `paths` aliases only where the project defines them, written relative to the tsconfig; never introduce `baseUrl` for them.
 - Keep `.d.ts` files for ambient declarations; types for your own code live beside that code.
 <!-- Project-specific / TypeScript-Packages -->
 
-### Types
+### TypeScript-Types
 
 - Keep `strict`, `noUncheckedIndexedAccess`, and `noImplicitOverride` enabled, and propose any that are off instead of turning them on unasked; never relax a compiler flag to silence an error.
 - Use classes when state and behavior belong together, plain types and functions otherwise; prefer composition over inheritance.
@@ -37,23 +37,23 @@ TypeScript files also follow the JavaScript section; where the two conflict, the
 - Avoid `as` assertions; when one is unavoidable, assert once, at the boundary, after validation.
 <!-- Project-specific / TypeScript-Types -->
 
-### Functions
+### TypeScript-Functions
 
 <!-- Project-specific / TypeScript-Functions -->
 
-### Comments
+### TypeScript-Comments
 
 - Write doc comments in JSDoc format.
 - Refer to [TypeScript JSDoc Reference](https://www.typescriptlang.org/docs/handbook/jsdoc-supported.html) for supported tags.
 <!-- Project-specific / TypeScript-Comments -->
 
-### Errors
+### TypeScript-Errors
 
 - Treat `catch (error)` as `unknown`: narrow it with `instanceof` before reading anything from it.
 - Return expected outcomes as a discriminated union (`{ ok: true; value: T } | { ok: false; reason: Reason }`), and keep `throw` for genuine failures.
 - Validate external data at the boundary with a schema, and derive the type from the schema; a cast validates nothing.
 <!-- Project-specific / TypeScript-Errors -->
 
-### Concurrency
+### TypeScript-Concurrency
 
 <!-- Project-specific / TypeScript-Concurrency -->

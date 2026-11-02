@@ -1,39 +1,39 @@
 ## React
 
-### Formats
+### React-Formats
 
 <!-- Project-specific / React-Formats -->
 
-### Names
+### React-Names
 
 - Name components PascalCase in PascalCase files (`UserCard.jsx` or `UserCard.tsx`); name event-handler props `on<Thing>` (`onSave`) and their handlers `handle<Thing>` (`handleSave`).
 <!-- Project-specific / React-Names -->
 
-### Packages
+### React-Packages
 
 <!-- Project-specific / React-Packages -->
 
-### Types
+### React-Types
 
 <!-- Project-specific / React-Types -->
 
-### Functions
+### React-Functions
 
 <!-- Project-specific / React-Functions -->
 
-### Comments
+### React-Comments
 
 <!-- Project-specific / React-Comments -->
 
-### Errors
+### React-Errors
 
 <!-- Project-specific / React-Errors -->
 
-### Concurrency
+### React-Concurrency
 
 <!-- Project-specific / React-Concurrency -->
 
-### Components
+### React-Components
 
 - Keep components pure: same props and state render the same output, no side effects during render.
 - Keep business rules out of components: a component calls a hook or function that owns the rule.
@@ -41,7 +41,7 @@
 - Accept `ref` as an ordinary prop where the project's React version passes it to function components; use `forwardRef` only where it does not.
 <!-- Project-specific / React-Components -->
 
-### State
+### React-State
 
 - Keep state as close as possible to its use; lift it only when two components need it.
 - Use effects only to synchronize with systems outside React: subscriptions, the DOM, timers. Respond to events in event handlers, not effects.
@@ -50,7 +50,7 @@
 - Never store derived data in state; compute it during render.
 <!-- Project-specific / React-State -->
 
-### Hooks
+### React-Hooks
 
 - Follow the Rules of Hooks: call hooks only at the top level of components and custom hooks.
 - List every reactive value an effect, `useMemo`, or `useCallback` reads in its dependency array; never omit one to control when it runs.

@@ -1,27 +1,27 @@
 ## Angular
 
-### Exploring
+### Angular-Exploring
 
 <!-- Project-specific / Angular-Exploring -->
 
-### Writing
+### Angular-Writing
 
 <!-- Project-specific / Angular-Writing -->
 
-### Security
+### Angular-Security
 
 - Never pass untrusted content through `DomSanitizer.bypassSecurityTrust*`; let Angular's built-in sanitization handle `[innerHTML]` and URL bindings.
 <!-- Project-specific / Angular-Security -->
 
-### Fixing
+### Angular-Fixing
 
 <!-- Project-specific / Angular-Fixing -->
 
-### Refactoring
+### Angular-Refactoring
 
 <!-- Project-specific / Angular-Refactoring -->
 
-### Testing
+### Angular-Testing
 
 - Check which test runner the project uses before writing tests; never assume the Angular CLI's current default.
 - Test a component through `TestBed` and its rendered template or public API, never a private method.
@@ -29,7 +29,7 @@
 - Test a business rule as a plain function or class, with no `TestBed` needed.
 <!-- Project-specific / Angular-Testing -->
 
-### Common Mistakes
+### Angular-Common Mistakes
 
 - Nested subscription: a `.subscribe()` call inside another `.subscribe()` callback => compose with a piped operator (`switchMap`, `mergeMap`) or `toSignal`.
 - Hand-synced signal: a computed value copied into a `signal` and kept in sync by hand => derive it with `computed()`.

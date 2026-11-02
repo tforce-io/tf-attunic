@@ -1,32 +1,32 @@
 ## PowerShell
 
-### Exploring
+### PowerShell-Exploring
 
 <!-- Project-specific / PowerShell-Exploring -->
 
-### Writing
+### PowerShell-Writing
 
 <!-- Project-specific / PowerShell-Writing -->
 
-### Security
+### PowerShell-Security
 
 <!-- Project-specific / PowerShell-Security -->
 
-### Fixing
+### PowerShell-Fixing
 
 <!-- Project-specific / PowerShell-Fixing -->
 
-### Refactoring
+### PowerShell-Refactoring
 
 <!-- Project-specific / PowerShell-Refactoring -->
 
-### Testing
+### PowerShell-Testing
 
 - Mock the registry a function reads or writes, as you would the filesystem or network; never touch the real one from a unit test.
 - Test parameter validation and the `ShouldProcess` branch explicitly; `-WhatIf` must produce no side effect.
 <!-- Project-specific / PowerShell-Testing -->
 
-### Common Mistakes
+### PowerShell-Common Mistakes
 
 - Alias in a script: an alias (`gci`, `%`, `?`, `echo`) left in a script => write the full cmdlet name.
 - Text instead of objects: a function emitting formatted text that a caller must regex-parse back into data => return objects.

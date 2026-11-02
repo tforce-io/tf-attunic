@@ -1,13 +1,13 @@
-## Python structure
+## Python
 
-### Guideline
+### Python-Guideline
 
 - Use the `src/` layout: package code under `src/<package>/`, tests under `tests/`, so tests exercise the installed package, not the working directory.
 - Keep the entry point (`__main__.py` or `main.py`) thin: parse arguments, build collaborators, call in.
 - Put ORM models, HTTP clients, and file I/O in their own modules; a domain module never imports them directly.
 <!-- Project-specific / Python-Guideline -->
 
-### Layout
+### Python-Layout
 
 ```
 ├── assets/          # repository assets (images, logos, etc)
@@ -25,7 +25,7 @@
 <!-- Project-specific / Python-Layout -->
 ```
 
-### Layer Dependencies
+### Python-Layer Dependencies
 
 Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 

@@ -1,10 +1,10 @@
 ## Python
 
-### Formats
+### Python-Formats
 
 <!-- Project-specific / Python-Formats -->
 
-### Names
+### Python-Names
 
 - Use `snake_case` for functions, variables, and modules; `PascalCase` for classes; `UPPER_SNAKE_CASE` for module-level constants (PEP 8).
 - Capitalize every letter of an acronym inside a `PascalCase` name, per PEP 8 (`HTTPServerError`, not `HttpServerError`).
@@ -12,7 +12,7 @@
 - Never prefix a `Protocol` or ABC with `I` (`IRepository`); name it for its role.
 <!-- Project-specific / Python-Names -->
 
-### Packages
+### Python-Packages
 
 - Give a module one job and a name for it; a package's `__init__.py` re-exports the public surface and does nothing else.
 - Prefix a name with `_` for anything outside a module's public surface; declare `__all__` where its star-import surface must be explicit.
@@ -20,7 +20,7 @@
 - Never use a wildcard import (`from x import *`) outside a `__init__.py` re-export.
 <!-- Project-specific / Python-Packages -->
 
-### Types
+### Python-Types
 
 - Put type hints on every public function, method, and attribute.
 - Model plain data with `@dataclass(frozen=True)` or `NamedTuple`; reserve ordinary mutable classes for objects with real identity and behavior.
@@ -28,17 +28,17 @@
 - Keep a class's public methods few and cohesive; unrelated public methods on one class are more than one reason to change.
 <!-- Project-specific / Python-Types -->
 
-### Functions
+### Python-Functions
 
 - Make optional and behavior-selecting parameters keyword-only after `*`.
 - Never default a mutable value (`def f(items=[])`): default to `None`, build it inside the body.
 <!-- Project-specific / Python-Functions -->
 
-### Comments
+### Python-Comments
 
 <!-- Project-specific / Python-Comments -->
 
-### Errors
+### Python-Errors
 
 - Raise the most specific built-in or project exception; never raise a bare `Exception` or a string.
 - Chain the cause across a re-raise (`raise ServiceError("refund failed") from error`); never write a bare `except:` that discards it.
@@ -46,7 +46,7 @@
 - Return `None`, annotated as optional, from a lookup where absence is normal; raise a specific `LookupError` subclass (`KeyError` for a mapping) where the contract promises a value.
 <!-- Project-specific / Python-Errors -->
 
-### Concurrency
+### Python-Concurrency
 
 - Group sibling tasks with `asyncio.TaskGroup`, where the project's Python version provides it, instead of unsupervised `create_task` calls; a group cancels the rest when one member fails.
 - Never call blocking I/O or CPU-bound work inside `async def`; use an async client, or hand the call to `asyncio.to_thread`.

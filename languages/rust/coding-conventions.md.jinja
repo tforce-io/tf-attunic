@@ -1,10 +1,10 @@
 ## Rust
 
-### Formats
+### Rust-Formats
 
 <!-- Project-specific / Rust-Formats -->
 
-### Names
+### Rust-Names
 
 - Use `snake_case` for functions, variables, and modules; `UpperCamelCase` for types, traits, and enum variants; `SCREAMING_SNAKE_CASE` for constants and statics.
 - Wrap a primitive in a newtype to name the invariant it carries (`struct OrderId(String)`), instead of passing a bare `String` or `u64` everywhere.
@@ -12,29 +12,29 @@
 - Give every enum variant a name that reads as a state (`Shipped { at: Timestamp }`), not a flag hiding inside a struct.
 <!-- Project-specific / Rust-Names -->
 
-### Packages
+### Rust-Packages
 
 - Default every item to private; use `pub(crate)` for cross-module use inside the crate, `pub` only for the crate's real public surface.
 - Give each concept its own module under `src/`, re-exported from `lib.rs`; nest modules only where a concept has sub-concepts, never just to mirror a folder layout.
 - Keep a trait beside the module that owns its concept; put a second implementation (a test double, an alternate backend) in its own module.
 <!-- Project-specific / Rust-Packages -->
 
-### Types
+### Rust-Types
 
 - Model a closed set of states as an `enum`, not a struct with a `status: String` field and scattered booleans.
 - Implement `From`/`TryFrom` for a conversion instead of a same-named `to_x`/`from_x` free function per type pair.
 <!-- Project-specific / Rust-Types -->
 
-### Functions
+### Rust-Functions
 
 - Borrow (`&T`, `&mut T`) by default; clone only where ownership must move, or the type is `Copy` and cheap.
 <!-- Project-specific / Rust-Functions -->
 
-### Comments
+### Rust-Comments
 
 <!-- Project-specific / Rust-Comments -->
 
-### Errors
+### Rust-Errors
 
 - Return `Result<T, E>` for a recoverable failure and propagate it with `?`; reserve `panic!` for a broken invariant the type system should prevent.
 - Define a library's errors as an enum, one variant per distinguishable cause, implementing `std::error::Error`.
@@ -44,7 +44,7 @@
 - Never call `.unwrap()` or `.expect()` on a path reachable from library code; return the `Result`/`Option` to the caller instead.
 <!-- Project-specific / Rust-Errors -->
 
-### Concurrency
+### Rust-Concurrency
 
 - Push blocking or CPU-heavy work onto the async runtime's blocking-task pool; never call blocking I/O from an async task on the runtime's worker threads.
 - Treat an `Rc<RefCell<T>>` or `Arc<Mutex<T>>` reachable from many owners as a design smell to resolve, not a default to reach for.

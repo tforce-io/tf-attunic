@@ -1,26 +1,26 @@
 ## Go
 
-### Exploring
+### Go-Exploring
 
 <!-- Project-specific / Go-Exploring -->
 
-### Writing
+### Go-Writing
 
 <!-- Project-specific / Go-Writing -->
 
-### Security
+### Go-Security
 
 <!-- Project-specific / Go-Security -->
 
-### Fixing
+### Go-Fixing
 
 <!-- Project-specific / Go-Fixing -->
 
-### Refactoring
+### Go-Refactoring
 
 <!-- Project-specific / Go-Refactoring -->
 
-### Testing
+### Go-Testing
 
 - Write table-driven tests with `t.Run(tt.name, func(t *testing.T) {...})`; name each case for behavior, not the input shape.
 - Call `t.Helper()` in every test helper so a failure reports the caller's line.
@@ -28,7 +28,7 @@
 - Reach for `t.Parallel()` only once a test's fixtures are verified independent of its siblings'.
 <!-- Project-specific / Go-Testing -->
 
-### Common Mistakes
+### Go-Common Mistakes
 
 - Catch-all package: a `util` or `common` package absorbing unrelated helpers => move each helper to the package named for its concept.
 - Shared package state: package-level mutable state read or written from more than one goroutine => make it immutable, or give it one owning goroutine or a lock.

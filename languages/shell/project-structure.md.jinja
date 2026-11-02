@@ -1,13 +1,13 @@
-## Shell structure
+## Shell
 
-### Guideline
+### Shell-Guideline
 
 - Keep one script per operational task; when unrelated subcommands accumulate, split the script or add a real subcommand dispatcher.
 - Put shared functions in `lib/`, entry points in `bin/` or the project root, whichever the project already uses; never duplicate a helper across scripts.
 - Keep generated or vendored scripts out of the directories you hand-edit.
 <!-- Project-specific / Shell-Guideline -->
 
-### Layout
+### Shell-Layout
 
 ```
 ├── bin/            # executable entry-point scripts
@@ -19,7 +19,7 @@
 <!-- Project-specific / Shell-Layout -->
 ```
 
-### Layer Dependencies
+### Shell-Layer Dependencies
 
 Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 

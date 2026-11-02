@@ -1,33 +1,33 @@
 ## Rust
 
-### Exploring
+### Rust-Exploring
 
 <!-- Project-specific / Rust-Exploring -->
 
-### Writing
+### Rust-Writing
 
 <!-- Project-specific / Rust-Writing -->
 
-### Security
+### Rust-Security
 
 <!-- Project-specific / Rust-Security -->
 
-### Fixing
+### Rust-Fixing
 
 <!-- Project-specific / Rust-Fixing -->
 
-### Refactoring
+### Rust-Refactoring
 
 <!-- Project-specific / Rust-Refactoring -->
 
-### Testing
+### Rust-Testing
 
 - Put unit tests beside their code in `#[cfg(test)] mod tests`; put tests of the public API under `tests/`.
 - Name a test for the behavior it proves (`rejects_empty_input`), and assert on `Result`/`Option` values with a pattern match, not `.unwrap()` on the tested path.
 - Reserve `#[should_panic]` for a genuine panic contract; never use it to paper over an untested `Result` path.
 <!-- Project-specific / Rust-Testing -->
 
-### Common Mistakes
+### Rust-Common Mistakes
 
 - Borrow-silencing clone: `.clone()` reached for to quiet a borrow-checker error => restructure ownership or borrow instead.
 - String error: an error carried as a `String`, leaving callers only a text match => return a typed error enum.

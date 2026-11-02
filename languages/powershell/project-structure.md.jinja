@@ -1,13 +1,13 @@
-## PowerShell structure
+## PowerShell
 
-### Guideline
+### PowerShell-Guideline
 
 - Mirror the module layout the project uses (`Public/`, `Private/`, `Classes/`, `tests/`); never add a loose top-level `.ps1` that duplicates a module function.
 - Keep one function per file under `Public/`/`Private/` when the project follows it, named identically to the function.
 - Keep build and packaging scripts (`build.ps1`) at the repository root, thin, and free of business logic.
 <!-- Project-specific / PowerShell-Guideline -->
 
-### Layout
+### PowerShell-Layout
 
 ```
 ├── docs/           # design and user documents
@@ -18,7 +18,7 @@
 <!-- Project-specific / PowerShell-Layout -->
 ```
 
-### Layer Dependencies
+### PowerShell-Layer Dependencies
 
 Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 

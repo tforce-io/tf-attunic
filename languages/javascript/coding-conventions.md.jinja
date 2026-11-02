@@ -1,19 +1,19 @@
 ## JavaScript
 
-### Formats
+### JavaScript-Formats
 
 - Use `const` by default, `let` only for reassignment, never `var`.
 - Compare with `===`/`!==`; use `??`/`?.` where `0` and `""` are valid values.
 - Always brace control-flow bodies (`if`/`else`, `for`, `while`, `do`) even for a single statement.
 <!-- Project-specific / JavaScript-Formats -->
 
-### Names
+### JavaScript-Names
 
 - Use `camelCase` for values and functions, `PascalCase` for classes and components, `UPPER_SNAKE_CASE` only for constants shared across modules.
 - Name a file after the one thing it exports, in the project's casing convention; never two conventions in one folder.
 <!-- Project-specific / JavaScript-Names -->
 
-### Packages
+### JavaScript-Packages
 
 - Write ES modules (`import`/`export`); in a package still on CommonJS, follow its module system and propose the migration instead of mixing `require` with `import` or changing `"type"` unasked.
 - Export only what another module uses; everything else stays module-private.
@@ -22,30 +22,30 @@
 - Avoid barrel files re-exporting whole folders: they hide cycles and load unwanted code; import from the owning module.
 <!-- Project-specific / JavaScript-Packages -->
 
-### Types
+### JavaScript-Types
 
 - In a JavaScript file, describe cross-module data shapes with JSDoc `@typedef`, or move the module to TypeScript.
 <!-- Project-specific / JavaScript-Types -->
 
-### Functions
+### JavaScript-Functions
 
 - Iterate with `for...of`; never `for...in` over arrays or objects (string indices, prototype chain).
 - Use `async`/`await`; do not mix callbacks and promises in the same code path.
 - Prefer non-mutating operations (`map`, `filter`, spread, `toSorted`, `toSpliced`, `with`) over mutating an argument.
 <!-- Project-specific / JavaScript-Functions -->
 
-### Comments
+### JavaScript-Comments
 
 <!-- Project-specific / JavaScript-Comments -->
 
-### Errors
+### JavaScript-Errors
 
 - Throw `Error` subclasses, never strings or plain objects; chain the cause: `throw new PaymentError("charge failed", { cause: error })`.
 - Cancel with `AbortController` and pass its `signal` through every call that can wait.
 - Never leave a promise floating: await it, return it, or hand it to a handler; never write an empty `catch`.
 <!-- Project-specific / JavaScript-Errors -->
 
-### Concurrency
+### JavaScript-Concurrency
 
 - Start independent operations with `Promise.all` or `Promise.allSettled`, not one `await` at a time in a loop.
 <!-- Project-specific / JavaScript-Concurrency -->

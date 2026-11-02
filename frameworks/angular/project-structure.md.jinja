@@ -1,6 +1,6 @@
-## Angular structure
+## Angular
 
-### Guideline
+### Angular-Guideline
 
 - Keep `src/main.ts` as the composition root: `bootstrapApplication`, providers, and nothing else.
 - Group each feature under `src/app/<feature>/` with its components, services, guards, and routes colocated (Angular's flat layout, not a type-based tree).
@@ -9,7 +9,7 @@
 - Declare the root `Routes` array in `src/app/app.routes.ts`; lazy-load features with `loadComponent`/`loadChildren`.
 <!-- Project-specific / Angular-Guideline -->
 
-### Layout
+### Angular-Layout
 
 ```
 ├── src/
@@ -22,7 +22,7 @@
 <!-- Project-specific / Angular-Layout -->
 ```
 
-### Layer Dependencies
+### Angular-Layer Dependencies
 
 Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 

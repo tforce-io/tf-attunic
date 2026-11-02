@@ -1,13 +1,13 @@
-## Sass structure
+## Sass
 
-### Guideline
+### Sass-Guideline
 
 - Keep one partial (`_card.scss`) per concept: one component, one set of tokens, one set of mixins; never a `_helpers.scss` collecting unrelated mixins.
 - Keep partials under the project's style root, mirroring how components are organized; keep a component's partial beside the component when the project co-locates styles.
 - Keep an entry point (`main.scss`, `app.scss`) to `@use` and `@forward` rules and the `@layer` order; it declares the build and holds no style rules.
 <!-- Project-specific / Sass-Guideline -->
 
-### Layout
+### Sass-Layout
 
 ```
 ├── assets/           # repository assets (images, logos, etc)
@@ -20,7 +20,7 @@
 <!-- Project-specific / Sass-Layout -->
 ```
 
-### Layer Dependencies
+### Sass-Layer Dependencies
 
 Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 

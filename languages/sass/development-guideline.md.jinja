@@ -2,33 +2,33 @@
 
 Sass files, in either syntax (`.scss` or the indented `.sass`), also follow the CSS section; where the two conflict, the rules in this section win.
 
-### Exploring
+### Sass-Exploring
 
 <!-- Project-specific / Sass-Exploring -->
 
-### Writing
+### Sass-Writing
 
 <!-- Project-specific / Sass-Writing -->
 
-### Security
+### Sass-Security
 
 <!-- Project-specific / Sass-Security -->
 
-### Fixing
+### Sass-Fixing
 
 <!-- Project-specific / Sass-Fixing -->
 
-### Refactoring
+### Sass-Refactoring
 
 <!-- Project-specific / Sass-Refactoring -->
 
-### Testing
+### Sass-Testing
 
 - Cover a nontrivial function or mixin (a responsive-map generator, a color-contrast helper) with the project's Sass unit tests, or a snapshot of its compiled CSS.
 - Treat a Sass deprecation warning as a failing test once the project has migrated off that deprecation: make it fatal in the compiler (`--fatal-deprecation=<id>`, or the build's equivalent option) so it cannot creep back in.
 <!-- Project-specific / Sass-Testing -->
 
-### Common Mistakes
+### Sass-Common Mistakes
 
 - Legacy import: a partial loaded with `@import` => load it with `@use`, or re-export it with `@forward`.
 - Duplicated token: the same variable or map declared in two partials that must always agree => declare it once and `@use` it where it is needed.

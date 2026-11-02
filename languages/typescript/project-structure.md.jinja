@@ -1,6 +1,6 @@
-## TypeScript structure
+## TypeScript
 
-### Guideline
+### TypeScript-Guideline
 
 - Keep entrypoints thin: parse env/config, wire dependencies, then delegate to `src/` modules.
 - Keep code under `src/` as the house style; only drop to a framework-mandated layout (e.g. `app/`, `pages/`) when a tool requires it.
@@ -11,7 +11,7 @@
 - Keep boundary schemas with the adapter that parses the input, and domain types in the domain.
 <!-- Project-specific / TypeScript-Guideline -->
 
-### Layout
+### TypeScript-Layout
 
 ```
 ├── api/                # OpenAPI/Swagger specs, JSON schemas, protocol definitions
@@ -40,7 +40,7 @@
 <!-- Project-specific / TypeScript-Layout -->
 ```
 
-### Layer Dependencies
+### TypeScript-Layer Dependencies
 
 Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
 

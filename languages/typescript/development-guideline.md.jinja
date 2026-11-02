@@ -2,34 +2,34 @@
 
 TypeScript files also follow the JavaScript section; where the two conflict, the rules in this section win.
 
-### Exploring
+### TypeScript-Exploring
 
 <!-- Project-specific / TypeScript-Exploring -->
 
-### Writing
+### TypeScript-Writing
 
 <!-- Project-specific / TypeScript-Writing -->
 
-### Security
+### TypeScript-Security
 
 <!-- Project-specific / TypeScript-Security -->
 
-### Fixing
+### TypeScript-Fixing
 
 <!-- Project-specific / TypeScript-Fixing -->
 
-### Refactoring
+### TypeScript-Refactoring
 
 <!-- Project-specific / TypeScript-Refactoring -->
 
-### Testing
+### TypeScript-Testing
 
 - Run the type check (`tsc --noEmit`, or the build's own) as a test step; a type error is a failing test.
 - Pin important type-level contracts with the test runner's type assertions or `@ts-expect-error` lines.
 - Never loosen a production type to make a test compile; fix the test's data.
 <!-- Project-specific / TypeScript-Testing -->
 
-### Common Mistakes
+### TypeScript-Common Mistakes
 
 - Leaking `any`: an `any` from one untyped boundary spreading across the codebase => type the boundary as `unknown` and narrow it there.
 - Silencing cast: an `as` cast that hides a type error instead of narrowing => narrow with a type guard, or validate first.

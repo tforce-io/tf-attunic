@@ -196,7 +196,7 @@ Template authoring conventions for this repository:
 
 - Use one word per concept across templates and docs; never one word for two concepts (e.g. *fragment* always means an included, never-copied file under `languages/`, `frameworks/`, or `licenses/`).
 - Name markers uniquely after the section they close: `<!-- Project-specific / <Section> -->`.
-- Name a fragment's markers `<!-- Project-specific / <Name>-<Section> -->`, where `<Name>` is the language or framework name as in its heading (e.g. `Go-Errors`, `React-Hooks`); spell `<Section>` as its heading does, spaces included.
+- Name a fragment's section headings and markers `<Name>-<Section>`, where `<Name>` is the language or framework name as in the fragment's top heading (e.g. `Go-Errors`, `Angular-Hooks`); the heading text and the marker text are identical, spaces included.
 - Name template files after the generated file with the `.jinja` suffix (e.g. `AGENTS.md.jinja` renders `AGENTS.md`).
 - Name language folders with the lowercase codes listed in the `languages` choices in `copier.yml`: `css`, `go`, `javascript`, `powershell`, `python`, `rust`, `sass`, `shell`, `typescript`, `text`.
 - Name framework folders with the lowercase codes listed in the `frameworks` choices in `copier.yml`: `angular`, `react`, `tailwind`.

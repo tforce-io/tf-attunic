@@ -26,5 +26,5 @@ Notes for declaring architecture layers in the `Layer Dependencies` section of `
 
 - Sass compiles to CSS and holds the same outermost-UI-detail position as any stylesheet: a mixin, function, or map decides appearance, never a business rule (a price break, a permission) an inner architecture layer should own.
 - Token maps are the interface a stylesheet exposes inward: name their entries for the design system's terms, so an inner architecture layer can request a token by name without knowing the Sass that produces it.
-- Check by hand: a mixin, function, or map that encodes a business decision, instead of styling a class or token a component applied, is a violation.
+- Check manually: a mixin, function, or map that encodes a business decision, instead of styling a class or token a component applied, is a violation.
 <!-- Project-specific / Sass-Layer Dependencies -->

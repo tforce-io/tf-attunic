@@ -44,5 +44,5 @@ Notes for declaring architecture layers in the `Layer Dependencies` section of `
 | main | crates/cli | application, adapters, domain | business rules |
 
 - Declare ports as traits in the domain or application crate; adapter crates implement them, and path dependencies point outward-to-inward only.
-- Check by hand: `cargo tree` (or reading each crate's `Cargo.toml`) must never show an inner crate depending on an outer one.
+- Check manually: `cargo tree` (or reading each crate's `Cargo.toml`) must never show an inner crate depending on an outer one.
 <!-- Project-specific / Rust-Layer Dependencies -->

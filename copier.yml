@@ -1,8 +1,9 @@
 _min_copier_version: "9.0.0"
 
 # Exclude patterns are matched against rendered destination paths, not
-# template source paths. Repo-own AGENTS.md, CLAUDE.md, and LICENSE don't
-# need excluding: their .jinja siblings shadow plain files during rendering.
+# template source paths. This repository's own AGENTS.md, CLAUDE.md, and
+# LICENSE don't need excluding: their .jinja siblings shadow plain files
+# during rendering.
 _exclude:
   - ".DS_Store"
   - ".git"

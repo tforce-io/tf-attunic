@@ -33,7 +33,7 @@ Notes for declaring architecture layers in the `Layer Dependencies` section of `
 - Business rules live in plain modules that import nothing from React.
 - API clients implement interfaces the application layer declares; components never call `fetch` directly.
 - Providers and the router compose everything, in the outermost architecture layer.
-- Check by hand: read the imports of changed files; an inner module importing an outer one is a violation.
+- Check manually: read the imports of changed files; an inner module importing an outer one is a violation.
 - Prefer passing dependencies in (constructor injection or a provider) over module-level singletons, so an architecture layer boundary can be substituted in tests.
 
 | Architecture layer | Typical path | Depends on | Must never contain |

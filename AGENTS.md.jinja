@@ -1,6 +1,6 @@
 # AGENTS.md - {{ project_name }}
 
-This file is the entry point for AI coding assistants working on this repository. It holds the rules for every task in [Core Rules](#core-rules) and [Anti-Loopholes](#anti-loopholes), and indexes the detailed topic guides in the `.agents/` directory and the project memory in the `.attunic/` directory. Read each file in [Topics](#topics) when its `When to read` entry applies.
+This file is the entry point for AI agents working on this repository. It holds the rules for every task in [Core Rules](#core-rules) and [Anti-Loopholes](#anti-loopholes), and indexes the detailed topic guides in the `.agents/` folder and the project memory in the `.attunic/` folder. Read each file in [Topics](#topics) when its `When to read` entry applies.
 
 The files that come from this project's template are the files with `Project-specific` markers, plus `CLAUDE.md`{{ ', the license files at the repository root,' if license != 'None' else '' }} and `.copier-answers.yml`, which have no marker and are template-owned in full.
 
@@ -31,7 +31,7 @@ A file with markers holds two kinds of content:
 | [.agents/license-header.md](.agents/license-header.md) | Before creating a code file: license header to put at its top |
 {%- endif %}
 | [.agents/memory-template.md](.agents/memory-template.md) | When an audit or cleanup workstream starts: skeleton for `workstream.md` |
-| [.agents/project-structure.md](.agents/project-structure.md) | When placing a file that [context.md's Layout](.attunic/context.md#layout) doesn't cover: standard project structures of languages and frameworks |
+| [.agents/project-structure.md](.agents/project-structure.md) | When placing a file that [context.md's Layout](.attunic/context.md#layout) doesn't cover: reference project structures of languages and frameworks |
 | [.agents/pull-request-guideline.md](.agents/pull-request-guideline.md) | Before opening or updating a pull request: guideline and checklist |
 | [.attunic/context.md](.attunic/context.md) | Every session, in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order): abstract, technical specifications, layout, layer dependencies with their deliberate exceptions, supporting tools |
 | [.attunic/memory.md](.attunic/memory.md) | Every session, in [attunic-protocol.md's Read Order](.agents/attunic-protocol.md#read-order): confirmed facts, binding instructions unique to this project |

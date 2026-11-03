@@ -25,5 +25,5 @@ Notes for declaring architecture layers in the `Layer Dependencies` section of `
 - Keep a public function a Humble Object: parameter binding, `ShouldProcess`, and formatting only; call into a `Classes/` type or a private function for any rule with branching.
 - Keep cmdlet-shaped types (`[PSCustomObject]`, a .NET type from a module you call) out of a domain class's public surface; convert at the boundary.
 - Keep module import and dependency wiring (`Import-Module`, `using module`) at the script or manifest level, never inside a function that also does the work.
-- Check by hand: a public function containing branching business rules instead of delegating to `Classes/` types or `Private/` helpers is a violation.
+- Check manually: a public function containing branching business rules instead of delegating to `Classes/` types or `Private/` helpers is a violation.
 <!-- Project-specific / PowerShell-Layer Dependencies -->

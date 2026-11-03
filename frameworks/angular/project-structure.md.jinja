@@ -30,7 +30,7 @@ Notes for declaring architecture layers in the `Layer Dependencies` section of `
 - Components, directives, and pipes are the delivery layer: they render and adapt, they do not decide.
 - Business rules are plain TypeScript classes or functions with no `@angular/*` import; declare a repository interface there and implement it in a service that injects `HttpClient`.
 - Guards, interceptors, and resolvers depend on the application layer's interfaces, never the reverse.
-- Check by hand: read the imports of changed files; an inner module importing an outer one is a violation.
+- Check manually: read the imports of changed files; an inner module importing an outer one is a violation.
 - Prefer passing dependencies in (constructor or `inject()`) over module-level singletons, so an architecture layer boundary can be substituted in tests.
 
 | Architecture layer | Typical path | Depends on | Must never contain |

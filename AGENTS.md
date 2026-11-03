@@ -1,14 +1,14 @@
 # AGENTS.md - TFattunic
 
-This file is the entry point for AI coding assistants developing this template; the `*.jinja` files it maintains are rendered into downstream projects (see [Confirmed Facts](#confirmed-facts)).
+This file is the entry point for AI agents developing this template; the `*.jinja` files it maintains are rendered into downstream projects (see [Confirmed Facts](#confirmed-facts)).
 
 ## Abstract
 
-TFattunic attunes software projects for AI coding assistants. From a project name, its languages and frameworks, and a license choice, it generates the instructions and project memory an agent needs to work on the repository: shared development guidelines, coding conventions, pull-request guidance, and the project's context, confirmed facts, open questions, and work in progress, so that any session can start informed and hand its findings to the next.
+TFattunic attunes software projects for AI agents. From a project name, its languages and frameworks, and a license choice, it generates the instructions and project memory an agent needs to work on the repository: shared development guidelines, coding conventions, pull-request guidance, and the project's context, confirmed facts, open questions, and work in progress, so that any session can start informed and hand its findings to the next.
 
 ## Technical Specifications
 
-A brief overview of the ingredients developers of this project should know.
+The technical aspects of the project: what it is built with and supports, and what working on it requires:
 
 - Languages: Jinja2 Template, Markdown.
 - Framework: [Copier](https://copier.readthedocs.io/).
@@ -18,7 +18,7 @@ A brief overview of the ingredients developers of this project should know.
 - Supported languages: `css`, `go`, `javascript`, `powershell`, `python`, `rust`, `sass`, `shell`, `typescript`, `text`.
 - Supported frameworks: `angular`, `react`, `tailwind`.
 - Supported licenses: `MIT`, `ISC`, `BSD-2-Clause`, `BSD-3-Clause`, `0BSD`, `Apache-2.0`, `MPL-2.0`, `GPL-3.0-only`, `GPL-3.0-or-later`, `LGPL-3.0-only`, `LGPL-3.0-or-later`, `AGPL-3.0-only`, `AGPL-3.0-or-later`, or `None`; license header style in code files: `Full`, `SPDX`, or `None` (skipped when `license` is `None`).
-- Verification: manual, by running `copier copy` / `copier update` into a scratch project and inspecting the generated files (see [Supporting Tools](#supporting-tools)).
+- Verification: manual, by running `copier copy` / `copier update` into a scratch folder and inspecting the generated files (see [Supporting Tools](#supporting-tools)).
 
 ## Core Rules
 
@@ -40,7 +40,7 @@ Rules for every task; follow them strictly unless a source ranked above them in 
 - Guard against common loopholes: stop and reassess when you catch yourself thinking any of the rationalizations in [Anti-Loopholes](#anti-loopholes).
 - Distrust recall: verify every Copier setting and Jinja filter against the installed Copier version, every EditorConfig property against its spec, and every API or tool behavior a fragment names against its official docs.
 - Confirm irreversible actions: ask before deleting files outside the change, rewriting history, force-pushing, publishing, or moving a published tag.
-- Verify every change: every changed behavior is checked by something that runs; without a test harness, as in this repository, the smallest check that runs (a `copier copy` render into a scratch directory) stands in for each test a rule asks for.
+- Verify every change: every changed behavior is checked by something that runs; without a test harness, as in this repository, the smallest check that runs (a `copier copy` render into a scratch folder) stands in for each test a rule asks for.
 - Commit and push only on request: never create a commit or push unless the user asks for it.
 - Report fully: say what ran and what didn't, what was skipped or assumed, and what was found along the way; never present unverified success or a stub or placeholder as finished; name anything that could not run with its remaining risk.
 
@@ -49,35 +49,35 @@ Rules for every task; follow them strictly unless a source ranked above them in 
 List of important folders, files and their roles in the project:
 
 ```text
-├── .agents/                              # shared AI agent instruction templates (`*.md.jinja`), copied into generated projects
+├── .agents/                              # shared AI agent guide templates (`*.md.jinja`), copied into downstream projects
 │   ├── attunic-protocol.md.jinja         # defines the `.attunic/` project memory: files, read order, write rules
 │   ├── coding-conventions.md.jinja       # formatting, naming, package, type, function, comment, error, and concurrency conventions; plus per-language and per-framework sections
 │   ├── development-guideline.md.jinja    # exploring/writing/security/fixing/refactoring/testing rules, common mistakes, coding checklist; plus per-language and per-framework sections
 │   ├── license-header.md.jinja           # license header to put at the top of every new code file
 │   ├── memory-template.md.jinja          # skeleton for `workstream.md`, copied when an audit or cleanup workstream starts
-│   ├── project-structure.md.jinja        # standard project structures of languages and frameworks, kept for reference
+│   ├── project-structure.md.jinja        # reference project structures of languages and frameworks
 │   └── pull-request-guideline.md.jinja   # guideline and checklist run before opening/updating a PR
-├── .attunic/                             # project memory templates, pre-seeded into generated projects; `workstream.md` created on demand (gitignored)
+├── .attunic/                             # project memory templates, copied into downstream projects; `workstream.md` created on demand (gitignored)
 │   ├── context.md.jinja                  # renders `context.md`: abstract, specs, layout, layer dependencies with deliberate exceptions, tools
 │   ├── memory.md.jinja                   # renders `memory.md`: confirmed facts, filled in by the user
 │   └── question.md.jinja                 # renders `question.md`: open questions, each removed once answered
 ├── frameworks/<framework>/               # framework fragments included by root templates for every selected framework; included, never copied
 │   ├── coding-conventions.md.jinja       # framework-specific coding conventions
 │   ├── development-guideline.md.jinja    # framework-specific development guideline
-│   └── project-structure.md.jinja        # framework-specific standard project structure
-├── languages/<language>/                 # language fragments included by root templates for every selected language (`typescript` also pulls in `javascript`'s rules, `sass` `css`'s); included, never copied
+│   └── project-structure.md.jinja        # framework-specific reference project structure
+├── languages/<language>/                 # language fragments included by root templates for every selected language (`typescript` builds on `javascript`, `sass` on `css`: selecting one also includes its base's rules); included, never copied
 │   ├── .editorconfig.jinja               # language-specific editor formatting rules
 │   ├── .gitignore.jinja                  # language-specific ignore patterns
 │   ├── coding-conventions.md.jinja       # language-specific coding conventions
 │   ├── development-guideline.md.jinja    # language-specific development guideline
-│   └── project-structure.md.jinja        # language-specific standard project structure
+│   └── project-structure.md.jinja        # language-specific reference project structure
 ├── licenses/                             # license text and notice fragments (not copied), included by the license renderers below and `.agents/license-header.md.jinja`
-├── .copier-answers.yml.jinja             # emits `.copier-answers.yml` in generated projects; never hand-edited (replayed by `copier update`)
-├── .editorconfig.jinja                   # generic editor formatting rules; includes the fragment of every selected language
-├── .gitignore.jinja                      # generic ignore rules; includes the fragment of every selected language
-├── AGENTS.md                             # agents' entry point of this repo itself; maintained manually, not copied
+├── .copier-answers.yml.jinja             # renders `.copier-answers.yml` in downstream projects; never edited manually (replayed by `copier update`)
+├── .editorconfig.jinja                   # general editor formatting rules; includes the fragment of every selected language
+├── .gitignore.jinja                      # general ignore rules; includes the fragment of every selected language
+├── AGENTS.md                             # agents' entry point of this repository itself; maintained manually, not copied
 ├── AGENTS.md.jinja                       # renders `AGENTS.md`, the agents' entry point; this flat `AGENTS.md` is maintained manually in parallel
-├── CLAUDE.md                             # this repo's pointer to `AGENTS.md`; not copied
+├── CLAUDE.md                             # this repository's pointer to `AGENTS.md`; not copied
 ├── CLAUDE.md.jinja                       # renders `CLAUDE.md`, which imports `AGENTS.md` and points Claude Code to its markers
 ├── COPYING.jinja                         # renders `COPYING` for GPL-3.0-only/or-later, the GPL part of LGPL-3.0-only/or-later, AGPL-3.0-only/or-later
 ├── COPYING.LESSER.jinja                  # renders `COPYING.LESSER` with the LGPL text, additionally for LGPL-3.0-only/or-later
@@ -87,7 +87,7 @@ List of important folders, files and their roles in the project:
 └── copier.yml                            # template questions and settings
 ```
 
-- File names without `*.jinja` extension are for this repo itself, they won't be copied into downstream projects.
+- File names without `*.jinja` extension are for this repository itself, they won't be copied into downstream projects.
 - If the list is not empty and a top-level file/folder is missing from it, prompt the user to update it.
 
 ## Layer Dependencies
@@ -116,7 +116,7 @@ List of documented exceptions:
 
 ## Supporting Tools
 
-All the supporting tools declared here are opinionated for consistent results across development environments.
+Use the tools declared here over alternatives, so every development environment gets the same results.
 
 ### Python
 
@@ -126,7 +126,7 @@ Runtime for Copier; nothing else in this template requires it.
 
 ### Copier
 
-Template engine; version floor `>= 9.0.0` (declared in `copier.yml`). Template versions resolve from PEP 440-compliant Git tags (e.g. `v1.0.0`); previous answers are replayed from `.copier-answers.yml`, which must never be hand-edited.
+Template engine; version floor `>= 9.0.0` (declared in `copier.yml`). Template versions resolve from PEP 440-compliant Git tags (e.g. `v1.0.0`); previous answers are replayed from `.copier-answers.yml`, which must never be edited manually.
 
 - Install:
   ```sh
@@ -141,7 +141,7 @@ Template engine; version floor `>= 9.0.0` (declared in `copier.yml`). Template v
   ```sh
   copier copy gh:tforce-io/tf-attunic <target>
   ```
-- Verify a change by rendering the working tree, uncommitted changes included, into a scratch directory (run at the repository root; see [Testing](#testing)):
+- Verify a change by rendering the working tree, uncommitted changes included, into a scratch folder (run at the repository root; see [Testing](#testing)):
   ```sh
   copier copy --vcs-ref=HEAD --defaults --data 'languages=[go]' . <scratch>
   ```
@@ -158,14 +158,14 @@ They may look wrong or contradict your knowledge or understanding; follow them i
 
 | Fact | Reason |
 |------|--------|
-| This file follows the templates without the attunic protocol: this repo keeps no project memory of its own (`context.md`'s and `memory.md`'s sections are inline here; no `question.md` or `workstream.md`). | This project doesn't have a complex structure; a single amalgamated `AGENTS.md` is sufficient. |
+| This file follows the templates without the attunic protocol: this repository keeps no project memory of its own (`context.md`'s and `memory.md`'s sections are inline here; no `question.md` or `workstream.md`). | This project doesn't have a complex structure; a single amalgamated `AGENTS.md` is sufficient. |
 | `AGENTS.md` and other files without the `.jinja` extension serve template development; `AGENTS.md.jinja` and every `*.jinja` file serve downstream projects, so rules written inside them are content to maintain, not instructions to follow here. | Every plain file is excluded in `copier.yml` or shadowed by its `.jinja` sibling, so only rendered `*.jinja` files reach downstream projects. |
 | Marker ownership is mirrored between the two audiences: template development edits template-owned content and leaves project-owned content empty; downstream projects add project-owned content and never edit template-owned content. | Downstream projects own the content below each marker, up to the heading that ends it (see [README.md's Customize](README.md#customize)), and `copier update` replays their additions by matching the marker line as diff context. |
 | Migration is skipped; downstream data loss is acceptable. | Project is in early development; skipping migration makes development faster. |
 | `.editorconfig`'s `[*]` default is set by the `charset`, `indent_style`, and `indent_size` answers, whose defaults (`utf-8`, `tab`, `2`) are this template's proposal; the indentation default applies to anything whose owner defines no indentation, so every `indent_style` or `indent_size` a language or format owner defines (official style guide, official formatter, or spec) must be declared explicitly in its own section, even when it equals the default. | Owner rules take priority, and declaring them explicitly prevents mistakes and keeps them intact when a downstream project changes the default. |
 | License text in [./licenses](./licenses) is safe to skip checking for most tasks. | It is canonical license text. |
 | Common Mistakes and Checklist (in [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja), plus Anti-Loopholes in [AGENTS.md.jinja](AGENTS.md.jinja), and this file) are for verification: some of their points restate rules from other sections on purpose; a restated point is emphasis, not duplication, so never flag or remove it as duplication. | The rule sections say what to do; these lists check that it was done: Anti-Loopholes while working, when a rationalization surfaces, Common Mistakes and Checklist before completion; restating a rule there marks it as important enough to check again. |
-| The `Layout` sections of the language/framework project-structure fragments are reference layouts: they may name tool-specific files (e.g. `uv.lock`, `clippy.toml`, `deny.toml`, each package manager's lockfile); every other part of the language/framework guides stays tool-neutral. | A reference layout lists files a project may already have so agents recognize them; listing one doesn't pick the tool, which stays the downstream project's choice. |
+| The `Layout` sections of the language/framework project-structure fragments are reference layouts: they may name tool-specific files (e.g. `uv.lock`, `clippy.toml`, `deny.toml`, each package manager's lockfile); every other part of the language/framework fragments stays tool-neutral. | A reference layout lists files a project may already have so agents recognize them; listing one doesn't pick the tool, which stays the downstream project's choice. |
 | The `tailwind` framework is offered only when `css` is selected, never for `sass`, `javascript`, or `typescript` alone. | Tailwind's entry point and configuration are CSS, its fragments build on the `css` ones, and Tailwind v4 is not designed for preprocessors like Sass. |
 
 ## Coding Conventions
@@ -179,17 +179,17 @@ Template authoring conventions for this repository:
 - In a section that ends with a table, place the marker as the table's last row, in its first cell, with one empty cell for each other column (e.g. `| <!-- Project-specific / Topics --> | |`), so project additions extend the table; a marker line outside the table ends the table, and rows added below it render as plain text.
 - Keep marker text byte-identical across template versions: Copier matches the marker line as diff context, so a whitespace or punctuation change can break the anchor and produce spurious conflicts on `copier update`.
 - Write template content only where it is template-owned; leave project-owned content empty for downstream projects, which add their own rules there (see [README.md's Customize](README.md#customize)).
-- Keep [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) and [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja) to generic principles: language/framework agnostic and tool-neutral; put language and framework specifics only in the `languages/` and `frameworks/` fragments.
-- Keep the language/framework guides tool-neutral; it's up to the downstream project to pick the tools and declare them in the context.
-- Keep the language/framework guides version-neutral: state rules that hold across the language's or framework's maintained versions, with no "since vN" claims; where versions differ, defer to what the project already uses.
-- Include all sections declared in [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) in the language/framework Coding Conventions, all sections but Checklist declared in [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja) in the language/framework Development Guidelines, and the Guideline, Layout, and Layer Dependencies sections, in that order, in the language/framework Project Structures, even when empty; add new sections after the shared ones.
+- Keep [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) and [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja) to general principles: language/framework agnostic and tool-neutral; put language and framework specifics only in the `languages/` and `frameworks/` fragments.
+- Keep the language/framework fragments tool-neutral; it's up to the downstream project to pick the tools and declare them in the context.
+- Keep the language/framework fragments version-neutral: state rules that hold across the language's or framework's maintained versions, with no "since vN" claims; where versions differ, defer to what the project already uses.
+- Include all sections declared in [.agents/coding-conventions.md.jinja](.agents/coding-conventions.md.jinja) in the language/framework Coding Conventions, all sections but Checklist declared in [.agents/development-guideline.md.jinja](.agents/development-guideline.md.jinja) in the language/framework Development Guidelines, and the Guideline, Layout, and Layer Dependencies sections, in that order, in the language/framework Project Structures, even when empty; add new sections after the declared ones.
 - Order the rules in each section by strength: mandatory, default, mandatory prohibitions, default prohibitions; keep the existing order within each group.
 - Use ASCII punctuation and straight quotes by default; use non-ASCII characters only where the content requires them (names, quoted text, symbols with no ASCII form, box-drawing in layout trees); keep encoding UTF-8 without a BOM.
 - End every file with a single final newline; strip trailing blank lines.
 - Separate headings from body text with exactly one blank line; never indent paragraphs or headings except intentional block quotes.
 - Never add a marker to a file without sections: `CLAUDE.md.jinja`, `.copier-answers.yml.jinja`, the license renderers, and the `licenses/` fragments; there it would be rendered into the generated file as content.
 - Never move or duplicate a marker: Copier anchors downstream additions to the marker line, so either change can misplace them or produce conflicts on `copier update`; treat it as a contract break (see [Writing](#writing)).
-- Never delete or reword comments a tool reads downstream, such as the `SPDX-License-Identifier` line emitted by [licenses/spdx-notice.jinja](licenses/spdx-notice.jinja); markers follow the rules above.
+- Never delete or reword comments a tool reads downstream, such as the `SPDX-License-Identifier` line rendered by [licenses/spdx-notice.jinja](licenses/spdx-notice.jinja); markers follow the rules above.
 - Never pad prose outside quoted text with filler (e.g. `simply`, `really`, `in order to`), meaningless words, or a sentence restating the one before it.
 
 ## Naming Conventions
@@ -228,7 +228,7 @@ When writing templates, follow these rules:
 - Update the docs that describe changed behavior (`README.md`, this file) in the same change.
 - Keep this file in sync with the templates it is an instance of (`AGENTS.md.jinja` and the `.agents/` and `.attunic/` templates): when a change alters a rule or section this file mirrors, apply the same change here in the same change, adapted to template development, or report why it doesn't apply.
 - Treat `copier.yml` question names, marker text and placement, and generated file paths as contracts with downstream projects; ask before breaking one, and call out every break, since migration is skipped (see [Confirmed Facts](#confirmed-facts)).
-- Never hand-edit rendered output to verify a change; change the template and render again.
+- Never edit a generated file manually to verify a change; change the template and render again.
 
 ## Security
 
@@ -236,7 +236,7 @@ When writing templates or verifying changes, follow these rules:
 
 - Validate answers where they enter: give a question a `validator` when an empty, malformed, or out-of-range answer would break a generated file.
 - Prefer allowlists over denylists in validators (e.g. the `project_name` pattern).
-- Never render an answer into YAML or a file path as raw text; constrain it with `choices` or a `validator`, or emit it through an escaping filter such as `to_nice_yaml`.
+- Never render an answer into YAML or a file path as raw text; constrain it with `choices` or a `validator`, or render it through an escaping filter such as `to_nice_yaml`.
 - Never add an unsafe Copier feature (`_jinja_extensions`, `_tasks`, `_migrations`) without the user's agreement: it runs code on the downstream user's machine, and Copier refuses it unless that user trusts the template (`--trust`).
 - Never hardcode secrets or commit them to the repository.
 
@@ -263,7 +263,7 @@ When verifying a change with `copier copy` renders (see [Supporting Tools](#supp
 - Render from the working tree with `--vcs-ref=HEAD`; without it, Copier renders the latest tag and the change is not in the output.
 - Check at least three expectations in the generated files for each changed behavior, spread across renders as needed, and make sure at least one does not hold in a render of the unchanged templates.
 - Cover answer boundaries, not just the defaults: `license` `None`, `license_header` `None`, no frameworks, `typescript` without `javascript`, `sass` without `css`, several languages at once, and an invalid answer each changed validator must reject.
-- Keep renders reproducible: pass every answer with `--data` (or `--data-file`) and `--defaults`, into a fresh scratch directory.
+- Keep renders reproducible: pass every answer with `--data` (or `--data-file`) and `--defaults`, into a fresh scratch folder.
 - Inspect the generated files, not just the template diff.
 - Never drop an answer set because its render fails or looks wrong: fix the template, or report the conflict and stop.
 
@@ -276,12 +276,12 @@ Check your diff against these failure patterns; each must be fixed before comple
 - Context loss: a stale or partial read that contradicts existing content, restores deleted content, or drops a marker or validator in a rewrite => re-read the target files, the templates that include them, and `README.md`.
 - Scope creep: changed lines that trace to no request such as drive-by renames, reformatting, dependency bumps => revert them and report instead.
 - Duplicated implementation: a rule, fragment, or include pattern paralleling one that exists => search before writing, extend the original, merge only true duplication, never content owned by different actors.
-- Wrong-file gravity: a rule added to whatever file was open, a god file growing, a new file at the repository root or current directory => place by role per [Layout](#layout).
+- Wrong-file gravity: a rule added to whatever file was open, a god file growing, a new file at the repository root or working directory => place by role per [Layout](#layout).
 - Phantom success: "should work now" with nothing run; a stub, placeholder, or TODO presented as done => run the render and quote the result, name what did not run, and state plainly what remains.
 - Silent structure drift: a fragment including a root template or a sibling fragment, or fragment content hard-coded into a root template, unless listed in [Deliberate Exceptions](#deliberate-exceptions); a rule edited in its wrong home; template content inside project-owned content; names off [Naming Conventions](#naming-conventions) => check every changed include against [Layer Dependencies](#layer-dependencies), keep includes as the only wiring, one home per rule, names per convention.
 - Missing validation: an answer accepted unchecked, including empty or out-of-range values, where it would break a generated file => add a `validator` to its question in `copier.yml`.
 - Missing error handling: an undefined variable rendering as empty text (Copier's default `jinja2.Undefined` doesn't fail), such as a misspelled answer name => check every name against `copier.yml` and inspect the render for gaps.
-- Edited generated file: a hand edit to rendered output => revert it, change the template, and render again.
+- Edited generated file: a manual edit to a generated file => revert it, change the template, and render again.
 - Stale docs: `README.md` or this file still describing the old behavior => update them in the same change.
 - Padded prose: filler or meaningless words, or a sentence restating the one before it => cut them.
 - Unannounced breaking change: a `copier.yml` question name, marker text or placement, or generated file path changed without the user's agreement => restore compatibility or ask, then call out the break.
@@ -310,7 +310,7 @@ Stop and reassess when you catch yourself thinking:
 Before considering any coding task complete, verify the following:
 
 - [ ] The task's requirements are fulfilled; acceptance criteria (if any) are verified against the generated files, not assumed from the template diff.
-- [ ] Changed templates render from the working tree into a scratch directory with the answer sets they need, and the generated files are inspected (see [Testing](#testing)).
+- [ ] Changed templates render from the working tree into a scratch folder with the answer sets they need, and the generated files are inspected (see [Testing](#testing)).
 - [ ] Changed files follow project convention (see [Coding Conventions](#coding-conventions) and [Naming Conventions](#naming-conventions)).
 - [ ] The complete final diff has been read line by line; every change is intentional and understood.
 - [ ] Changes are reviewed for security requirements (see [Security](#security)).

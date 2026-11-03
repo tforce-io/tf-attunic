@@ -41,5 +41,5 @@ Notes for declaring architecture layers in the `Layer Dependencies` section of `
 
 - Declare ports as a `typing.Protocol` in the domain or application module; adapter modules implement them.
 - Keep framework base classes and decorators out of the domain layer; a domain object never inherits from one.
-- Check by hand: read the imports of changed files; a domain module importing an ORM, an HTTP framework, or an HTTP client is a violation.
+- Check manually: read the imports of changed files; a domain module importing an ORM, an HTTP framework, or an HTTP client is a violation.
 <!-- Project-specific / Python-Layer Dependencies -->

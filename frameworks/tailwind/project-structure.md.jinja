@@ -25,5 +25,5 @@ Notes for declaring architecture layers in the `Layer Dependencies` section of `
 
 - Tailwind adds no architecture layer: the CSS notes apply to class lists in markup as they do to stylesheets.
 - Keep business rules out of class conditionals: a conditional only selects an already-decided variant; a discount threshold or a permission check belongs to the architecture layer that owns it, and reaches the component as a plain prop.
-- Check by hand: a class conditional that computes a business decision, instead of selecting a variant from a prop, is a violation.
+- Check manually: a class conditional that computes a business decision, instead of selecting a variant from a prop, is a violation.
 <!-- Project-specific / Tailwind-Layer Dependencies -->

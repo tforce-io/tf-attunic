@@ -15,7 +15,7 @@
 ```
 ├── api/            # OpenAPI/Swagger specs, JSON schemas, protocol definitions
 ├── assets/         # repository assets (images, logos, etc)
-├── cmd/            # main packages (one subdirectory per binary)
+├── cmd/            # main packages (one subfolder per binary)
 ├── config/         # global application configuration
 ├── deployments/    # deployment configs and templates (docker-compose, kubernetes/helm, terraform)
 ├── docs/           # design and user documents (beyond godoc)
@@ -51,5 +51,5 @@ Notes for declaring architecture layers in the `Layer Dependencies` section of `
 | transport | internal/\<app\>/transport | application, domain | SQL, external clients |
 
 - `pkg/` is a public boundary for other modules; keep application-internal architecture layer types out of it.
-- Check by hand: reading imports or `go list -deps ./...` must never show an inner package importing an outer one.
+- Check manually: reading imports or `go list -deps ./...` must never show an inner package importing an outer one.
 <!-- Project-specific / Go-Layer Dependencies -->

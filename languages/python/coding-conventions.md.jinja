@@ -23,7 +23,7 @@
 ### Python-Types
 
 - Put type hints on every public function, method, and attribute.
-- Model plain data with `@dataclass(frozen=True)` or `NamedTuple`; reserve ordinary mutable classes for objects with real identity and behavior.
+- Model plain data with `@dataclass(frozen=True)` or `NamedTuple`; reserve ordinary mutable classes for objects with identity and behavior.
 - Declare a `typing.Protocol` for a structural contract a caller depends on; reach for an ABC only where shared implementation matters.
 - Keep a class's public methods few and cohesive; unrelated public methods on one class are more than one reason to change.
 <!-- Project-specific / Python-Types -->

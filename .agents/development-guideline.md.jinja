@@ -4,7 +4,7 @@
 
 Reuse before writing new code; go through these in order and stop at the first that applies:
 
-- Does it already exist in this codebase? Reuse the helper, util, or pattern that's already here; don't rewrite it.
+- Does it already exist in this codebase? Reuse the helper, util, or pattern.
 - Does a closely matching implementation that needs adaptation exist in this codebase? Report it and propose extending it before writing anything new.
 - Does the standard library already do this? Use it.
 - Does a native platform feature cover it? Use it.
@@ -33,13 +33,13 @@ When writing code, follow these rules:
 When writing code or verifying changes, follow these rules:
 
 - Keep authorization checks beside the operation they protect, or centralized in one enforced policy layer.
-- Perform input validation at trust boundaries. Boundaries are external APIs, databases, file systems, clocks, queues, UI events, network calls, subprocesses, generated code.
+- Validate input at trust boundaries. Boundaries are external APIs, databases, file systems, clocks, queues, UI events, network calls, subprocesses, generated code.
 - Grant least privilege: the narrowest permissions, token scopes, file modes, and network exposure that work.
 - Use the standard library or a well-maintained, established library for auth and crypto.
 - Prefer the standard library or a well-maintained, established library for parsing and serialization.
 - Prefer allowlists over denylists when validating input, permissions, and file types.
 - Never build queries, shell commands, markup, or code by concatenating untrusted input; use parameterized queries, argument lists, and context-aware escaping.
-- Never log secrets, tokens, and sensitive data in error messages and logs.
+- Never write secrets, tokens, or sensitive data to error messages or logs.
 - Never hardcode secrets or commit them to the repository; read them from the environment or a secret store.
 <!-- Project-specific / Security -->
 
@@ -56,7 +56,7 @@ When fixing issues, follow these rules:
 
 When restructuring code without changing its behavior, follow these rules:
 
-- Run the relevant tests before and after; behavior must not change.
+- Run the relevant tests before and after; their results must match.
 - For deduplication, only merge true duplication (copies that must always change together, owned by the same actor); merging accidental lookalikes is harder to undo than leaving them apart.
 - Run audit or cleanup work spanning more than one batch as a workstream: once the user consents to it, create `workstream.md` from [memory-template.md](memory-template.md), record the baseline before the first change, keep one intent per batch, verify after each batch, and keep `workstream.md` current.
 <!-- Project-specific / Refactoring -->
@@ -118,7 +118,7 @@ Check your diff against these failure patterns; each must be fixed before comple
 {{ ((blocks + fblocks) | join('\n\n')) ~ '\n\n' if blocks or fblocks else '' -}}
 ## Checklist
 
-Before considering any coding task complete, verify the following to ensure nothing is missed during implementation:
+Before considering any coding task complete, verify the following:
 
 - [ ] The task's requirements are fulfilled; acceptance criteria (if any) are verified against real behavior, not assumed from passing tests.
 - [ ] The project builds successfully, if it has a build step (see [context.md's Supporting Tools](../.attunic/context.md#supporting-tools)).
@@ -138,7 +138,7 @@ Before considering any coding task complete, verify the following to ensure noth
 - [ ] Project knowledge the user gave during the task that a later agent couldn't derive and would otherwise have to guess or ask about, exceptions included, is named in the report, for the user to record in the project memory (see [attunic-protocol.md's Write Rules](attunic-protocol.md#write-rules)).
 - [ ] [context.md](../.attunic/context.md) entries and [memory.md](../.attunic/memory.md) facts the task made stale, or found contradicted by the project, are named in the report, for the user to update or remove (see [attunic-protocol.md's Write Rules](attunic-protocol.md#write-rules)).
 - [ ] Open questions are recorded in [question.md](../.attunic/question.md) per [attunic-protocol.md's Write Rules](attunic-protocol.md#write-rules), each once the user explicitly confirms it (unconfirmed ones are named in the report).
-- [ ] Every applicable item above was verified by actually running the check; anything not run is explicitly reported, not claimed.
+- [ ] Every applicable item above was verified by running the check; anything not run is explicitly reported, not claimed.
 <!-- Project-specific / Checklist -->
 
 ## Project-specific

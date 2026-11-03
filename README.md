@@ -1,6 +1,6 @@
 # TFattunic
 
-[Copier](https://copier.readthedocs.io/) template attuned to multi-language and multi-framework support for any project. See [Appendix](#supported-languages) for details.
+[Copier](https://copier.readthedocs.io/) template attuned to multi-language and multi-framework support. See [Appendix](#supported-languages) for details.
 
 This `README.md` is for the template itself; it won't be copied into downstream projects.
 
@@ -82,14 +82,14 @@ To customize the generated files to follow your project, add your rules below th
 ├── COPYING.jinja              # renders COPYING for GPL-3.0-only, GPL-3.0-or-later, the GPL part of LGPL-3.0-only / LGPL-3.0-or-later, AGPL-3.0-only, AGPL-3.0-or-later
 ├── COPYING.LESSER.jinja       # renders COPYING.LESSER with the LGPL text (LGPL-3.0-only and LGPL-3.0-or-later)
 ├── LICENSE                    # MIT License Text for this template (not copied)
-├── LICENSE.jinja              # renders LICENSE for LICENSE-based licenses (MIT, ISC, BSD-2-Clause, BSD-3-Clause, 0BSD, Apache-2.0, MPL-2.0)
+├── LICENSE.jinja              # renders LICENSE for MIT, ISC, BSD-2-Clause, BSD-3-Clause, 0BSD, Apache-2.0, MPL-2.0
 ├── README.md                  # template documentation; not copied
 └── copier.yml                 # template questions and settings
 ```
 
 ### Project Memory (`.attunic/`)
 
-Generated projects carry a markdown-only project memory in `.attunic/`, adapted from [clean-code-skills](https://github.com/btseee/clean-code-skills)' memory protocol. It gives every agent session the project knowledge it can't derive on its own, so it doesn't guess, ask, or re-confirm, with no scripts and no runtime tooling:
+Generated projects carry a markdown-only project memory in `.attunic/`, adapted from [clean-code-skills](https://github.com/btseee/clean-code-skills)' memory protocol. It gives every agent session the project knowledge it can't derive on its own, so it doesn't guess, ask, or re-confirm:
 
 | File            | Created by                                                               |
 |-----------------|--------------------------------------------------------------------------|
@@ -147,11 +147,11 @@ Each root template `{% include %}`s the framework fragment of every framework se
 
 - Keep the marker convention from the [Customize](#customize) section above in every new Markdown template, including the fragments in `languages/<lang>/` and `frameworks/<framework>/`; files without sections, such as the license renderers, take none (see `AGENTS.md`'s Coding Conventions).
 - Keep the marker text byte-identical across versions; Copier matches on this line as diff context, so even a whitespace or punctuation change can break the anchor and produce spurious conflicts.
-- Only make changes to content above the `<!-- Project-specific / ... -->` or `# Project-specific` marker in each section.
+- Only change content above the `<!-- Project-specific / ... -->` or `# Project-specific` marker in each section.
 - To add a new language, create `languages/<lang_code>/` with all the fragments listed above and add `<lang_code>` to the `languages` question's choices (an array multiselect) in `copier.yml`; declare its owner-defined indentation in its `.editorconfig.jinja` and list it under [Indentation](#indentation); add its line-comment token to `line_comment_tokens` in `.agents/license-header.md.jinja` if it has line comments, otherwise its block-comment delimiters to `block_comment_tokens`; if it inherits another language's rules, map it to that language in `base_languages` in `.gitignore.jinja`, `.agents/coding-conventions.md.jinja`, and `.agents/development-guideline.md.jinja`; and add the code to [Supported Languages](#supported-languages) and to the language lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
 - To add a new framework, create `frameworks/<framework_code>/` with all the fragments listed above and append `<framework_code>` to the `frameworks` question's dynamic choices in `copier.yml`, under a condition naming every language it supports (for a language without frameworks yet, also add it to the question's `when` condition); then add the code to [Supported Frameworks](#supported-frameworks) and to the framework lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
 - To add a new license, update `copier.yml` (choices, `_exclude` branches), create the `licenses/<id>.jinja` and `licenses/<id>-notice.jinja` fragments, update the `LICENSE.jinja` / `COPYING.jinja` includes, and update the README's License File Mapping table and Supported Licenses list, the license list in `AGENTS.md`'s Technical Specifications, and the license names in the `LICENSE.jinja` / `COPYING.jinja` Layout comments of both `AGENTS.md` and this README, in the same commit.
-- Never move or re-point a published tag (no force-push to tags); ship corrections as a new tag instead.
+- Never move or re-point a published tag; ship corrections as a new tag instead.
 
 ## Appendix
 

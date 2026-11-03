@@ -25,7 +25,7 @@ TypeScript files also follow the JavaScript section; where the two conflict, the
 ### TypeScript-Testing
 
 - Run the type check (`tsc --noEmit`, or the build's own) as a test step; a type error is a failing test.
-- Pin important type-level contracts with the test runner's type assertions or `@ts-expect-error` lines.
+- Pin a type-level contract callers depend on (an inferred type, an overload, a rejected input) with the test runner's type assertions or `@ts-expect-error` lines.
 - Never loosen a production type to make a test compile; fix the test's data.
 <!-- Project-specific / TypeScript-Testing -->
 

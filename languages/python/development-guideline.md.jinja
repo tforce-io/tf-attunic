@@ -31,7 +31,7 @@
 - Catch-all module: a `utils.py` or `helpers.py` absorbing every function nobody else wants to place => move each function to the module named for its concept.
 - Cause-discarding `except`: a bare `except:` or `except Exception:` that drops the cause => catch the specific exception you can act on, or re-raise with `from`.
 - Hidden circular import: a cycle papered over with a function-local `import` => move the shared symbol to a module both sides already depend on.
-- Star import: `import *` hiding which names a module actually provides => import the names explicitly; keep star imports to `__init__.py` re-exports.
+- Star import: `import *` hiding which names a module provides => import the names explicitly; keep star imports to `__init__.py` re-exports.
 - Notebook-ordered logic: business logic that only runs correctly in a notebook's cell execution order => move it into an importable module with explicit inputs.
 - Mutable default argument: a mutable default (`[]`, `{}`) silently shared and mutated across calls => default to `None` and build the value inside the body.
 <!-- Project-specific / Python-Common Mistakes -->

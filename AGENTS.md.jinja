@@ -1,6 +1,6 @@
 # AGENTS.md - {{ project_name }}
 
-This file is the entry point for AI coding assistants working on this repository. It holds the rules for every task in [Core Rules](#core-rules) and [Anti-Loopholes](#anti-loopholes), and indexes the detailed topic guides in the `.agents/` directory and the project memory in the `.attunic/` directory. Read each file in [Topics](#topics) when its `When to read` entry applies; you don't need to load all of them.
+This file is the entry point for AI coding assistants working on this repository. It holds the rules for every task in [Core Rules](#core-rules) and [Anti-Loopholes](#anti-loopholes), and indexes the detailed topic guides in the `.agents/` directory and the project memory in the `.attunic/` directory. Read each file in [Topics](#topics) when its `When to read` entry applies.
 
 The files that come from this project's template are the files with `Project-specific` markers, plus `CLAUDE.md`{{ ', the license files at the repository root,' if license != 'None' else '' }} and `.copier-answers.yml`, which have no marker and are template-owned in full.
 
@@ -41,7 +41,7 @@ A file with markers holds two kinds of content:
 
 ## Core Rules
 
-Important rules when working with the project; follow them strictly unless the conflict rules below let another source override one:
+Rules for every task; follow them strictly unless the conflict rules below let another source override one:
 
 - Follow instructions: anything explicitly requested, plus the instructions in the files in [Topics](#topics), each when its `When to read` entry applies.
 - Resolve conflicts by priority, highest first; [question.md](.attunic/question.md) and `workstream.md` hold open questions and work state, not rules, and take no part in it:

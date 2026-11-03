@@ -3,7 +3,7 @@
 ### TypeScript-Guideline
 
 - Keep entrypoints thin: parse env/config, wire dependencies, then delegate to `src/` modules.
-- Keep code under `src/` as the house style; only drop to a framework-mandated layout (e.g. `app/`, `pages/`) when a tool requires it.
+- Keep code under `src/` as the house style, unless a framework mandates another layout (e.g. `app/`, `pages/`).
 - In a workspace monorepo (npm, yarn, pnpm, or bun), keep shared tooling at the repo root and give each package under `packages/` (or `apps/` for deployables) its own `package.json`, `tsconfig.json`, and `src/`.
 - Organize files by responsibility (e.g. `config/`, `http/`, `auth/`), not by type.
 - Keep test files (`*.test.ts`, `*.spec.ts`) near the code they test.

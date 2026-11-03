@@ -44,7 +44,7 @@ These rules add to the CSS ones and win where the two conflict; the CSS naming r
 - Apply at most one utility per CSS property and variant to an element, choosing it with a conditional (`gridLayout ? "grid" : "flex"`): when two conflict, the one later in the generated stylesheet wins, whatever their order in the class list.
 - Expose a component's styling variations as props that select a variant; where the component must also accept classes from its caller, merge them with the project's conflict-aware class-merging utility, so the caller's utility replaces the conflicting one deliberately.
 - Prefer the project's class-joining utility over hand-concatenated strings for a conditional class list.
-- Prefer extracting a class list repeated across files into a component or template partial over an `@apply` class; keep `@apply` for small, highly reusable elements (a button, a form control) in a project without components, since `@apply` everywhere is writing CSS again.
+- Prefer extracting a class list repeated across files into a component or template partial over an `@apply` class; keep `@apply` for small, reusable elements (a button, a form control) in a project without components, since `@apply` everywhere is writing CSS again.
 <!-- Project-specific / Tailwind-Utilities -->
 
 ### Tailwind-Theme

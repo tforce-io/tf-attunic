@@ -4,7 +4,7 @@
 
 - Keep `main()` functions thin: parse flags/config, wire dependencies, then delegate to `internal/` packages.
 - Code that should never be imported by other projects belongs under `internal/`.
-- Only put code under `pkg/` if it's genuinely meant to be a public, importable API; don't use it as a dumping ground.
+- Only put code under `pkg/` if it's meant to be a public, importable API.
 - Group files within a package by responsibility, not by type.
 - Keep test files (`_test.go`) alongside the code they test, in the same package or a `_test` package for black-box tests.
 - Mirror the module's existing layout (`internal/`, `pkg/`, or flat) instead of introducing a second convention.

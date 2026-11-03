@@ -24,7 +24,7 @@
 
 - Put unit tests beside their code in `#[cfg(test)] mod tests`; put tests of the public API under `tests/`.
 - Name a test for the behavior it proves (`rejects_empty_input`), and assert on `Result`/`Option` values with a pattern match, not `.unwrap()` on the tested path.
-- Reserve `#[should_panic]` for a genuine panic contract; never use it to paper over an untested `Result` path.
+- Reserve `#[should_panic]` for a panic the function's contract promises; never use it to paper over an untested `Result` path.
 <!-- Project-specific / Rust-Testing -->
 
 ### Rust-Common Mistakes

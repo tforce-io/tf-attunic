@@ -22,7 +22,7 @@ A brief overview of the ingredients developers of this project should know.
 
 ## Core Rules
 
-Important rules when working with the project; follow them strictly unless a source ranked above them in the conflict order below overrides one:
+Rules for every task; follow them strictly unless a source ranked above them in the conflict order below overrides one:
 
 - Follow instructions: anything explicitly requested, plus the instructions in [Coding Conventions](#coding-conventions), [Naming Conventions](#naming-conventions), [Exploring](#exploring), [Writing](#writing), [Security](#security), [Fixing](#fixing), [Refactoring](#refactoring), [Testing](#testing), [Common Mistakes](#common-mistakes), [Checklist](#checklist), [Pull Request Guideline](#pull-request-guideline), and [Pull Request Checklist](#pull-request-checklist).
 - Resolve conflicts by priority, highest first:
@@ -105,9 +105,9 @@ List of architecture layers and their relationships:
 
 ### Deliberate Exceptions
 
-List of documented exceptions that cannot follow the architecture layers above:
+List of documented exceptions:
 
-- Any place the rules above are knowingly broken, with the reason and the condition for fixing it.
+- Record each exception with its reason and the condition for fixing it.
 - Only exceptions to the architecture layers above belong here.
 - An undocumented exception is a defect; a documented one is allowed, and revisited once its `Revisit-if` condition holds.
 
@@ -116,7 +116,7 @@ List of documented exceptions that cannot follow the architecture layers above:
 
 ## Supporting Tools
 
-All the supporting tools declared here are opinionated for the sake of consistent results across development environments.
+All the supporting tools declared here are opinionated for consistent results across development environments.
 
 ### Python
 
@@ -154,7 +154,7 @@ Template engine; version floor `>= 9.0.0` (declared in `copier.yml`). Template v
 
 Facts about the project which have been confirmed, written as additional instructions for the next agent working on it. Each states something unique to this project: a business rule, a rule that goes against common sense, or a shortcut to what would take a lot of time and effort to work out.
 
-They may look wrong or contradict your knowledge or understanding; follow them instead of guessing or asking the user again. These facts outrank anything derived or guessed. Each reason says why its fact holds, so an agent can apply the fact to cases it doesn't name; it is not the history of how the fact was decided. Edit a fact in place when it changes, and remove it once it no longer holds.
+They may look wrong or contradict your knowledge or understanding; follow them instead of guessing or asking the user again. Each reason says why its fact holds, so an agent can apply the fact to cases it doesn't name; it is not the history of how the fact was decided. Edit a fact in place when it changes, and remove it once it no longer holds.
 
 | Fact | Reason |
 |------|--------|
@@ -207,7 +207,7 @@ Template authoring conventions for this repository:
 
 Reuse before writing new content; go through these in order and stop at the first that applies:
 
-- Does it already exist in this codebase? Reuse the fragment, include pattern, or wording that's already here; don't rewrite it.
+- Does it already exist in this codebase? Reuse the fragment, include pattern, or wording.
 - Does a closely matching template or fragment that needs adaptation exist in this codebase? Report it and propose extending it before writing anything new.
 - Does a Jinja built-in filter, test, or tag already do this? Use it.
 - Does a Copier setting cover it (e.g. a question's `when`, `choices`, or `validator`, or `_exclude`)? Use it.
@@ -252,7 +252,7 @@ When fixing issues, follow these rules:
 
 When restructuring templates without changing their output, follow these rules:
 
-- Render the affected templates before and after with the same answers; the generated files must not change.
+- Render the affected templates before and after with the same answers; the two renders must be identical.
 - For deduplication, only merge true duplication (copies that must always change together, owned by the same actor); merging accidental lookalikes is harder to undo than leaving them apart.
 - Run audit or cleanup work spanning more than one batch as a workstream: record the baseline before the first change, keep one intent per batch, verify after each batch, and keep the batch list current in the plan shared with the user.
 
@@ -307,7 +307,7 @@ Stop and reassess when you catch yourself thinking:
 
 ## Checklist
 
-Before considering any coding task complete, verify the following to ensure nothing is missed during implementation:
+Before considering any coding task complete, verify the following:
 
 - [ ] The task's requirements are fulfilled; acceptance criteria (if any) are verified against the generated files, not assumed from the template diff.
 - [ ] Changed templates render from the working tree into a scratch directory with the answer sets they need, and the generated files are inspected (see [Testing](#testing)).
@@ -322,7 +322,7 @@ Before considering any coding task complete, verify the following to ensure noth
 - [ ] New or moved top-level files and folders are reflected in [Layout](#layout) (prompt the user per its rule).
 - [ ] Knowledge the user gave during the task that a later agent couldn't derive and would otherwise have to guess or ask about, lasting choices and exceptions included, is named in the report, for the user to record in this file.
 - [ ] Confirmed Facts the task made stale, or found contradicted by the repository, are named in the report, for the user to update or remove.
-- [ ] Every applicable item above was verified by actually running the check; anything not run is explicitly reported, not claimed.
+- [ ] Every applicable item above was verified by running the check; anything not run is explicitly reported, not claimed.
 
 ## Pull Request Guideline
 

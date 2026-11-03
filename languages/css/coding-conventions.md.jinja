@@ -42,7 +42,7 @@ Some rules below name features not every browser supports (e.g. `@layer`, `@scop
 
 ### CSS-Errors
 
-- Check every changed declaration with the project's linter or in the rendered page: the browser silently drops an invalid declaration, and nothing reports it.
+- Check every changed declaration with the project's linter or in the rendered page: the browser silently drops an invalid declaration.
 - Give a `var()` a fallback wherever its custom property may be undefined (`color: var(--surface, #fff)`); without one, the property is treated as `unset`, discarding any earlier declaration.
 - Guard a feature some of the project's browser targets lack with `@supports`, and keep a working declaration outside the guard so every target renders.
 <!-- Project-specific / CSS-Errors -->

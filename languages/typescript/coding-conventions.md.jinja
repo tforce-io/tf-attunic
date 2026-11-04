@@ -18,7 +18,7 @@ TypeScript files also follow the JavaScript section; where the two conflict, the
 
 - Use `import type` (or `import { type ... }`) for type-only imports, so erased imports never turn into runtime dependencies; keep `verbatimModuleSyntax` enabled, and propose it where it is off instead of turning it on unasked.
 - Use `paths` aliases only where the project defines them, written relative to the tsconfig; never introduce `baseUrl` for them.
-- Keep `.d.ts` files for ambient declarations; types for your own code live beside that code.
+- Keep `.d.ts` files for ambient declarations; keep types for your own code beside that code.
 <!-- Project-specific / TypeScript-Packages -->
 
 ### TypeScript-Types

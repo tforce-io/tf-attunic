@@ -25,7 +25,7 @@ The rules below assume Bash. In a POSIX `sh` script (`#!/bin/sh`), use `[ ]` ins
 
 ### Shell-Functions
 
-- Wrap logic in functions and call them from one `main "$@"` at the bottom; nothing but definitions runs at the top level.
+- Wrap logic in functions and call them from one `main "$@"` at the bottom; run nothing but definitions at the top level.
 - Declare every function-local with `local` (`local -r` when it never changes); an undeclared variable leaks into the caller's scope.
 - Mark a value that must not change `readonly` right after it is set.
 - Keep a function to one job; parsing arguments, doing the work, and printing a report is three functions.

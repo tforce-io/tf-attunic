@@ -23,7 +23,7 @@
 ### PowerShell-Testing
 
 - Mock the registry a function reads or writes, as you would the filesystem or network; never touch the real one from a unit test.
-- Test parameter validation and the `ShouldProcess` branch explicitly; `-WhatIf` must produce no side effect.
+- Test parameter validation and the `ShouldProcess` branch explicitly; assert that `-WhatIf` produces no side effect.
 <!-- Project-specific / PowerShell-Testing -->
 
 ### PowerShell-Common Mistakes

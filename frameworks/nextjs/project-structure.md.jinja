@@ -1,0 +1,51 @@
+## Next.js
+
+### Next.js-Guideline
+
+- Follow this structure instead of the React one for code built on Next.js.
+- Keep routing under `app/` (or `src/app/`): the folder path sets the URL, with `page` for a route's UI, `layout` for the shell shared by a segment and its children, and `route` for a Route Handler.
+- Use a segment's `loading`, `error`, and `not-found` files as its Suspense and error boundaries.
+- Keep Server Actions (`'use server'`) in `actions/` folders or `*.actions.ts` files.
+- Keep plain business and data modules under `lib/` (or `src/lib/`), shared by pages, layouts, and Route Handlers; no JSX or route-only exports there.
+- Keep one request boundary (`proxy.ts` or `middleware.ts`) at the project root, or under `src/` beside `app/`.
+<!-- Project-specific / Next.js-Guideline -->
+
+### Next.js-Layout
+
+```
+├── app/ (or src/app/)
+│   ├── <segment>/             # a route segment; the folder path sets its URL
+│   │   ├── page.jsx|tsx       # the route's UI
+│   │   ├── layout.jsx|tsx     # shell shared by the segment and its children
+│   │   ├── loading.jsx|tsx    # the segment's Suspense boundary
+│   │   ├── error.jsx|tsx      # the segment's error boundary
+│   │   └── not-found.jsx|tsx  # the segment's not-found UI
+│   └── api/<resource>/
+│       └── route.js|ts        # Route Handler: HTTP methods for a URL, no UI
+├── actions/                   # Server Actions (or *.actions.ts files)
+├── lib/ (or src/lib/)         # plain business and data modules; no JSX
+├── public/                    # static assets served as they are
+├── instrumentation.js|ts      # monitoring and OpenTelemetry setup
+├── next.config.js|ts          # Next.js configuration
+├── proxy.js|ts                # request boundary (or middleware.js|ts), run before routing
+<!-- Project-specific / Next.js-Layout -->
+```
+
+### Next.js-Layer Dependencies
+
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- For code built on Next.js, this suggestion replaces the JavaScript, TypeScript, and React ones: the architecture layer names are the same, without `main`, since the framework owns the entry point and `ui` is the outermost architecture layer.
+- `app/` and the request boundary are the delivery layer: they adapt; they do not decide.
+- Business rules move out of `lib/` into plain modules with no `next/*` or React import; declare a repository or gateway interface there and implement it in `lib/`.
+- Route Handlers and Server Actions call the application layer; they never embed the rule they expose.
+- Check manually: read the imports of changed files; an inner module importing an outer one is a violation.
+- Prefer passing dependencies in over module-level singletons, so an architecture layer boundary can be substituted in tests.
+
+| Architecture layer | Typical path | Depends on | Must never contain |
+|--------------------|--------------|------------|--------------------|
+| domain | src/domain | itself | framework types, database, HTTP |
+| application | src/application | domain | HTTP handlers, framework types |
+| adapters | src/lib, src/server; elsewhere, modules that call `fetch` or another external client | application (its ports), domain | business rules, JSX |
+| ui | app, src/app; elsewhere, Server Actions and the request boundary | application, adapters, domain | business rules, SQL, external clients |
+| <!-- Project-specific / Next.js-Layer Dependencies --> | | | |

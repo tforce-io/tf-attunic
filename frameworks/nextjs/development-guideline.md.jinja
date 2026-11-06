@@ -1,0 +1,44 @@
+## Next.js
+
+Next.js code also follows the React section; where the two conflict, the rules in this section win.
+
+### Next.js-Exploring
+
+<!-- Project-specific / Next.js-Exploring -->
+
+### Next.js-Writing
+
+<!-- Project-specific / Next.js-Writing -->
+
+### Next.js-Security
+
+- Treat every Server Action as a public endpoint: validate its input and verify authentication and authorization inside it; it is reachable by direct POST, whatever the page or the request boundary checked.
+- Never read a secret through a `NEXT_PUBLIC_*` variable: Next.js includes those variables in the client bundle; read a server-only variable in a module marked with `import "server-only"`.
+<!-- Project-specific / Next.js-Security -->
+
+### Next.js-Fixing
+
+<!-- Project-specific / Next.js-Fixing -->
+
+### Next.js-Refactoring
+
+<!-- Project-specific / Next.js-Refactoring -->
+
+### Next.js-Testing
+
+- Test a Server Action as a plain async function, without rendering.
+- Test a Route Handler by calling its exported `GET` or `POST` function directly, where the test runner allows it.
+- Test an async Server Component end to end: some component-testing tools don't fully support it.
+- Keep component and end-to-end tests for behavior that needs the DOM or a real navigation through the request boundary.
+- Run the linter through the project's own script and CI step, never `next lint` or `next build`.
+<!-- Project-specific / Next.js-Testing -->
+
+### Next.js-Common Mistakes
+
+- Oversized client boundary: `'use client'` on a file that does no interactive work, pulling its imports and rendered components into the client bundle => move the directive to the interactive leaf.
+- Public secret: a secret read through `process.env.NEXT_PUBLIC_*` => read a server-only variable in a module marked with `import "server-only"`.
+- Duplicated route rule: the same rule computed inline in a page and its Route Handler => move it to one module both call.
+- Business decision at the boundary: `proxy.ts` or `middleware.ts` making an authorization decision with business meaning => keep a cheap check there, and move the decision to the code that owns the rule.
+- Oversized cache boundary: `"use cache"` around a whole page when only one function or component is safe to share => move the directive to that function or component.
+- Effect-fetched data: data fetched in a Client Component effect => fetch it in a Server Component or through a data-fetching library.
+<!-- Project-specific / Next.js-Common Mistakes -->

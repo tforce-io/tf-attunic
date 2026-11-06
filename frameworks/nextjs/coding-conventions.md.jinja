@@ -1,0 +1,55 @@
+## Next.js
+
+Next.js code also follows the React section; where the two conflict, the rules in this section win. The rules in this section cover the App Router; where Next.js versions differ (`proxy.ts` or `middleware.ts`, `"use cache"` or `fetch` cache options), follow what the project uses.
+
+### Next.js-Formats
+
+<!-- Project-specific / Next.js-Formats -->
+
+### Next.js-Names
+
+- Keep the names the framework reads as it defines them, whatever the project's file and function naming: route files (`page`, `layout`, `route`) and their exports (`GET`, `POST`, `generateMetadata`, `generateStaticParams`).
+<!-- Project-specific / Next.js-Names -->
+
+### Next.js-Packages
+
+- Mark every module of server-only code with `import "server-only"`, so importing it into a Client Component fails the build.
+<!-- Project-specific / Next.js-Packages -->
+
+### Next.js-Types
+
+<!-- Project-specific / Next.js-Types -->
+
+### Next.js-Functions
+
+<!-- Project-specific / Next.js-Functions -->
+
+### Next.js-Comments
+
+<!-- Project-specific / Next.js-Comments -->
+
+### Next.js-Errors
+
+<!-- Project-specific / Next.js-Errors -->
+
+### Next.js-Concurrency
+
+<!-- Project-specific / Next.js-Concurrency -->
+
+### Next.js-Components
+
+- Keep Server Components the default; add `'use client'` only to the leaf component that needs state, event handlers, or browser APIs, never to a whole route tree: a marked file's imports and the components it renders directly join the client bundle.
+<!-- Project-specific / Next.js-Components -->
+
+### Next.js-Routes
+
+- Put each business rule in a plain module, never in a `page`, `layout`, or `route` file; a page and its matching Route Handler both call it, and neither redefines it.
+- Write the request boundary in the file the project's Next.js version and runtime read: `proxy.ts` exporting `proxy`, or `middleware.ts` exporting `middleware`.
+- Keep the request boundary to cheap checks (authentication, redirects, headers), never a business decision: it runs before every matched request.
+<!-- Project-specific / Next.js-Routes -->
+
+### Next.js-Caching
+
+- Opt in to caching around the one function or component that is safe to share, with the mechanism the project has enabled: `"use cache"` under `cacheComponents`, otherwise the `fetch` options `cache: "force-cache"` or `next: { revalidate }`.
+- Never assume a `fetch` is cached.
+<!-- Project-specific / Next.js-Caching -->

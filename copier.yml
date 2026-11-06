@@ -79,10 +79,15 @@ frameworks:
   choices: |
     {%- set choices = [] %}
     {%- if 'typescript' in languages %}{% set _ = choices.append('angular') %}{% endif %}
+    {%- if 'typescript' in languages or 'javascript' in languages %}{% set _ = choices.append('nextjs') %}{% endif %}
     {%- if 'typescript' in languages or 'javascript' in languages %}{% set _ = choices.append('react') %}{% endif %}
     {%- if 'css' in languages %}{% set _ = choices.append('tailwind') %}{% endif %}
     {{- choices | tojson }}
   default: []
+  validator: >-
+    {% if 'nextjs' in frameworks and 'react' not in frameworks %}
+    Next.js builds on React; select react as well.
+    {% endif %}
 
 charset:
   type: str

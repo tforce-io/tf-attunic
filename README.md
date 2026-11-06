@@ -125,6 +125,8 @@ TypeScript builds on JavaScript, and Sass on CSS: when `typescript` is selected 
 
 Each root template `{% include %}`s the framework fragment of every framework selected in the multi-select `frameworks` answer (in the question's choices order), right after the language fragments. These fragments are never copied into downstream projects.
 
+Next.js builds on React: a validator on the `frameworks` question rejects `nextjs` without `react`, so the fragments of both are always included. The `coding-conventions.md.jinja` and `development-guideline.md.jinja` fragments of `nextjs` hold only what Next.js adds or overrides, and state that their rules win where the two conflict; its `project-structure.md.jinja` fragment states that it replaces the React one.
+
 ### License File Mapping
 
 | License choice     | Files generated              |
@@ -172,6 +174,7 @@ Each root template `{% include %}`s the framework fragment of every framework se
 ### Supported Frameworks
 
 - Angular: `angular`
+- Next.js: `nextjs`
 - React: `react`
 - Tailwind CSS: `tailwind`
 

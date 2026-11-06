@@ -62,6 +62,7 @@ List of important folders, files and their roles in the project:
 │   ├── memory.md.jinja                   # renders `memory.md`: confirmed facts, filled in by the user
 │   └── question.md.jinja                 # renders `question.md`: open questions, each removed once answered
 ├── frameworks/<framework>/               # framework fragments included by root templates for every selected framework; included, never copied
+│   ├── .gitignore.jinja                  # framework-specific ignore patterns
 │   ├── coding-conventions.md.jinja       # framework-specific coding conventions
 │   ├── development-guideline.md.jinja    # framework-specific development guideline
 │   └── project-structure.md.jinja        # framework-specific reference project structure
@@ -74,7 +75,7 @@ List of important folders, files and their roles in the project:
 ├── licenses/                             # license text and notice fragments (not copied), included by the license renderers below and `.agents/license-header.md.jinja`
 ├── .copier-answers.yml.jinja             # renders `.copier-answers.yml` in downstream projects; never edited manually (replayed by `copier update`)
 ├── .editorconfig.jinja                   # general editor formatting rules; includes the fragment of every selected language
-├── .gitignore.jinja                      # general ignore rules; includes the fragment of every selected language
+├── .gitignore.jinja                      # general ignore rules; includes the fragment of every selected language and framework
 ├── AGENTS.md                             # agents' entry point of this repository itself; maintained manually, not copied
 ├── AGENTS.md.jinja                       # renders `AGENTS.md`, the agents' entry point; this flat `AGENTS.md` is maintained manually in parallel
 ├── CLAUDE.md                             # this repository's pointer to `AGENTS.md`; not copied
@@ -174,7 +175,7 @@ Template authoring conventions for this repository:
 
 - End each section of every Markdown template (`*.md.jinja`, fragments included) with a `<!-- Project-specific / <Section> -->` marker; content from a marker down to the end of the file or the next heading that has as many or fewer `#` than the marker's section heading or has a marker of its own is project-owned, everything else is template-owned.
 - Give a section its own marker before its next heading, its first subsection's included, when its heading has more `#` than the section heading of the marker above it; otherwise the section falls into that marker's project-owned content.
-- Use a single plain `# Project-specific` comment as the last line of `.editorconfig.jinja` and `.gitignore.jinja`, below the included fragments; their language fragments carry no marker.
+- Use a single plain `# Project-specific` comment as the last line of `.editorconfig.jinja` and `.gitignore.jinja`, below the included fragments; their language and framework fragments carry no marker.
 - In a section that ends with a fenced block, place the marker inside the fence, before its closing line, when the block is a layout tree, so project additions extend the tree; otherwise place it below the closing fence.
 - In a section that ends with a table, place the marker as the table's last row, in its first cell, with one empty cell for each other column (e.g. `| <!-- Project-specific / Topics --> | |`), so project additions extend the table; a marker line outside the table ends the table, and rows added below it render as plain text.
 - Keep marker text byte-identical across template versions: Copier matches the marker line as diff context, so a whitespace or punctuation change can break the anchor and produce spurious conflicts on `copier update`.

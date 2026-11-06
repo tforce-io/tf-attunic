@@ -74,7 +74,7 @@ To customize the generated files to follow your project, add your rules below th
 ├── licenses/                  # license text fragments, license notice fragments, included by LICENSE.jinja / COPYING*.jinja / .agents/license-header.md.jinja (not copied)
 ├── .copier-answers.yml.jinja  # renders .copier-answers.yml (required by copier update)
 ├── .editorconfig.jinja        # general editor formatting rules + language fragment included before the Project-specific marker
-├── .gitignore.jinja           # general ignore rules + language fragment included before the Project-specific marker
+├── .gitignore.jinja           # general ignore rules + language and framework fragments included before the Project-specific marker
 ├── AGENTS.md                  # agents' entry point of this repository itself; maintained manually, not copied
 ├── AGENTS.md.jinja            # entry point for AI agents in downstream projects
 ├── CLAUDE.md                  # this repository's pointer to AGENTS.md; not copied
@@ -118,6 +118,7 @@ TypeScript builds on JavaScript, and Sass on CSS: when `typescript` is selected 
 
 | Fragment                         | Included by                              |
 |----------------------------------|------------------------------------------|
+| `.gitignore.jinja`               | `.gitignore.jinja`                       |
 | `coding-conventions.md.jinja`    | `.agents/coding-conventions.md.jinja`    |
 | `development-guideline.md.jinja` | `.agents/development-guideline.md.jinja` |
 | `project-structure.md.jinja`     | `.agents/project-structure.md.jinja`     |
@@ -149,7 +150,7 @@ Each root template `{% include %}`s the framework fragment of every framework se
 - Keep the marker text byte-identical across versions; Copier matches on this line as diff context, so even a whitespace or punctuation change can break the anchor and produce spurious conflicts.
 - Only change content above the `<!-- Project-specific / ... -->` or `# Project-specific` marker in each section.
 - To add a new language, create `languages/<language>/` with all the fragments listed above and add `<language>` to the `languages` question's choices (an array multiselect) in `copier.yml`; declare its owner-defined indentation in its `.editorconfig.jinja` and list it under [Indentation](#indentation); add its line-comment token to `line_comment_tokens` in `.agents/license-header.md.jinja` if it has line comments, otherwise its block-comment delimiters to `block_comment_tokens`; if it builds on another language, map it to that base language in `base_languages` in `.gitignore.jinja`, `.agents/coding-conventions.md.jinja`, and `.agents/development-guideline.md.jinja`; and add the code to [Supported Languages](#supported-languages) and to the language lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
-- To add a new framework, create `frameworks/<framework>/` with all the fragments listed above and append `<framework>` to the `frameworks` question's dynamic choices in `copier.yml`, under a condition naming every language it supports (for a language without frameworks yet, also add it to the question's `when` condition); then add the code to [Supported Frameworks](#supported-frameworks) and to the framework lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
+- To add a new framework, create `frameworks/<framework>/` with all the fragments listed above and add `<framework>` to the `frameworks` question's dynamic choices in `copier.yml`, in alphabetical order, under a condition naming every language it supports (for a language without frameworks yet, also add it to the question's `when` condition); if it builds on another framework, reject it without that base framework in the question's `validator`; then add the code to [Supported Frameworks](#supported-frameworks) and to the framework lists in `AGENTS.md`'s Technical Specifications and Naming Conventions.
 - To add a new license, update `copier.yml` (choices, `_exclude` branches), create the `licenses/<id>.jinja` and `licenses/<id>-notice.jinja` fragments, update the `LICENSE.jinja` / `COPYING.jinja` includes, and update the README's License File Mapping table and Supported Licenses list, the license list in `AGENTS.md`'s Technical Specifications, and the license names in the `LICENSE.jinja` / `COPYING.jinja` Layout comments of both `AGENTS.md` and this README, in the same commit.
 - Never move or re-point a published tag; ship corrections as a new tag instead.
 

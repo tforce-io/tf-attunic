@@ -27,5 +27,10 @@ desktop.ini
 {% if snippet | trim %}{% set _ = blocks.append(snippet | trim) %}{% endif -%}
 {%- endfor -%}
 {%- endfor -%}
-{{ ((blocks | join('\n\n')) ~ '\n\n' if blocks else '') -}}
+{% set fblocks = [] -%}
+{% for framework in frameworks -%}
+{%- set snippet %}{% include 'frameworks/' ~ framework ~ '/.gitignore.jinja' %}{% endset -%}
+{% if snippet | trim %}{% set _ = fblocks.append(snippet | trim) %}{% endif -%}
+{%- endfor -%}
+{{ ((blocks + fblocks) | join('\n\n')) ~ '\n\n' if blocks or fblocks else '' -}}
 # Project-specific

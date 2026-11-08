@@ -1,0 +1,39 @@
+## NestJS
+
+### NestJS-Exploring
+
+<!-- Project-specific / NestJS-Exploring -->
+
+### NestJS-Writing
+
+<!-- Project-specific / NestJS-Writing -->
+
+### NestJS-Security
+
+- Validate every `@Body()`, `@Query()`, and `@Param()` value with a pipe before the handler reads it (`ValidationPipe` with a DTO class, or the schema validation pipe the project uses); a service receives already-valid data.
+<!-- Project-specific / NestJS-Security -->
+
+### NestJS-Fixing
+
+<!-- Project-specific / NestJS-Fixing -->
+
+### NestJS-Refactoring
+
+<!-- Project-specific / NestJS-Refactoring -->
+
+### NestJS-Testing
+
+- Test a service as a plain class: construct it directly with fakes for its dependencies, or through `Test.createTestingModule` when it needs the dependency injection container.
+- Test a guard's `canActivate` or a pipe's `transform` by calling it directly, with a hand-built `ExecutionContext` or `ArgumentMetadata`, without an HTTP call.
+- Keep end-to-end tests through `createNestApplication` to a few routes that prove the whole request pipeline, not every branch.
+- Fake a clock, queue, or outbound client at the provider boundary: override its provider in the testing module (`overrideProvider`, or a `useValue` provider).
+<!-- Project-specific / NestJS-Testing -->
+
+### NestJS-Common Mistakes
+
+- Tangled modules: a growing web of `forwardRef()` calls between modules or providers => move what both sides need into a provider of its own.
+- Business rule in an enhancer: a guard, pipe, or interceptor that queries the database or applies a business rule itself => move the query or rule into a service, and defer to it.
+- Entity on the wire: an ORM entity returned or accepted as a controller's response or body type => map it to a DTO.
+- Fat controller: a controller method doing more than taking its DTO and calling one service method => move the logic into the service.
+- Stale module arrays: `providers` or `exports` entries left behind by a feature that no longer needs them => remove them.
+<!-- Project-specific / NestJS-Common Mistakes -->

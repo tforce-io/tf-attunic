@@ -1,0 +1,48 @@
+## NestJS
+
+### NestJS-Guideline
+
+- Keep `src/main.ts` to bootstrapping: create the application from the root module, apply global settings, and start listening.
+- Keep `src/app.module.ts` as the root module: it imports every feature module.
+- Group each feature under `src/<feature>/`: its module, controller, and service, with request and response shapes in `dto/` and persistence models in `entities/`.
+- Keep `src/common/` to enhancers shared by more than one feature, grouped by role (`guards/`, `interceptors/`, `pipes/`, `filters/`); keep an enhancer one feature uses beside that feature, and never use `common/` as a catch-all for unrelated helpers.
+<!-- Project-specific / NestJS-Guideline -->
+
+### NestJS-Layout
+
+```
+├── src/
+│   ├── main.ts                      # bootstrap: create the application, apply global settings, listen
+│   ├── app.module.ts                # root module; imports every feature module
+│   ├── <feature>/
+│   │   ├── dto/                     # request and response shapes, validated at the boundary
+│   │   ├── entities/                # persistence models; a storage detail, not domain types
+│   │   ├── <feature>.controller.ts  # routes: validated DTO in, one service call, DTO out
+│   │   ├── <feature>.module.ts      # wires the feature's controllers and providers
+│   │   └── <feature>.service.ts     # the feature's business rules
+│   └── common/                      # enhancers shared by several features: guards/, interceptors/, pipes/, filters/
+├── nest-cli.json                    # Nest CLI configuration
+<!-- Project-specific / NestJS-Layout -->
+```
+
+### NestJS-Layer Dependencies
+
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- For code built on NestJS, this suggestion replaces the TypeScript one: the architecture layer names are the same, with the delivery layer split out of `adapters` as `delivery`.
+- NestJS groups files by feature, so an architecture layer is a file role inside each feature folder, not a folder of its own.
+- Controllers, resolvers, gateways, and enhancers are the delivery layer: they adapt; they do not decide.
+- A persistence entity is an adapter detail, not a domain type: ORM types, `Request`/`Response`, and `ExecutionContext` never cross into business rules.
+- Declare repository and outbound-service ports as abstract classes or injection tokens in the application layer; Nest can't inject by an interface, which TypeScript erases.
+- Implement a port in the adapters layer, and bind it with `useClass` in the module that owns it.
+- `main.ts` and the modules are the composition root: every provider binding lives in the module of the feature it belongs to, or the root module, never inside a service.
+- Check manually: read the imports of changed files; an inner module importing an outer one is a violation.
+
+| Architecture layer | Typical path | Depends on | Must never contain |
+|--------------------|--------------|------------|--------------------|
+| domain | src/domain, or a feature's domain/ | itself | framework, ORM, or HTTP types |
+| application | `*.service.ts` | domain | database access, ORM types, `Request`/`Response`, `ExecutionContext` |
+| adapters | `*.repository.ts`, `*.entity.ts`, `entities/`; elsewhere, providers that call a database or another external client | application (its ports), domain | business rules |
+| delivery | `*.controller.ts`, `*.resolver.ts`, `*.gateway.ts`, `*.guard.ts`, `*.interceptor.ts`, `*.pipe.ts`, `*.filter.ts` | application, domain | business rules, persistence entities |
+| main | src/main.ts, `*.module.ts` | application, adapters, delivery, domain | business rules |
+| <!-- Project-specific / NestJS-Layer Dependencies --> | | | |

@@ -1,0 +1,55 @@
+## NestJS
+
+### NestJS-Formats
+
+<!-- Project-specific / NestJS-Formats -->
+
+### NestJS-Names
+
+- Name a file `<feature>.<role>.ts` and its class `<Feature><Role>`, feature first and role suffix last: `orders.controller.ts` exports `OrdersController`, `orders.service.ts` exports `OrdersService`, `orders.module.ts` exports `OrdersModule`.
+<!-- Project-specific / NestJS-Names -->
+
+### NestJS-Packages
+
+- Keep a module's `providers` to what its own feature owns, and its `exports` to what other modules inject; import another feature's module to reuse its provider, never declare that provider again.
+- Import an injected class with a value import, never `import type`: Nest resolves constructor injection from the parameter types TypeScript emits as decorator metadata, and a type-only import erases the class from that metadata.
+- Avoid `forwardRef()`: break a circular dependency between modules or providers by moving what both need into a provider of its own; keep `forwardRef()` for a cycle that can't be broken.
+<!-- Project-specific / NestJS-Packages -->
+
+### NestJS-Types
+
+- Declare a DTO that `ValidationPipe` validates as a class, not an interface or type alias: the pipe reads the class at runtime, and TypeScript erases interfaces and type aliases.
+<!-- Project-specific / NestJS-Types -->
+
+### NestJS-Functions
+
+<!-- Project-specific / NestJS-Functions -->
+
+### NestJS-Comments
+
+<!-- Project-specific / NestJS-Comments -->
+
+### NestJS-Errors
+
+<!-- Project-specific / NestJS-Errors -->
+
+### NestJS-Concurrency
+
+<!-- Project-specific / NestJS-Concurrency -->
+
+### NestJS-Providers
+
+- Inject a provider's or controller's dependencies through its constructor.
+<!-- Project-specific / NestJS-Providers -->
+
+### NestJS-Controllers
+
+- Keep a controller to routing: take a validated DTO, call one service method, and return its result; never put a business rule in a controller.
+- Never return a persistence entity from a controller, or accept one as its body type; map it to a DTO, so the wire format and the storage schema change independently.
+<!-- Project-specific / NestJS-Controllers -->
+
+### NestJS-Enhancers
+
+- Keep each enhancer (guard, interceptor, pipe, or filter) to one job: a guard decides whether a request proceeds, an interceptor wraps the handler call, a pipe transforms or validates one argument, a filter maps an exception to a response; never put a business rule in one.
+- Register each global enhancer once: in `main.ts`, or as an `APP_GUARD`, `APP_INTERCEPTOR`, `APP_PIPE`, or `APP_FILTER` provider when it needs injected dependencies, since one registered in `main.ts` can't inject any; never register an equivalent one in a feature module.
+<!-- Project-specific / NestJS-Enhancers -->

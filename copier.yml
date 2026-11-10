@@ -79,6 +79,7 @@ frameworks:
   choices: |
     {%- set choices = [] %}
     {%- if 'typescript' in languages %}{% set _ = choices.append('angular') %}{% endif %}
+    {%- if 'typescript' in languages or 'javascript' in languages %}{% set _ = choices.append('express') %}{% endif %}
     {%- if 'typescript' in languages %}{% set _ = choices.append('nestjs') %}{% endif %}
     {%- if 'typescript' in languages or 'javascript' in languages %}{% set _ = choices.append('nextjs') %}{% endif %}
     {%- if 'typescript' in languages or 'javascript' in languages %}{% set _ = choices.append('react') %}{% endif %}

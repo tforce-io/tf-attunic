@@ -16,7 +16,7 @@ The technical aspects of the project: what it is built with and supports, and wh
 - Test runner: None.
 - Linter: None.
 - Supported languages: `css`, `go`, `javascript`, `powershell`, `python`, `rust`, `sass`, `shell`, `typescript`, `text`.
-- Supported frameworks: `angular`, `nestjs`, `nextjs`, `react`, `tailwind`.
+- Supported frameworks: `angular`, `express`, `nestjs`, `nextjs`, `react`, `tailwind`.
 - Supported licenses: `MIT`, `ISC`, `BSD-2-Clause`, `BSD-3-Clause`, `0BSD`, `Apache-2.0`, `MPL-2.0`, `GPL-3.0-only`, `GPL-3.0-or-later`, `LGPL-3.0-only`, `LGPL-3.0-or-later`, `AGPL-3.0-only`, `AGPL-3.0-or-later`, or `None`; license header style in code files: `Full`, `SPDX`, or `None` (skipped when `license` is `None`).
 - Verification: manual, by running `copier copy` / `copier update` into a scratch folder and inspecting the generated files (see [Supporting Tools](#supporting-tools)).
 
@@ -200,7 +200,7 @@ Template authoring conventions for this repository:
 - Name a fragment's section headings and markers `<Name>-<Section>`, where `<Name>` is the language or framework name as in the fragment's top heading (e.g. `Go-Errors`, `Angular-Hooks`); the heading text and the marker text are identical, spaces included.
 - Name template files after the generated file with the `.jinja` suffix (e.g. `AGENTS.md.jinja` renders `AGENTS.md`).
 - Name language folders with the lowercase codes listed in the `languages` choices in `copier.yml`: `css`, `go`, `javascript`, `powershell`, `python`, `rust`, `sass`, `shell`, `typescript`, `text`.
-- Name framework folders with the lowercase codes listed in the `frameworks` choices in `copier.yml`: `angular`, `nestjs`, `nextjs`, `react`, `tailwind`.
+- Name framework folders with the lowercase codes listed in the `frameworks` choices in `copier.yml`: `angular`, `express`, `nestjs`, `nextjs`, `react`, `tailwind`.
 - Name license fragments `<license-id>.jinja` and `<license-id>-notice.jinja` (e.g. `mit.jinja`, `mit-notice.jinja`).
 - Never number or version a name instead of replacing the original (`coding-conventions-v2.md.jinja`, `_new`, `_copy`).
 
@@ -223,7 +223,7 @@ When writing templates, follow these rules:
 - Make targeted edits, never whole-file regeneration; every changed line must trace to the request.
 - Keep one job per unit at every scale (bullet, section, template); if describing its job needs "and", split it.
 - Find every usage of a template variable, marker, section anchor, or file you change, by text search, including `README.md` and this file; make sure a rename or behavior change doesn't introduce a new bug or leave a bug half-fixed.
-- Scan the lower-level rules for conflicts and duplication when you change a higher-level rule: Core Rules, Anti-Loopholes, [.agents/attunic-protocol.md.jinja](.agents/attunic-protocol.md.jinja), and the `.attunic/` templates reach each other and the other `.agents/` templates (and, in this file, its other sections), each general section of the `.agents/` templates reaches the matching section of every `languages/` and `frameworks/` fragment, and a base fragment reaches the fragments built on it (`javascript` reaches `typescript`; `typescript` reaches `angular` and `nestjs`; `css` reaches `sass` and `tailwind`; `react` reaches `nextjs`); since a lower-level rule wins a conflict, except against the Core Rules, Anti-Loopholes, attunic protocol, and `.attunic/` templates, and a restatement drifts, list what the change creates in the plan and resolve it in the same change, keep an override a language's or framework's idiom requires, and report what already existed.
+- Scan the lower-level rules for conflicts and duplication when you change a higher-level rule: Core Rules, Anti-Loopholes, [.agents/attunic-protocol.md.jinja](.agents/attunic-protocol.md.jinja), and the `.attunic/` templates reach each other and the other `.agents/` templates (and, in this file, its other sections), each general section of the `.agents/` templates reaches the matching section of every `languages/` and `frameworks/` fragment, and a base fragment reaches the fragments built on it (`javascript` reaches `typescript`, `express`, `nextjs`, and `react`; `typescript` reaches `angular`, `express`, `nestjs`, `nextjs`, and `react`; `css` reaches `sass` and `tailwind`; `react` reaches `nextjs`); since a lower-level rule wins a conflict, except against the Core Rules, Anti-Loopholes, attunic protocol, and `.attunic/` templates, and a restatement drifts, list what the change creates in the plan and resolve it in the same change, keep an override a language's or framework's idiom requires, and report what already existed.
 - Report unrelated findings instead of fixing them.
 - Remove what your change orphaned (unused fragments, variables, sections, files).
 - Update the docs that describe changed behavior (`README.md`, this file) in the same change.

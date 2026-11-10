@@ -1,0 +1,45 @@
+## Express
+
+### Express-Guideline
+
+- Keep `src/app.js` (or `src/app.ts`) to building the app: create it, mount middleware and routers, register the error handler last, and export it; never call `listen()` there.
+- Keep `src/server.js` (or `src/server.ts`, or `bin/www`) as the only entry point: import the app, and call `listen()`.
+- Keep one router per resource under `src/routes/`, and the handlers it maps to under `src/controllers/`.
+- Keep business rules under `src/services/`, cross-cutting request handling under `src/middleware/`, and database queries only under `src/models/` or `src/repositories/`.
+- Keep environment values and third-party client setup under `src/config/`, read once at startup.
+<!-- Project-specific / Express-Guideline -->
+
+### Express-Layout
+
+```
+├── src/
+│   ├── app.js|ts                  # builds the app: middleware, routers, error handler last; exported, never listens
+│   ├── server.js|ts               # entry point: imports the app and calls listen()
+│   ├── config/                    # environment values and third-party client setup, read once at startup
+│   ├── routes/                    # one router per resource: paths and HTTP methods to handlers
+│   ├── controllers/               # handlers: validated input in, one service call, response out
+│   ├── services/                  # business rules; never import express or read req/res
+│   ├── middleware/                # cross-cutting request handling: authentication, validation, rate limiting, logging
+│   └── models/ (or repositories/) # the only modules that query the database
+<!-- Project-specific / Express-Layout -->
+```
+
+### Express-Layer Dependencies
+
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- For code built on Express, this suggestion replaces the JavaScript or TypeScript one: the architecture layer names are the same, with the delivery layer split out of `adapters` as `delivery`.
+- Routers, controllers, and middleware are the delivery layer: they adapt HTTP; they do not decide.
+- `express`, `req`, and `res` stop at the delivery layer, and ORM or database driver types at the adapters layer; business rules receive plain values.
+- Declare a repository port in the application layer, beside the service that needs it: a JSDoc `@typedef` in JavaScript, an interface in TypeScript; a module under `src/models/` or `src/repositories/` implements it.
+- `src/app.*` and `src/server.*` are the composition root: they build the routers and every dependency, and pass them in; no other module builds the object graph.
+- Check manually: read the imports of changed files; an inner module importing an outer one is a violation.
+
+| Architecture layer | Typical path | Depends on | Must never contain |
+|--------------------|--------------|------------|--------------------|
+| domain | src/domain | itself | framework, ORM, or HTTP types |
+| application | src/services | domain | database access, `express`, `req`/`res` |
+| adapters | src/models, src/repositories | application (its ports), domain | business rules, `express`, `req`/`res` |
+| delivery | src/routes, src/controllers, src/middleware | application, domain | business rules, database access |
+| main | `src/app.*`, `src/server.*`, src/config | application, adapters, delivery, domain | business rules |
+| <!-- Project-specific / Express-Layer Dependencies --> | | | |

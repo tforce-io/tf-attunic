@@ -1,0 +1,53 @@
+## Express
+
+### Express-Formats
+
+<!-- Project-specific / Express-Formats -->
+
+### Express-Names
+
+<!-- Project-specific / Express-Names -->
+
+### Express-Packages
+
+<!-- Project-specific / Express-Packages -->
+
+### Express-Types
+
+<!-- Project-specific / Express-Types -->
+
+### Express-Functions
+
+<!-- Project-specific / Express-Functions -->
+
+### Express-Comments
+
+<!-- Project-specific / Express-Comments -->
+
+### Express-Errors
+
+- Register one central error-handling middleware after every route and router, so no error reaches Express's default handler, which writes the stack trace into the response outside the `production` environment.
+- Declare an error-handling middleware with all four parameters `(err, req, res, next)`, unused ones included: Express recognizes one by its parameter count, and runs a shorter one as ordinary middleware.
+- Delegate to `next(err)` from the central error handler when `res.headersSent` is true: the response has started, and only Express's default handler can close the connection.
+- Pass every error Express can't see to `next(err)`: one raised in a callback or in a promise the handler doesn't return, and, where the project's Express version doesn't forward a rejected promise to `next` on its own, a rejection from an async handler or middleware.
+- Never wrap an async handler or middleware in a `try`/`catch` or a helper only to forward its rejection where the project's Express version forwards it on its own.
+<!-- Project-specific / Express-Errors -->
+
+### Express-Concurrency
+
+<!-- Project-specific / Express-Concurrency -->
+
+### Express-Routers
+
+- Give each resource its own router module, mounted under its path prefix in the app module; never register every route on the app in one file.
+- Keep a router to wiring: map each path and HTTP method to its middleware and handler.
+- Keep a route handler to the HTTP boundary: read validated values from `req`, call a service with plain values, and shape the response; never put a business rule in a handler.
+- Write wildcard and optional route segments in the path syntax of the project's Express version: the syntax differs between major versions, and a path written in another version's syntax is rejected or matches different paths.
+- Never pass `req` or `res` to a service; extract the plain values it needs before the call.
+<!-- Project-specific / Express-Routers -->
+
+### Express-Middleware
+
+- Keep each middleware to one cross-cutting job (authentication, validation, rate limiting, logging); never put a business rule in one.
+- Mount middleware the whole app needs once, in the app module, before the routers; mount middleware one resource needs on that resource's router.
+<!-- Project-specific / Express-Middleware -->

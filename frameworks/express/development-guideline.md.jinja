@@ -1,0 +1,41 @@
+## Express
+
+### Express-Exploring
+
+<!-- Project-specific / Express-Exploring -->
+
+### Express-Writing
+
+<!-- Project-specific / Express-Writing -->
+
+### Express-Security
+
+- Validate `req.body`, `req.query`, and `req.params` in middleware or at the top of the handler, before anything reads them; a service receives already-valid plain values.
+- Set security response headers once, with one middleware mounted in the app module before every router; never set them per route.
+- Pass `limit` to the body parsers, and `extended` to `express.urlencoded()`, explicitly, so how large and how deeply nested a parsed body may be is the project's decision, not a default that differs between Express versions.
+<!-- Project-specific / Express-Security -->
+
+### Express-Fixing
+
+<!-- Project-specific / Express-Fixing -->
+
+### Express-Refactoring
+
+<!-- Project-specific / Express-Refactoring -->
+
+### Express-Testing
+
+- Test a service as plain functions, with no request, response, or app involved.
+- Test routes by sending requests to the exported app, without starting the server entry point.
+- Fake the database and outbound clients at the dependency the service receives, not inside the service.
+- Test the central error handler: a route that throws must produce the documented status and body.
+<!-- Project-specific / Express-Testing -->
+
+### Express-Common Mistakes
+
+- Fat route: a route callback that parses input, applies a business rule, and queries the database inline => move validation into middleware, the rule into a service, and the query into a model or repository.
+- Framework in a service: a service that imports `express` or reads `req`/`res` => pass it plain values.
+- Bypassed error handler: a `catch` in a handler that answers on its own instead of forwarding the error => pass the error to `next(err)`.
+- Three-parameter error handler: an error-handling middleware declared without all four parameters, so Express runs it as ordinary middleware => declare `(err, req, res, next)`.
+- Stale route syntax: a wildcard or optional-segment path left in another Express version's syntax after an upgrade => rewrite it in the installed version's syntax.
+<!-- Project-specific / Express-Common Mistakes -->

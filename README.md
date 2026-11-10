@@ -174,6 +174,7 @@ Next.js builds on React: a validator on the `frameworks` question rejects `nextj
 ### Supported Frameworks
 
 - Angular: `angular`
+- Express: `express`
 - NestJS: `nestjs`
 - Next.js: `nextjs`
 - React: `react`

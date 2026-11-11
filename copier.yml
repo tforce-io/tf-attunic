@@ -45,7 +45,6 @@ _message_after_update: |
 project_name:
   type: str
   help: "What is the name of this project?"
-  default: "project-name"
   validator: >-
     {% if not (project_name | regex_search('^[A-Za-z][A-Za-z0-9_. -]*$')) %}
     Start with a letter; use only letters, digits, spaces, dots, dashes, and underscores.

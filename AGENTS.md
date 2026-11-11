@@ -144,7 +144,7 @@ Template engine; version floor `>= 9.0.0` (declared in `copier.yml`). Template v
   ```
 - Verify a change by rendering the working tree, uncommitted changes included, into a scratch folder (run at the repository root; see [Testing](#testing)):
   ```sh
-  copier copy --vcs-ref=HEAD --defaults --data 'languages=[go]' . <scratch>
+  copier copy --vcs-ref=HEAD --defaults --data 'project_name=demo' --data 'languages=[go]' . <scratch>
   ```
 - Update an existing downstream project (run inside the project):
   ```sh

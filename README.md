@@ -12,7 +12,7 @@ Generate a new project:
 copier copy gh:tforce-io/tf-attunic .
 ```
 
-Then fill in `.attunic/context.md`; the template is ready to use.
+Then fill in `.attunic/context.md` (see [tf-attunic-examples](https://github.com/tforce-io/tf-attunic-examples) for filled-in examples); the template is ready to use.
 
 Update an existing project that was generated from this template:
 

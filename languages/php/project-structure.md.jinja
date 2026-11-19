@@ -1,0 +1,44 @@
+## PHP
+
+### PHP-Guideline
+
+- Keep source under `src/` and tests under `tests/`, the test tree mirroring the source tree; follow the project's existing roots where it already uses others.
+- Keep entry scripts (`public/index.php`, console commands under `bin/`) thin: bootstrap, dispatch, return.
+- Keep an exception beside the module that throws it, never in one catch-all `Exceptions` namespace spanning unrelated modules.
+<!-- Project-specific / PHP-Guideline -->
+
+### PHP-Layout
+
+```
+├── bin/          # console entry scripts (thin: bootstrap, dispatch, return)
+├── config/       # application configuration
+├── docs/         # design and user documents
+├── examples/     # examples for applications and/or public libraries
+├── public/       # web document root: front controller (index.php) and static files only
+├── scripts/      # build/install/analysis scripts
+├── src/          # application/library source, autoloaded per PSR-4
+├── tests/        # test suites, fixtures, and test data, mirroring src/
+├── Dockerfile    # container build definition
+├── Makefile      # build/test/lint task automation (optional)
+├── composer.json # package manifest: dependencies, autoload map, and scripts
+├── composer.lock # dependency lockfile (committed for applications)
+<!-- Project-specific / PHP-Layout -->
+```
+
+### PHP-Layer Dependencies
+
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- The entry scripts (`public/index.php`, `bin/*`) and the container configuration are the outermost architecture layer and the composition root: the only place that binds a concrete implementation to its interface, never a constructor parameter default (`OrderRepository $orders = new SqlOrderRepository()`); they may use everything, and nothing uses them.
+- Architecture layers live under `src/`, one namespace each; one suggestion, innermost first:
+
+| Architecture layer | Typical path | Depends on | Must never contain |
+|--------------------|--------------|------------|--------------------|
+| domain | src/Domain | itself | framework, ORM, or HTTP namespaces, superglobals (`$_GET`, `$_POST`, `$_SERVER`) |
+| application | src/Application | domain | database access, HTTP controllers |
+| infrastructure | src/Infrastructure | application (its ports), domain | business rules |
+| main | public/index.php, bin/\* | application, infrastructure, domain | business rules |
+
+- Declare a port as an interface beside the domain or application code that calls it (`OrderRepository`); implement it in the infrastructure layer (`SqlOrderRepository`).
+- Check manually: read the `use` imports of changed files; a domain class importing a framework, ORM, or HTTP namespace is a violation.
+<!-- Project-specific / PHP-Layer Dependencies -->

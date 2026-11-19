@@ -1,0 +1,58 @@
+## PHP
+
+### PHP-Formats
+
+- Open a file with the `<?php` tag on its first line, below a shebang if any; text above the tag, a license header included, is sent as output.
+- Order the blocks below the opening tag, one blank line apart: file-level comments and docblock, `declare` statements, the `namespace` declaration, then `use` imports of classes, functions, and constants, in that order; PHP rejects a `strict_types` declaration that is not the first statement.
+- Omit the closing `?>` tag from a file containing only PHP; anything after it is sent as output.
+<!-- Project-specific / PHP-Formats -->
+
+### PHP-Names
+
+- Use `PascalCase` for classes, interfaces, traits, enums, and enum cases, `camelCase` for methods, and `UPPER_SNAKE_CASE` for class constants (PSR-1, PER Coding Style).
+- Name properties and variables in one casing across the codebase, `camelCase` unless it already uses another; PSR-1 leaves their casing open.
+- Name an interface for the contract it promises, following the codebase's convention: the `Interface` suffix of PSR interfaces (`LoggerInterface`) or the bare noun (`Logger`); never an `I` prefix.
+- Never prefix a property or method name with `_` to mark it private or protected; the visibility keyword says it.
+<!-- Project-specific / PHP-Names -->
+
+### PHP-Packages
+
+- Declare one class, interface, trait, or enum per file, in a file named after it, case included (`OrderRepository.php`).
+- Mirror the namespace in the folder path below its PSR-4 base directory (`App\Billing\Invoice` lives in `src/Billing/Invoice.php` when `App\` maps to `src/`).
+- Declare every class and function inside the project's vendor namespace, never in the global namespace.
+- Use `protected` only for a member a subclass is designed to use or override; default to `private`.
+<!-- Project-specific / PHP-Packages -->
+
+### PHP-Types
+
+- Type every parameter, return value, and property natively; write docblock types (`@param`, `@return`, `@var`) only for what native types cannot express, such as generics and array shapes (`list<Order>`, `array{id: int, name: string}`).
+- Declare `strict_types=1` in every new file when the codebase's files do, so scalar types are enforced instead of silently coerced; where they don't, propose it instead of adding it unasked: it changes how every call from that file behaves.
+- Model structured data as a class with typed properties instead of an associative array with string keys (`$order['total']`); keep arrays for lists and maps of uniform values.
+- Mark a property `readonly` when nothing changes it after construction, and the class `readonly` when every property is.
+- Model a closed set of values as an `enum`, backed (`enum Status: string`) when the value is stored or serialized; never as a group of class constants.
+- Prefer `final` classes, opening one to inheritance only as a designed extension point; a test double then implements the interface its caller depends on.
+<!-- Project-specific / PHP-Types -->
+
+### PHP-Functions
+
+- Promote a constructor parameter to a property when the constructor stores it as received; declare the property separately when the constructor transforms the value first.
+<!-- Project-specific / PHP-Functions -->
+
+### PHP-Comments
+
+- Write doc comments as `/** ... */` docblocks directly above the element they document; reflection and documentation tools ignore `//` and `/* */` comments.
+<!-- Project-specific / PHP-Comments -->
+
+### PHP-Errors
+
+- Throw the most specific SPL or project exception (`InvalidArgumentException`, `DomainException`, a project subclass); never a bare `\Exception`.
+- Pass the caught exception as `previous` when rethrowing (`throw new PaymentFailedException('charge declined', previous: $e)`).
+- Return `null`, declared with a nullable type (`?Order`), from a lookup where absence is normal, never `false` as legacy built-ins do; throw a specific exception where the contract promises a value.
+- Declare the `never` return type on a function that always throws or exits.
+- Catch only the exception type you can act on; catch `\Throwable` only at the outermost boundary that reports it (front controller, console command, worker loop).
+- Never suppress an error with the `@` operator; check the precondition, or handle the failure the call reports.
+<!-- Project-specific / PHP-Errors -->
+
+### PHP-Concurrency
+
+<!-- Project-specific / PHP-Concurrency -->

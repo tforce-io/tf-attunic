@@ -163,6 +163,7 @@ Next.js builds on React: a validator on the `frameworks` question rejects `nextj
 - CSS: `css`
 - Go: `go`
 - JavaScript: `javascript`
+- PHP: `php`
 - PowerShell: `powershell`
 - Python: `python`
 - Rust: `rust`
@@ -205,11 +206,14 @@ Reference for `.editorconfig`: every `indent_style` or `indent_size` a language 
 | Go: `*.go`, `go.mod`, `go.work` | `tab` | `2` (default) | [gofmt](https://pkg.go.dev/cmd/gofmt), [`go mod edit -fmt`](https://go.dev/ref/mod#go-mod-edit), [`go work edit -fmt`](https://go.dev/ref/mod#go-work-edit) |
 | Make: `Makefile`, `makefile`, `GNUmakefile`, `*.mk` | `tab` | `2` (default) | [GNU make recipe syntax](https://www.gnu.org/software/make/manual/html_node/Recipe-Syntax.html) |
 | Markdown: `*.md` | `space` | `2` (default) | This template: generated Markdown nests lists with spaces |
+| PHP: `*.php` | `space` | `4` | [PER Coding Style, 2.4 Indenting](https://www.php-fig.org/per/coding-style/#24-indenting) |
 | PowerShell: `*.ps1`, `*.psd1`, `*.psm1` | `space` | `4` | [PSScriptAnalyzer UseConsistentIndentation](https://learn.microsoft.com/en-us/powershell/utility-modules/psscriptanalyzer/rules/useconsistentindentation) |
 | Python: `*.py`, `*.pyi` | `space` | `4` | [PEP 8](https://peps.python.org/pep-0008/#indentation) |
 | Rust: `*.rs` | `space` | `4` | [Rust Style Guide](https://doc.rust-lang.org/style-guide/#indentation-and-line-width) |
 | YAML: `*.yaml`, `*.yml` | `space` | `2` (default) | [YAML 1.2.2, 6.1 Indentation Spaces](https://yaml.org/spec/1.2.2/#61-indentation-spaces) |
 | Everything else, e.g. CSS, Sass, JavaScript, TypeScript, Shell, Text, JSON, TOML | `tab` (default) | `2` (default) | No owner rule |
+
+PHP's section also declares `charset = utf-8`, overriding the `charset` answer: [PSR-1, 2.2 Character Encoding](https://www.php-fig.org/psr/psr-1/#22-character-encoding) requires UTF-8 without BOM, and a BOM before `<?php` is sent as output.
 
 ## Attributions
 

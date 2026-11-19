@@ -1,0 +1,40 @@
+## PHP
+
+### PHP-Exploring
+
+<!-- Project-specific / PHP-Exploring -->
+
+### PHP-Writing
+
+- Never grow the static analyzer's baseline to get a clean run; fix the new error, or suppress it narrowly with a *why* comment.
+<!-- Project-specific / PHP-Writing -->
+
+### PHP-Security
+
+- Expose only the web document root (conventionally `public/`: the front controller and static files) to the web server; keep source, configuration, `vendor/`, and `.env` files outside it.
+- Never pass untrusted input to `unserialize()`, whatever its `allowed_classes` option: instantiating and autoloading classes can run code; exchange such data as JSON (`json_decode()`).
+<!-- Project-specific / PHP-Security -->
+
+### PHP-Fixing
+
+<!-- Project-specific / PHP-Fixing -->
+
+### PHP-Refactoring
+
+<!-- Project-specific / PHP-Refactoring -->
+
+### PHP-Testing
+
+- Parametrize boundary and equivalence-class variations with the test runner's data providers instead of copy-pasting test methods.
+<!-- Project-specific / PHP-Testing -->
+
+### PHP-Common Mistakes
+
+- Array as struct: an associative array passed around as a record (`$order['total']`) => model it as a class with typed properties.
+- Loose comparison: `==`, `in_array()` without its strict argument, or a truthiness check where `0`, `'0'`, or `''` is a valid value, such as `strpos()` returning `0` for a match at the start => compare with `===`/`!==`, and pass `true` as `in_array()`'s strict argument.
+- Static reach-in: a static facade, singleton, or service-locator call inside domain code => inject the collaborator through the constructor.
+- Global business rule: a function in the global namespace carrying a business rule => move it into the class or namespace of the module that owns the rule.
+- Catch-all class: a `Helpers` or `Utils` class collecting unrelated static methods => move each method to the class named for its concept.
+- Suppressed warning: an `@`-prefixed call hiding a real failure => check the precondition, or handle the failure the call reports.
+- Working constructor: a constructor that persists, calls out, or dispatches events => keep it to validating and assigning its arguments; move the work into a method.
+<!-- Project-specific / PHP-Common Mistakes -->

@@ -15,7 +15,7 @@ The technical aspects of the project: what it is built with and supports, and wh
 - Build system: None.
 - Test runner: None.
 - Linter: None.
-- Supported languages: `css`, `go`, `javascript`, `powershell`, `python`, `rust`, `sass`, `shell`, `typescript`, `text`.
+- Supported languages: `css`, `go`, `javascript`, `php`, `powershell`, `python`, `rust`, `sass`, `shell`, `typescript`, `text`.
 - Supported frameworks: `angular`, `express`, `nestjs`, `nextjs`, `react`, `tailwind`.
 - Supported licenses: `MIT`, `ISC`, `BSD-2-Clause`, `BSD-3-Clause`, `0BSD`, `Apache-2.0`, `MPL-2.0`, `GPL-3.0-only`, `GPL-3.0-or-later`, `LGPL-3.0-only`, `LGPL-3.0-or-later`, `AGPL-3.0-only`, `AGPL-3.0-or-later`, or `None`; license header style in code files: `Full`, `SPDX`, or `None` (skipped when `license` is `None`).
 - Verification: manual, by running `copier copy` / `copier update` into a scratch folder and inspecting the generated files (see [Supporting Tools](#supporting-tools)).
@@ -199,7 +199,7 @@ Template authoring conventions for this repository:
 - Name markers uniquely within their file after the section they close: `<!-- Project-specific / <Section> -->`.
 - Name a fragment's section headings and markers `<Name>-<Section>`, where `<Name>` is the language or framework name as in the fragment's top heading (e.g. `Go-Errors`, `Angular-Hooks`); the heading text and the marker text are identical, spaces included.
 - Name template files after the generated file with the `.jinja` suffix (e.g. `AGENTS.md.jinja` renders `AGENTS.md`).
-- Name language folders with the lowercase codes listed in the `languages` choices in `copier.yml`: `css`, `go`, `javascript`, `powershell`, `python`, `rust`, `sass`, `shell`, `typescript`, `text`.
+- Name language folders with the lowercase codes listed in the `languages` choices in `copier.yml`: `css`, `go`, `javascript`, `php`, `powershell`, `python`, `rust`, `sass`, `shell`, `typescript`, `text`.
 - Name framework folders with the lowercase codes listed in the `frameworks` choices in `copier.yml`: `angular`, `express`, `nestjs`, `nextjs`, `react`, `tailwind`.
 - Name license fragments `<license-id>.jinja` and `<license-id>-notice.jinja` (e.g. `mit.jinja`, `mit-notice.jinja`).
 - Never number or version a name instead of replacing the original (`coding-conventions-v2.md.jinja`, `_new`, `_copy`).

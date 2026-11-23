@@ -169,6 +169,7 @@ Next.js builds on React: a validator on the `frameworks` question rejects `nextj
 - Rust: `rust`
 - Sass: `sass`
 - Shell: `shell`
+- Swift: `swift`
 - TypeScript: `typescript`
 - Text: `text`
 
@@ -210,10 +211,13 @@ Reference for `.editorconfig`: every `indent_style` or `indent_size` a language 
 | PowerShell: `*.ps1`, `*.psd1`, `*.psm1` | `space` | `4` | [PSScriptAnalyzer UseConsistentIndentation](https://learn.microsoft.com/en-us/powershell/utility-modules/psscriptanalyzer/rules/useconsistentindentation) |
 | Python: `*.py`, `*.pyi` | `space` | `4` | [PEP 8](https://peps.python.org/pep-0008/#indentation) |
 | Rust: `*.rs` | `space` | `4` | [Rust Style Guide](https://doc.rust-lang.org/style-guide/#indentation-and-line-width) |
+| Swift: `*.swift` | `space` | `2` | [swift-format Configuration, indentation](https://github.com/swiftlang/swift-format/blob/main/Documentation/Configuration.md) |
 | YAML: `*.yaml`, `*.yml` | `space` | `2` (default) | [YAML 1.2.2, 6.1 Indentation Spaces](https://yaml.org/spec/1.2.2/#61-indentation-spaces) |
 | Everything else, e.g. CSS, Sass, JavaScript, TypeScript, Shell, Text, JSON, TOML | `tab` (default) | `2` (default) | No owner rule |
 
 PHP's section also declares `charset = utf-8`, overriding the `charset` answer: [PSR-1, 2.2 Character Encoding](https://www.php-fig.org/psr/psr-1/#22-character-encoding) requires UTF-8 without BOM, and a BOM before `<?php` is sent as output.
+
+Swift's section follows swift-format's default over Xcode's editor default of 4 spaces: swift-format is the toolchain's own formatter, so it is the owner rule.
 
 ## Attributions
 

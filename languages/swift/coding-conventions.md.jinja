@@ -1,0 +1,68 @@
+## Swift
+
+### Swift-Formats
+
+- Keep the `// swift-tools-version:` comment on the first line of `Package.swift`, above the license header; SwiftPM reads the manifest's tools version from it, and older tools versions reject a manifest with a comment above it.
+<!-- Project-specific / Swift-Formats -->
+
+### Swift-Names
+
+- Use `UpperCamelCase` for types and protocols, and `lowerCamelCase` for everything else, enum cases and constants included (`maxRetryCount`, not `MAX_RETRY_COUNT`).
+- Case an acronym or initialism uniformly up or down according to its position (`userID`, `URLSession`, `utf8Bytes`); never `userId` or `UrlSession`.
+- Choose argument labels so a call reads as a grammatical phrase at the call site (`list.insert(item, at: index)`); omit the first label only when the argument completes the base name's phrase or the initializer is a value-preserving conversion (`Int64(someUInt32)`).
+- Omit words that repeat type information the call site already shows (`allViews.remove(cancelButton)`, not `allViews.removeElement(cancelButton)`).
+- Name a mutating and nonmutating method pair after one verb: the imperative for the mutating method, the `-ed` or `-ing` form for the one returning a new value (`sort()`/`sorted()`, `append(_:)`/`appending(_:)`); for a noun-based operation, prefix the mutating method with `form` (`formUnion(_:)`/`union(_:)`).
+- Begin a factory method's name with `make` (`makeIterator()`).
+- Name a protocol that describes what something is as a noun (`Collection`), and one that describes a capability with an `-able`, `-ible`, or `-ing` suffix (`Equatable`, `ProgressReporting`); never with an `I` prefix.
+<!-- Project-specific / Swift-Names -->
+
+### Swift-Packages
+
+- Pick the narrowest access level that works: `private` within a declaration and its extensions in the same file, `fileprivate` for other declarations in the file, `internal` (the default) within the module, `package` for other modules of the same package, `public` for the module's API, and `open` only for a class or member designed to be subclassed or overridden outside its module.
+- Expose a property read-only with `private(set)`, instead of a getter method beside a separately mutable stored property.
+- Name a file after the primary type it declares (`Order.swift`), and a file holding an extension after the type and what the extension adds (`Order+Codable.swift`, `Order+Formatting.swift`).
+<!-- Project-specific / Swift-Packages -->
+
+### Swift-Types
+
+- Default to a `struct` or `enum`; declare a `class` only when the type needs identity or Objective-C interoperability, and share behavior through protocols and their extensions instead of class inheritance.
+- Mark a class `final` unless it is designed for subclassing.
+- Declare a stored value with `let` unless it changes after initialization.
+- Model a closed set of alternatives as an `enum`, with associated values for per-case data, instead of a type code or a group of optional properties only some of which are set.
+- Switch over an enum the module owns exhaustively, without `default:`, so adding a case fails to compile until every switch handles it; where the compiler warns that an enum may have unknown values, add `@unknown default:`, not `default:`.
+- Prefer `some Protocol` or a generic parameter over `any Protocol` for parameter and return types; use an existential (`any`) only where values of different concrete types share one storage, such as a heterogeneous array.
+<!-- Project-specific / Swift-Types -->
+
+### Swift-Functions
+
+- Exit early with `guard ... else` for each unmet precondition, so the success path stays unindented and last.
+- Give a parameter a default value instead of writing a family of overloads that differ only by trailing arguments; place defaulted parameters at the end of the list.
+- Capture `self` weakly (`[weak self]`) in an escaping closure that `self` stores, directly or through an object it owns; a strong capture there is a reference cycle that is never freed.
+<!-- Project-specific / Swift-Functions -->
+
+### Swift-Comments
+
+- Write doc comments as `///` lines in Swift-flavored Markdown directly above the declaration, opening with a one-sentence summary; add `- Parameters:`, `- Returns:`, and `- Throws:` fields only where the summary leaves them unclear.
+- Keep `// MARK:` comments that group a type's members (such as one per protocol-conformance extension): editors build the file outline from them, so they are tool-read, not position markers; add new ones only where the file already uses them.
+<!-- Project-specific / Swift-Comments -->
+
+### Swift-Errors
+
+- Throw a domain error type conforming to `Error`, usually an `enum` with one case per cause a caller can tell apart; never an `NSError` built in new Swift code, or a `String` made to conform to `Error`.
+- Carry the underlying error as an associated value when wrapping it (`case storageFailed(underlying: any Error)`); never discard it for a new error.
+- Keep untyped `throws` by default; declare a typed `throws(SomeError)` only where the error type will never widen and callers handle it exhaustively, such as code internal to one module.
+- Use `try?` only where `nil` tells the caller all it needs; it discards the error.
+- Never force-unwrap (`!`), force-try (`try!`), or force-cast (`as!`) a value that can be absent or fail at runtime; reserve them for invariants the code guarantees (a URL built from a string literal), and otherwise unwrap with `guard let`, `if let`, or `??`.
+<!-- Project-specific / Swift-Errors -->
+
+### Swift-Concurrency
+
+- Give mutable state shared across tasks one isolation owner: an `actor`, or the main actor (`@MainActor`) for UI state; never a class with unsynchronized stored properties reached from several tasks.
+- Make a type that crosses an isolation boundary `Sendable`: a value type whose stored properties are all `Sendable`, an actor, or a `final` class whose stored properties are all `let` and `Sendable`.
+- Keep the handle of every unstructured `Task` that can outlive its caller, and cancel it when its owner goes away.
+- Check for cancellation (`try Task.checkCancellation()`, `Task.isCancelled`) in long-running work; cancellation is cooperative and stops nothing by itself.
+- Prefer structured concurrency (`async let`, task groups) over an unstructured `Task` for work that finishes before its caller returns.
+- Prefer `async` functions over completion handlers, and Swift concurrency over Dispatch queues, in code that already uses Swift concurrency.
+- Never silence a data-race diagnostic with `@unchecked Sendable`, `nonisolated(unsafe)`, or `@preconcurrency` unless a *why* comment beside it says what makes it safe.
+- Never block a thread in async code with a semaphore, `DispatchGroup.wait()`, or `Thread.sleep`; `await` the work instead: Swift's cooperative thread pool doesn't replace a blocked thread.
+<!-- Project-specific / Swift-Concurrency -->

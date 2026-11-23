@@ -64,6 +64,7 @@ languages:
     - rust
     - sass
     - shell
+    - swift
     - typescript
     - text
   validator: >-

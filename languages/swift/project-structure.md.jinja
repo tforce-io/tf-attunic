@@ -1,0 +1,47 @@
+## Swift
+
+### Swift-Guideline
+
+- Follow the Swift Package Manager layout: each target's sources under `Sources/<Target>/` and its tests under `Tests/<Target>Tests/`; follow the project's existing layout where it already uses another, such as an Xcode project's groups.
+- Keep the entry point (`main.swift` or the `@main` type) thin: build the collaborators, inject them, start.
+- Keep `Package.swift` declarative: products, targets, and dependencies.
+- Split code into targets along domain lines, so `internal` access enforces the boundaries between them; never grow one target that every feature edits.
+<!-- Project-specific / Swift-Guideline -->
+
+### Swift-Layout
+
+```
+├── <App>.xcodeproj/ # Xcode project (Apple-platform apps; optional)
+├── Plugins/         # SwiftPM build-tool and command plugins (optional)
+├── Sources/         # one folder per target (Sources/<Target>/); an executable target holds main.swift or the @main type
+├── Tests/           # one folder per test target (Tests/<Target>Tests/), mirroring Sources/
+├── docs/            # design and user documents
+├── examples/        # examples for applications and/or public libraries
+├── scripts/         # build/install/analysis scripts
+├── .swift-format    # swift-format configuration (optional)
+├── .swift-version   # pinned Swift toolchain (optional)
+├── .swiftlint.yml   # SwiftLint configuration (optional)
+├── Dockerfile       # container build definition
+├── Makefile         # build/test/lint task automation (optional)
+├── Package.resolved # dependency lockfile (committed for applications)
+├── Package.swift    # package manifest: products, targets, and dependencies
+<!-- Project-specific / Swift-Layout -->
+```
+
+### Swift-Layer Dependencies
+
+Notes for declaring architecture layers in the `Layer Dependencies` section of `.attunic/context.md`; adjust them to the project before declaring.
+
+- The executable target (`main.swift` or the `@main` type) is the outermost architecture layer and the composition root: the only place that constructs a concrete adapter and injects it; it may import everything, and nothing imports it.
+- Architecture layers are SwiftPM targets, each listing in its `dependencies` only the targets its layer may depend on; one suggestion, innermost first:
+
+| Architecture layer | Typical path | Depends on | Must never contain |
+|--------------------|--------------|------------|--------------------|
+| domain | Sources/Domain | itself | UI frameworks (`SwiftUI`, `UIKit`, `AppKit`), networking, persistence |
+| application | Sources/Application | domain | database access, network calls, UI |
+| adapters | Sources/Adapters | application (its ports), domain | business rules |
+| main | Sources/\<App\> | application, adapters, domain | business rules |
+
+- Declare ports as protocols in the domain or application target; adapter targets conform to them, and the composition root injects them through initializers.
+- Check manually: in `Package.swift`, an inner target's `dependencies` must never list an outer target; then read the `import`s of changed files, since a build can resolve an import of an already-built target that its own target doesn't list.
+<!-- Project-specific / Swift-Layer Dependencies -->

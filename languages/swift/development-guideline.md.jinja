@@ -1,0 +1,44 @@
+## Swift
+
+### Swift-Exploring
+
+<!-- Project-specific / Swift-Exploring -->
+
+### Swift-Writing
+
+- Guard a call to an API newer than the deployment target with `if #available(...)`, or mark its caller `@available(...)`.
+- Never raise a deployment target, the `swift-tools-version`, the Swift language mode, or a module's concurrency settings as a side effect of a task; propose it instead: each drops OS or toolchain versions the project supports, or turns on new errors across the codebase.
+<!-- Project-specific / Swift-Writing -->
+
+### Swift-Security
+
+- Confine APIs with `unsafe` in their name (`UnsafeMutablePointer`, `withUnsafeBytes`, `unsafeBitCast`) to a narrow wrapper whose comment names the invariant that keeps it memory-safe.
+- Never let a pointer from a `withUnsafe...` closure escape it; it is valid only inside the closure.
+<!-- Project-specific / Swift-Security -->
+
+### Swift-Fixing
+
+<!-- Project-specific / Swift-Fixing -->
+
+### Swift-Refactoring
+
+<!-- Project-specific / Swift-Refactoring -->
+
+### Swift-Testing
+
+- Test async code with an `async` test that awaits it; reserve expectations with timeouts for callback-based APIs.
+- Unwrap an optional in a test with the test framework's throwing unwrap (`try #require(value)`, `try XCTUnwrap(value)`) instead of `!`, so a `nil` fails that test instead of crashing the whole test run.
+- Parametrize boundary and equivalence-class variations with the test framework's parameterized tests, where it has them, instead of copy-pasting test functions.
+<!-- Project-specific / Swift-Testing -->
+
+### Swift-Common Mistakes
+
+- Runtime force unwrap: `!`, `try!`, or `as!` on a value that can be `nil` or fail at runtime => unwrap with `guard let`, `if let`, or `??`, or propagate with `try`.
+- Discarded error: `try?` on a call whose failure the caller must act on => propagate with `try`, or `catch` the specific error.
+- Retain cycle: an escaping closure stored by an object it captures strongly (`self.onChange = { self.reload() }`) => capture `[weak self]`.
+- Defaulted switch: `default:` in a switch over an enum the module owns, hiding cases added later => list every case.
+- Singleton reach-in: a `.shared` singleton called from domain code => inject the collaborator through the initializer.
+- Leaked task: an unstructured `Task` with no stored handle that outlives the object that started it => keep the handle and cancel it with its owner, or use structured concurrency.
+- Actor reentrancy: actor state read before an `await` and trusted after it => read it again after the `await`.
+- Catch-all extension file: an `Extensions.swift` or `Utilities.swift` collecting unrelated extensions => move each into a file named for its type and concern (`Order+Formatting.swift`).
+<!-- Project-specific / Swift-Common Mistakes -->
